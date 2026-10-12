@@ -1,0 +1,122 @@
+{
+  "common": {
+    "appName": "TrainSched",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "retry": "Erneut versuchen",
+    "loading": "Wird geladen …",
+    "back": "Zurück",
+    "comingSoon": "Kommt in einem der nächsten Meilensteine."
+  },
+  "auth": {
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordConfirm": "Passwort wiederholen",
+    "passwordHint": "Mindestens 8 Zeichen, Buchstaben und Zahlen.",
+    "signIn": {
+      "title": "Anmelden",
+      "subtitle": "Willkommen zurück!",
+      "submit": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
+      "haveInvite": "Ich habe einen Einladungscode"
+    },
+    "invite": {
+      "title": "Einladung annehmen",
+      "subtitle": "Gib den Code deiner Lehrerin ein und lege dein Konto an.",
+      "code": "Einladungscode",
+      "codePlaceholder": "ABCD-EFGH",
+      "submit": "Konto erstellen",
+      "toSignIn": "Ich habe schon ein Konto"
+    },
+    "forgot": {
+      "title": "Passwort vergessen",
+      "subtitle": "Wir schicken dir einen Link, mit dem du ein neues Passwort festlegen kannst.",
+      "submit": "Link senden",
+      "sent": "Falls ein Konto mit dieser E-Mail existiert, ist der Link unterwegs. Bitte prüfe dein Postfach.",
+      "toSignIn": "Zurück zur Anmeldung"
+    },
+    "reset": {
+      "title": "Neues Passwort",
+      "subtitle": "Lege jetzt dein neues Passwort fest.",
+      "submit": "Passwort speichern",
+      "verifying": "Link wird geprüft …",
+      "invalidLink": "Dieser Link ist ungültig oder abgelaufen. Fordere bitte einen neuen an.",
+      "success": "Dein Passwort wurde geändert."
+    },
+    "signOut": "Abmelden"
+  },
+  "consent": {
+    "title": "Datenschutz",
+    "intro": "TrainSched speichert nur, was für deinen Unterricht nötig ist:",
+    "bullets": {
+      "data": "Name, E-Mail, Zeitzone und Sprache",
+      "lessons": "Termine, Notizen, Hausaufgaben und Anhänge deines Unterrichts",
+      "location": "Die Daten liegen auf Servern in Europa.",
+      "delete": "Du kannst dein Konto und alle Daten jederzeit löschen lassen."
+    },
+    "accept": "Einverstanden",
+    "decline": "Ablehnen und abmelden"
+  },
+  "tabs": {
+    "today": "Heute",
+    "calendar": "Kalender",
+    "students": "Schüler",
+    "requests": "Anfragen",
+    "settings": "Konto",
+    "lessons": "Termine",
+    "homework": "Hausaufgaben",
+    "materials": "Materialien",
+    "profile": "Profil"
+  },
+  "teacher": {
+    "today": {
+      "emptyTitle": "Noch keine Termine",
+      "emptyMessage": "Sobald du Termine anlegst, siehst du hier „Heute“ und „Diese Woche“."
+    },
+    "calendar": { "emptyTitle": "Kalender" },
+    "students": { "emptyTitle": "Noch keine Schüler" },
+    "requests": { "emptyTitle": "Keine offenen Anfragen" }
+  },
+  "student": {
+    "lessons": {
+      "emptyTitle": "Noch keine Termine",
+      "emptyMessage": "Deine Lehrerin plant gerade deine Stunden."
+    },
+    "homework": { "emptyTitle": "Keine Hausaufgaben" },
+    "materials": { "emptyTitle": "Noch keine Materialien" }
+  },
+  "account": {
+    "title": "Konto",
+    "name": "Name",
+    "role": "Rolle",
+    "roles": {
+      "admin": "Admin",
+      "teacher": "Lehrer/in",
+      "student": "Schüler/in"
+    },
+    "timezone": "Zeitzone",
+    "language": "Sprache",
+    "languages": {
+      "de": "Deutsch",
+      "vi": "Tiếng Việt"
+    }
+  },
+  "errors": {
+    "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "network": "Keine Verbindung. Bitte prüfe dein Internet.",
+    "invalidCredentials": "E-Mail oder Passwort ist falsch.",
+    "invalidCode": "Dieser Einladungscode ist ungültig, abgelaufen oder wurde schon benutzt.",
+    "emailTaken": "Mit dieser E-Mail gibt es bereits ein Konto. Bitte melde dich an.",
+    "rateLimited": "Zu viele Versuche. Bitte warte einen Moment.",
+    "profileLoad": "Dein Profil konnte nicht geladen werden."
+  },
+  "validation": {
+    "required": "Pflichtfeld",
+    "invalid_email": "Bitte gib eine gültige E-Mail ein.",
+    "invalid_code": "Der Code hat 8 Zeichen, z. B. ABCD-EFGH.",
+    "password_too_short": "Mindestens 8 Zeichen.",
+    "password_too_long": "Höchstens 72 Zeichen.",
+    "password_letters_digits": "Bitte Buchstaben und Zahlen verwenden.",
+    "passwords_mismatch": "Die Passwörter stimmen nicht überein."
+  }
+}

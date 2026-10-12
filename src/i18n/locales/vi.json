@@ -1,0 +1,122 @@
+{
+  "common": {
+    "appName": "TrainSched",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "retry": "Thử lại",
+    "loading": "Đang tải …",
+    "back": "Quay lại",
+    "comingSoon": "Sẽ có trong phiên bản tiếp theo."
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Mật khẩu",
+    "passwordConfirm": "Nhập lại mật khẩu",
+    "passwordHint": "Ít nhất 8 ký tự, gồm chữ và số.",
+    "signIn": {
+      "title": "Đăng nhập",
+      "subtitle": "Chào mừng bạn quay lại!",
+      "submit": "Đăng nhập",
+      "forgotPassword": "Quên mật khẩu?",
+      "haveInvite": "Tôi có mã mời"
+    },
+    "invite": {
+      "title": "Nhận lời mời",
+      "subtitle": "Nhập mã do cô giáo gửi và tạo tài khoản của bạn.",
+      "code": "Mã mời",
+      "codePlaceholder": "ABCD-EFGH",
+      "submit": "Tạo tài khoản",
+      "toSignIn": "Tôi đã có tài khoản"
+    },
+    "forgot": {
+      "title": "Quên mật khẩu",
+      "subtitle": "Chúng tôi sẽ gửi cho bạn một liên kết để đặt mật khẩu mới.",
+      "submit": "Gửi liên kết",
+      "sent": "Nếu có tài khoản với e-mail này, liên kết đã được gửi. Vui lòng kiểm tra hộp thư.",
+      "toSignIn": "Quay lại đăng nhập"
+    },
+    "reset": {
+      "title": "Mật khẩu mới",
+      "subtitle": "Hãy đặt mật khẩu mới của bạn.",
+      "submit": "Lưu mật khẩu",
+      "verifying": "Đang kiểm tra liên kết …",
+      "invalidLink": "Liên kết không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu liên kết mới.",
+      "success": "Mật khẩu của bạn đã được thay đổi."
+    },
+    "signOut": "Đăng xuất"
+  },
+  "consent": {
+    "title": "Bảo vệ dữ liệu",
+    "intro": "TrainSched chỉ lưu những gì cần thiết cho việc học của bạn:",
+    "bullets": {
+      "data": "Tên, e-mail, múi giờ và ngôn ngữ",
+      "lessons": "Lịch học, ghi chú, bài tập và tệp đính kèm",
+      "location": "Dữ liệu được lưu trên máy chủ ở châu Âu.",
+      "delete": "Bạn có thể yêu cầu xóa tài khoản và toàn bộ dữ liệu bất cứ lúc nào."
+    },
+    "accept": "Đồng ý",
+    "decline": "Từ chối và đăng xuất"
+  },
+  "tabs": {
+    "today": "Hôm nay",
+    "calendar": "Lịch",
+    "students": "Học viên",
+    "requests": "Yêu cầu",
+    "settings": "Tài khoản",
+    "lessons": "Buổi học",
+    "homework": "Bài tập",
+    "materials": "Tài liệu",
+    "profile": "Hồ sơ"
+  },
+  "teacher": {
+    "today": {
+      "emptyTitle": "Chưa có buổi học",
+      "emptyMessage": "Khi bạn tạo buổi học, bạn sẽ thấy „Hôm nay“ và „Tuần này“ ở đây."
+    },
+    "calendar": { "emptyTitle": "Lịch" },
+    "students": { "emptyTitle": "Chưa có học viên" },
+    "requests": { "emptyTitle": "Không có yêu cầu nào" }
+  },
+  "student": {
+    "lessons": {
+      "emptyTitle": "Chưa có buổi học",
+      "emptyMessage": "Cô giáo đang sắp xếp lịch học cho bạn."
+    },
+    "homework": { "emptyTitle": "Không có bài tập" },
+    "materials": { "emptyTitle": "Chưa có tài liệu" }
+  },
+  "account": {
+    "title": "Tài khoản",
+    "name": "Tên",
+    "role": "Vai trò",
+    "roles": {
+      "admin": "Quản trị",
+      "teacher": "Giáo viên",
+      "student": "Học viên"
+    },
+    "timezone": "Múi giờ",
+    "language": "Ngôn ngữ",
+    "languages": {
+      "de": "Deutsch",
+      "vi": "Tiếng Việt"
+    }
+  },
+  "errors": {
+    "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "network": "Không có kết nối. Vui lòng kiểm tra Internet.",
+    "invalidCredentials": "E-mail hoặc mật khẩu không đúng.",
+    "invalidCode": "Mã mời không hợp lệ, đã hết hạn hoặc đã được sử dụng.",
+    "emailTaken": "Đã có tài khoản với e-mail này. Vui lòng đăng nhập.",
+    "rateLimited": "Quá nhiều lần thử. Vui lòng đợi một chút.",
+    "profileLoad": "Không thể tải hồ sơ của bạn."
+  },
+  "validation": {
+    "required": "Bắt buộc",
+    "invalid_email": "Vui lòng nhập e-mail hợp lệ.",
+    "invalid_code": "Mã gồm 8 ký tự, ví dụ ABCD-EFGH.",
+    "password_too_short": "Ít nhất 8 ký tự.",
+    "password_too_long": "Tối đa 72 ký tự.",
+    "password_letters_digits": "Vui lòng dùng cả chữ và số.",
+    "passwords_mismatch": "Mật khẩu không khớp."
+  }
+}

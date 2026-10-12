@@ -1,56 +1,83 @@
-# Welcome to your Expo app 👋
+# TrainSched
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (Android + iOS) mit Expo, Backend auf Supabase.
 
-## Get started
+- Architektur: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-1. Install dependencies
+**Stand:** M1 (Setup, Auth, Rollen, Einladungen, RLS) ist fertig.
 
-   ```bash
-   npm install
-   ```
+## Voraussetzungen
 
-2. Start the app
+| Tool           | Version / Hinweis                                                                |
+| -------------- | -------------------------------------------------------------------------------- |
+| Node.js        | 24 LTS (mindestens 20.19)                                                        |
+| Docker Desktop | muss laufen, damit die lokale Supabase startet                                   |
+| Expo Go        | App auf dem Handy (iOS/Android), passend zu **SDK 57**                           |
+| Supabase CLI   | kommt als devDependency mit (`npx supabase …`), keine globale Installation nötig |
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Setup (lokal)
 
 ```bash
-npm run reset-project
+npm install
+npm run db:start          # startet Supabase lokal in Docker (beim ersten Mal dauert es)
+cp .env.example .env.local
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+In `.env.local` den `PUBLISHABLE_KEY` aus der Ausgabe von `npm run db:start` eintragen. Mit `npx supabase status` lässt er sich jederzeit wieder anzeigen.
 
-### Other setup steps
+```bash
+npm run db:reset          # Migrationen + Demo-Daten (supabase/seed.sql) einspielen
+npm run functions:serve   # Edge Functions lokal (für Einladungen nötig), eigenes Terminal
+npm start                 # Expo Dev-Server, QR-Code mit Expo Go scannen
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Auf dem Handy testen
 
-## Learn more
+Das Handy kann `127.0.0.1` nicht erreichen. Setze in `.env.local` deshalb die **LAN-IP deines PCs** ein, z. B. `EXPO_PUBLIC_SUPABASE_URL=http://192.168.1.23:54321`. Die IP zeigt `ipconfig` unter „IPv4-Adresse“. PC und Handy müssen im selben WLAN sein. Danach `npm start` neu starten.
 
-To learn more about developing your project with Expo, look at the following resources:
+### Demo-Zugänge (nur lokal)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Die Zugangsdaten und ein offener Einladungscode stehen im Kopf von [supabase/seed.sql](supabase/seed.sql).
 
-## Join the community
+- **Lehrerin (Admin):** sieht die Lehrer-Tabs (Heute, Kalender, Schüler, Anfragen, Konto).
+- **Schülerin:** sieht beim ersten Login den Datenschutz-Screen, danach die Schüler-Tabs.
+- **Einladung:** Auf „Ich habe einen Einladungscode“ tippen, den Code aus `seed.sql` eingeben und ein neues Konto anlegen. Alternativ per Deep Link `trainsched://invite?code=…`.
 
-Join our community of developers creating universal apps.
+Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1:54324>.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Skripte
+
+| Befehl                    | Zweck                                                         |
+| ------------------------- | ------------------------------------------------------------- |
+| `npm start`               | Expo Dev-Server                                               |
+| `npm run check`           | TypeScript (`tsc --noEmit`) + ESLint + Prettier-Check         |
+| `npm test`                | Jest + React Native Testing Library                           |
+| `npm run test:db`         | pgTAP-Tests für RLS und SQL-Funktionen (Supabase muss laufen) |
+| `npm run db:reset`        | DB neu aufsetzen (Migrationen + Seed)                         |
+| `npm run db:types`        | TypeScript-Typen aus dem DB-Schema generieren                 |
+| `npm run functions:serve` | Edge Functions lokal starten                                  |
+| `npm run format`          | Prettier auf alle Dateien                                     |
+
+## Supabase in der Cloud (Produktion)
+
+1. Auf supabase.com ein Projekt in einer **EU-Region** anlegen (Frankfurt oder Zürich).
+2. Unter Authentication → Sign In / Providers **„Allow new users to sign up“ ausschalten**. Den E-Mail-Provider **aktiv lassen**.
+3. Unter Authentication → URL Configuration `trainsched://**` als Redirect-URL eintragen (für den Passwort-Reset).
+4. Lokal verknüpfen und deployen:
+   ```bash
+   npx supabase link --project-ref <ref>
+   npx supabase db push
+   npx supabase functions deploy accept-invite --no-verify-jwt
+   ```
+5. Die erste Admin-Person anlegen: Im Dashboard unter Authentication → Users einen User erstellen, dann im SQL-Editor ausführen:
+   ```sql
+   select private.bootstrap_admin('deine@mail.ch');
+   ```
+6. In `.env.local` (bzw. als EAS-Umgebungsvariablen) die Projekt-URL und den Publishable Key eintragen.
+
+## Sicherheit
+
+- Rechte werden **serverseitig per Row Level Security** erzwungen. Die Rollen-Weiterleitung in der App ist nur UX.
+- Die offene Registrierung ist gesperrt. Konten entstehen ausschliesslich über Einladungscodes (Edge Function `accept-invite`).
+- Im Repo stehen keine Secrets. `.env.local` ist per `.gitignore` ausgeschlossen, nur `.env.example` wird committed.
