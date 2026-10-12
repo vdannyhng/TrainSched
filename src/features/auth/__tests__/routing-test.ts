@@ -21,9 +21,21 @@ describe('resolveAuthGate', () => {
   });
 
   it('ohne Einwilligung → Consent-Screen, unabhängig von der Rolle', () => {
-    expect(resolveAuthGate({ ...base, profile: { role: 'admin', privacy_consent_at: null } })).toBe(
-      'consent',
-    );
+    expect(
+      resolveAuthGate({
+        ...base,
+        profile: { role: 'admin', privacy_consent_at: null, access_paused_at: null },
+      }),
+    ).toBe('consent');
+  });
+
+  it('pausiertes Konto → Hinweis-Screen, auch ohne Einwilligung', () => {
+    expect(
+      resolveAuthGate({
+        ...base,
+        profile: { role: 'teacher', privacy_consent_at: null, access_paused_at: '2026-10-13T08:00:00Z' },
+      }),
+    ).toBe('paused');
   });
 
   it.each([
@@ -31,6 +43,8 @@ describe('resolveAuthGate', () => {
     ['teacher', 'teacher'],
     ['student', 'student'],
   ] as const)('Rolle %s → Bereich %s', (role, gate) => {
-    expect(resolveAuthGate({ ...base, profile: { role, privacy_consent_at: consented } })).toBe(gate);
+    expect(
+      resolveAuthGate({ ...base, profile: { role, privacy_consent_at: consented, access_paused_at: null } }),
+    ).toBe(gate);
   });
 });

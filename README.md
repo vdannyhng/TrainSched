@@ -5,7 +5,7 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 - Architektur: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-**Stand:** M1 (Setup, Auth, Rollen, Einladungen, RLS) und M2 (Schülerverwaltung, Themen, Notizen pro Schüler) sind fertig.
+**Stand:** M1 (Auth, Rollen, RLS), M2 (Schülerverwaltung, Themen) und M3 (Termine: Serien, Kalender, Verschieben/Absagen, Konflikte, Zeitzonen, Konten pausieren) sind fertig.
 
 ## Voraussetzungen
 
@@ -75,6 +75,12 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
    select private.bootstrap_admin('deine@mail.ch');
    ```
 6. In `.env.local` (bzw. als EAS-Umgebungsvariablen) die Projekt-URL und den Publishable Key eintragen.
+
+## Hinweise für die Entwicklung
+
+- **Kein `db:reset`**, wenn lokale Konten erhalten bleiben sollen – neue Migrationen mit `npx supabase migration up` einspielen.
+- `supabase migration up` spielt eine Migration **nicht atomar** ein: Bricht sie ab, bleiben Teilobjekte zurück. Dann gezielt aufräumen oder (ohne wichtige lokale Daten) `db:reset`.
+- PowerShell blockiert evtl. `npm.ps1` → `npm.cmd …` verwenden.
 
 ## Sicherheit
 

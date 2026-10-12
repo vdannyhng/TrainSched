@@ -15,6 +15,8 @@ import {
 } from '@/components/ui';
 import { signOut, updateProfileLocale } from '@/features/auth/api';
 import { profileQueryKey, useAuth } from '@/features/auth/AuthProvider';
+import { useTeachers, useTeacherSettings, useUpdateBuffer } from '@/features/settings/api';
+import { AccessToggle } from '@/features/settings/components/AccessToggle';
 import { useCreateTeacherInvitation, useMyStudent } from '@/features/students/api';
 import { InvitationCodeBox } from '@/features/students/components/InviteCard';
 import { SUPPORTED_LOCALES, type AppLocale } from '@/i18n';
@@ -62,7 +64,9 @@ export function AccountScreen() {
       />
       <FormMessage message={setLocale.error ? t(errorKey(setLocale.error)) : undefined} />
 
+      {profile.role !== 'student' ? <TeachingCard teacherId={userId} /> : null}
       {profile.role === 'admin' ? <InviteTeacherCard /> : null}
+      {profile.role === 'admin' ? <TeachersCard selfId={userId} /> : null}
 
       <View style={styles.spacer} />
       <Button
@@ -102,6 +106,47 @@ function MyCourseCard({ userId }: { userId: string | undefined }) {
   );
 }
 
+const BUFFER_OPTIONS = [0, 10, 15, 30] as const;
+
+function TeachingCard({ teacherId }: { teacherId: string | undefined }) {
+  const { t } = useTranslation();
+  const settings = useTeacherSettings(teacherId);
+  const update = useUpdateBuffer(teacherId);
+  if (!settings.data) return null;
+  return (
+    <Card title={t('settings.teaching')}>
+      <Segmented
+        label={t('settings.buffer')}
+        value={String(settings.data.buffer_minutes)}
+        disabled={update.isPending}
+        onChange={(v) => update.mutate(Number(v))}
+        options={BUFFER_OPTIONS.map((m) => ({ value: String(m), label: t('common.minutes', { count: m }) }))}
+      />
+      <AppText variant="caption" tone="muted">
+        {t('settings.bufferHint')}
+      </AppText>
+      <FormMessage message={update.error ? t(errorKey(update.error)) : undefined} />
+    </Card>
+  );
+}
+
+function TeachersCard({ selfId }: { selfId: string | undefined }) {
+  const { t } = useTranslation();
+  const teachers = useTeachers(true);
+  const others = (teachers.data ?? []).filter((p) => p.id !== selfId);
+  return (
+    <Card title={t('access.teachers')}>
+      {others.length === 0 ? <AppText tone="muted">{t('access.noTeachers')}</AppText> : null}
+      {others.map((p) => (
+        <View key={p.id} style={styles.teacher}>
+          <InfoRow label={p.email ?? ''} value={p.display_name || p.email || '–'} />
+          <AccessToggle profileId={p.id} pausedAt={p.access_paused_at} />
+        </View>
+      ))}
+    </Card>
+  );
+}
+
 function InviteTeacherCard() {
   const { t } = useTranslation();
   const invite = useCreateTeacherInvitation();
@@ -122,4 +167,5 @@ function InviteTeacherCard() {
 
 const styles = StyleSheet.create({
   spacer: { flex: 1, minHeight: spacing.lg },
+  teacher: { gap: spacing.sm, paddingTop: spacing.sm },
 });

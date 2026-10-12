@@ -81,6 +81,8 @@ type Props = {
   creating: boolean;
   error: unknown;
   onCreate: () => void;
+  /** Inhalt bei bestehendem App-Zugang (z. B. Pausieren-Schalter) */
+  linkedContent?: React.ReactNode;
 };
 
 export function InviteCard({
@@ -91,13 +93,14 @@ export function InviteCard({
   creating,
   error,
   onCreate,
+  linkedContent,
 }: Props) {
   const { t, i18n } = useTranslation();
 
   return (
     <Card title={t('students.sections.appAccess')}>
       {linked ? (
-        <AppText tone="success">{t('students.invite.linked')}</AppText>
+        (linkedContent ?? <AppText tone="success">{t('students.invite.linked')}</AppText>)
       ) : (
         <>
           {!created ? (

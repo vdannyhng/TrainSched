@@ -73,6 +73,9 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
         <Stack.Protected guard={gate === 'consent'}>
           <Stack.Screen name="consent" />
         </Stack.Protected>
+        <Stack.Protected guard={gate === 'paused'}>
+          <Stack.Screen name="paused" />
+        </Stack.Protected>
         <Stack.Protected guard={gate === 'teacher'}>
           <Stack.Screen name="(teacher)" />
         </Stack.Protected>

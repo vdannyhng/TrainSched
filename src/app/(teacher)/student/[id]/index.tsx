@@ -2,10 +2,21 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Linking, Pressable, StyleSheet, View } from 'react-native';
 
-import { AppText, Card, Chip, ChipRow, ErrorState, InfoRow, LoadingState, Screen } from '@/components/ui';
+import {
+  AppText,
+  Button,
+  Card,
+  Chip,
+  ChipRow,
+  ErrorState,
+  InfoRow,
+  LoadingState,
+  Screen,
+} from '@/components/ui';
 import { StudentNotes } from '@/features/notes/components/StudentNotes';
 import { useCreateInvitation, useInvitationStatus, useStudent } from '@/features/students/api';
 import { InviteCard } from '@/features/students/components/InviteCard';
+import { AccessToggle } from '@/features/settings/components/AccessToggle';
 import { LEVEL_COLORS } from '@/lib/colors';
 import { nowInZone, timezoneCity } from '@/lib/timezones';
 import { MIN_TOUCH, spacing } from '@/theme/tokens';
@@ -62,6 +73,11 @@ export default function StudentDetailScreen() {
         </AppText>
       </View>
 
+      <Button
+        title={t('lessons.planForStudent')}
+        onPress={() => router.push({ pathname: '/lesson/new', params: { studentId: s.id } })}
+      />
+
       <Card title={t('students.sections.learning')}>
         {s.goal ? <InfoRow label={t('students.fields.goal')} value={s.goal} /> : null}
         <InfoRow label={t('levels.label')} value={`${s.start_level ?? '–'} → ${s.current_level ?? '–'}`} />
@@ -110,6 +126,7 @@ export default function StudentDetailScreen() {
         creating={createInvitation.isPending}
         error={createInvitation.error}
         onCreate={() => createInvitation.mutate()}
+        linkedContent={s.profile_id ? <AccessToggle profileId={s.profile_id} /> : undefined}
       />
 
       <StudentNotes studentId={s.id} teacherId={s.teacher_id} />

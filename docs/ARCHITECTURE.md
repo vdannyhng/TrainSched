@@ -1,6 +1,6 @@
 # TrainSched – Architektur
 
-Stand: 2026-10-13 · Status: **freigegeben**, M1–M2 umgesetzt
+Stand: 2026-10-13 · Status: **freigegeben**, M1–M3 umgesetzt
 
 ## 1. Getroffene Entscheidungen (aus den Rückfragen)
 
@@ -180,6 +180,12 @@ Beträge: `numeric(12,2)`, die Währung steht pro Zeile. Angezeigt wird nur Text
 - **Ereignisse** (verschoben, abgesagt, neue Anfrage, Anfrage entschieden): Datenbank-Trigger schreiben in eine `outbox`, die Edge Function `dispatch-notifications` versendet. Dadurch blockiert keine App-Aktion auf den Push-Versand.
 - Inhalte der Pushes sind datensparsam: „Termin morgen 18:00 verschoben“, ohne Notizinhalte.
 
+## 6b. Konten pausieren (seit M3)
+
+- `profiles.access_paused_at`: Ein pausiertes Konto kann sich anmelden, sieht aber nur den Hinweis „Zugang pausiert“.
+- Durchgesetzt in RLS: `private.is_active_user()` steckt in allen zentralen Helfern (`is_admin`, `is_teacher`, `my_student_ids`, `is_lesson_participant`, …) – pausierte Nutzer sehen keine Fachdaten.
+- RPC `set_access_paused`: Lehrer pausieren eigene Schüler, Admin alle außer sich selbst. Daten bleiben vollständig erhalten.
+
 ## 7. Datenschutz (DSGVO / nDSG)
 
 - Supabase-Projekt in EU/CH-Region; Auftragsverarbeitungsvertrag (DPA) mit Supabase abschliessen.
@@ -201,7 +207,9 @@ TrainSched/
 │  │  ├─ consent.tsx · reset-password.tsx
 │  │  ├─ (teacher)/(tabs)/       # today · calendar · students · requests · settings
 │  │  │  (später: lesson/[id] · student/[id] im (teacher)-Stack)
-│  │  └─ (student)/(tabs)/       # lessons · homework · materials · profile
+│  │  ├─ (teacher)/lesson/       # new · [id] · [id]/edit|reschedule|cancel|held
+│  │  ├─ paused.tsx              # Hinweis für pausierte Konten
+│  │  └─ (student)/(tabs)/       # lessons · homework · materials · profile; Detail unter /my-lesson/[id]
 │  ├─ features/                  # nach Fachdomäne
 │  │  ├─ auth/ account/ (später students/ lessons/ tags/ notes/ homework/ requests/ billing/)
 │  │  │   └─ (api.ts · schemas.ts · components/ · __tests__/)

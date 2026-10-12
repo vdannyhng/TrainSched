@@ -16,7 +16,11 @@
     "copied": "Kopiert",
     "all": "Alle",
     "none": "Keins",
-    "optional": "optional"
+    "optional": "optional",
+    "minutes": "{{count}} Min.",
+    "more": "Mehr",
+    "open": "Öffnen",
+    "done": "Fertig"
   },
   "auth": {
     "email": "E-Mail",
@@ -142,7 +146,11 @@
     "consentRequired": "Bitte zuerst die Einwilligung der Erziehungsberechtigten bestätigen.",
     "alreadyLinked": "Dieser Schüler hat bereits einen App-Zugang.",
     "loadFailed": "Daten konnten nicht geladen werden.",
-    "notFound": "Nicht gefunden."
+    "notFound": "Nicht gefunden.",
+    "overlap": "Zu dieser Zeit gibt es schon einen Termin.",
+    "participantsRequired": "Bitte mindestens eine Person auswählen.",
+    "cannotPauseSelf": "Du kannst dich nicht selbst pausieren.",
+    "exportFailed": "Export fehlgeschlagen."
   },
   "validation": {
     "required": "Pflichtfeld",
@@ -155,7 +163,13 @@
     "too_long": "Zu lang.",
     "invalid_phone": "Bitte gib eine gültige Telefonnummer ein.",
     "invalid_timezone": "Unbekannte Zeitzone, z. B. Europe/Zurich.",
-    "guardian_contact_required": "E-Mail oder Telefon der Erziehungsberechtigten angeben."
+    "guardian_contact_required": "E-Mail oder Telefon der Erziehungsberechtigten angeben.",
+    "participants_required": "Bitte mindestens eine Person auswählen.",
+    "invalid_date": "Bitte ein gültiges Datum wählen.",
+    "invalid_time": "Bitte Uhrzeit als HH:MM eingeben, z. B. 18:00.",
+    "invalid_duration": "Dauer zwischen 15 und 480 Minuten.",
+    "invalid_url": "Bitte einen Link mit https:// eingeben.",
+    "end_before_start": "Der letzte Termin liegt vor dem ersten."
   },
   "levels": {
     "label": "Niveau",
@@ -239,5 +253,155 @@
     "empty": "Noch keine Themen.",
     "deleteTitle": "„{{label}}“ löschen?",
     "deleteMessage": "Das Thema wird bei allen Schülern entfernt."
+  },
+  "lessons": {
+    "new": "Neuer Termin",
+    "edit": "Termin bearbeiten",
+    "editFollowing": "Serie ab hier bearbeiten",
+    "today": "Heute",
+    "thisWeek": "Diese Woche",
+    "nothingToday": "Heute keine Termine.",
+    "nothingWeek": "Keine weiteren Termine diese Woche.",
+    "upcoming": "Kommende Termine",
+    "past": "Vergangene Termine",
+    "showPast": "Vergangene anzeigen",
+    "hidePast": "Vergangene ausblenden",
+    "emptyTitle": "Noch keine Termine",
+    "emptyTeacher": "Lege deinen ersten Termin an – einzeln oder als Serie.",
+    "emptyStudent": "Deine Lehrerin plant gerade deine Stunden.",
+    "planForStudent": "Termin planen",
+    "fields": {
+      "participants": "Teilnehmende",
+      "participantsHint": "Mehrere auswählen = Gruppenunterricht",
+      "searchStudents": "Schüler suchen",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "timeHint": "Format HH:MM, z. B. 18:00",
+      "duration": "Dauer",
+      "repeat": "Wiederholung",
+      "endDate": "Letzter Termin (optional)",
+      "endDateHint": "Leer lassen = ohne Ende (Termine werden 6 Monate im Voraus angelegt)",
+      "format": "Format",
+      "location": "Ort",
+      "meetingUrl": "Link zum Online-Raum",
+      "title": "Titel (optional)",
+      "titleHint": "Sonst werden die Namen angezeigt",
+      "level": "Niveau",
+      "topics": "Themen"
+    },
+    "repeat": {
+      "none": "Einmalig",
+      "weekly": "Wöchentlich",
+      "biweekly": "Alle 2 Wochen"
+    },
+    "format": {
+      "online": "Online",
+      "in_person": "Vor Ort"
+    },
+    "status": {
+      "scheduled": "Geplant",
+      "held": "Gehalten",
+      "cancelled": "Abgesagt"
+    },
+    "attendance": {
+      "pending": "Offen",
+      "present": "Anwesend",
+      "excused": "Entschuldigt",
+      "absent": "Gefehlt"
+    },
+    "actions": {
+      "reschedule": "Verschieben",
+      "cancel": "Absagen",
+      "markHeld": "Gehalten",
+      "restore": "Absage zurücknehmen",
+      "edit": "Bearbeiten",
+      "editThis": "Nur diesen Termin",
+      "editFollowing": "Diesen und alle folgenden",
+      "endSeries": "Serie ab hier beenden",
+      "exportIcs": "In Kalender exportieren",
+      "delete": "Termin löschen",
+      "join": "Online-Raum öffnen"
+    },
+    "detail": {
+      "when": "Wann",
+      "where": "Wo",
+      "participants": "Teilnehmende",
+      "series": "Serie",
+      "seriesInfo": "{{frequency}} seit {{start}}",
+      "seriesUntil": "bis {{end}}",
+      "cancelReason": "Grund der Absage",
+      "groupOf": "Gruppe",
+      "yourTime": "Deine Zeit"
+    },
+    "reschedule": {
+      "title": "Termin verschieben",
+      "quick": "Schnellauswahl",
+      "plusDay": "+1 Tag",
+      "plusWeek": "+1 Woche",
+      "plusHour": "+1 Std.",
+      "minusHour": "−1 Std.",
+      "newDate": "Neues Datum",
+      "newTime": "Neue Uhrzeit",
+      "save": "Verschieben"
+    },
+    "cancel": {
+      "title": "Termin absagen",
+      "reason": "Grund (optional)",
+      "reasonPlaceholder": "z. B. Krankheit, Feiertag …",
+      "confirm": "Termin absagen"
+    },
+    "held": {
+      "title": "Als gehalten markieren",
+      "hint": "Anwesenheit pro Person",
+      "save": "Speichern"
+    },
+    "endSeries": {
+      "title": "Serie ab hier beenden?",
+      "message": "Dieser und alle folgenden geplanten Termine der Serie werden gelöscht. Gehaltene und abgesagte bleiben erhalten.",
+      "done": "{{count}} Termine entfernt."
+    },
+    "deleteTitle": "Termin löschen?",
+    "deleteMessage": "Der Termin wird endgültig gelöscht. Zum Absagen lieber „Absagen“ verwenden.",
+    "editScopeTitle": "Was möchtest du ändern?",
+    "conflicts": {
+      "title": "Bitte prüfen",
+      "overlap": "Überschneidung mit „{{label}}“ ({{time}})",
+      "buffer": "Weniger als {{minutes}} Min. Puffer zu „{{label}}“ ({{time}})",
+      "seriesOverlapHint": "Überschneidende Serientermine werden übersprungen.",
+      "singleOverlapHint": "Zu dieser Zeit gibt es schon einen Termin. Bitte wähle eine andere Zeit.",
+      "saveAnyway": "Trotzdem speichern",
+      "change": "Ändern"
+    },
+    "seriesCreated": "{{created}} Termine angelegt.",
+    "seriesSkipped": "{{skipped}} wegen Überschneidung übersprungen.",
+    "defaultLabel": "Unterricht"
+  },
+  "calendar": {
+    "title": "Kalender",
+    "day": "Tag",
+    "week": "Woche",
+    "month": "Monat",
+    "today": "Heute",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "lessonsCount": "{{count}} Termine"
+  },
+  "settings": {
+    "teaching": "Unterricht",
+    "buffer": "Pufferzeit zwischen Terminen",
+    "bufferHint": "Warnung, wenn Termine näher beieinander liegen."
+  },
+  "access": {
+    "title": "App-Zugang",
+    "active": "Zugang aktiv",
+    "paused": "Zugang pausiert seit {{date}}",
+    "pause": "Zugang pausieren",
+    "resume": "Zugang wieder aktivieren",
+    "pauseTitle": "Zugang pausieren?",
+    "pauseMessage": "Die Person kann die App vorübergehend nicht nutzen. Alle Daten bleiben erhalten und du kannst den Zugang jederzeit wieder aktivieren.",
+    "pausedScreenTitle": "Zugang pausiert",
+    "pausedScreenMessage": "Dein Zugang zu TrainSched ist im Moment pausiert. Deine Daten bleiben erhalten. Bitte wende dich an deine Lehrerin.",
+    "teachers": "Lehrer",
+    "noTeachers": "Noch keine weiteren Lehrer."
   }
 }

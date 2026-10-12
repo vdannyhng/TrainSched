@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅**
+Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅**
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -38,7 +38,7 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - „Lehrernotiz zum Schüler“ als Vorgriff auf `notes` (`visibility = teacher`).
 - **Tests:** RLS für `students`/`tags`/`student_tags`, Komponententests für Formular-Validierung und Chip-Kontrast.
 
-## M3 – Termine (Kern der App)
+## M3 – Termine (Kern der App) ✅
 
 - Migrationen `lesson_series`, `lessons`, `lesson_participants`, `lesson_tags`, Exclusion-Constraint, `materialize_series`, `check_conflicts`, `pg_cron`-Verlängerung.
 - Startscreen Lehrer „Heute / Diese Woche“ mit Schnellaktionen (Verschieben in ≤3 Taps, Gehalten, Notiz).
@@ -48,7 +48,9 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - Konfliktwarnung inkl. Pufferzeit (einstellbar unter Einstellungen), Konfliktliste vor dem Speichern einer Serie.
 - Anzeige in der Zeitzone des Betrachters, Doppelanzeige bei abweichender Zeitzone.
 - Schüleransicht: eigene Termine (Liste), Termindetails.
-- ICS-Export eines Termins bzw. einer Serie über das Teilen-Sheet.
+- ICS-Export eines Termins über das Teilen-Sheet.
+- **Zusatz:** Konten pausieren (Lehrer → eigene Schüler, Admin → alle), serverseitig per RLS; Pufferzeit in den Kontoeinstellungen.
+- Notiz-Schnellaktion auf der Terminkarte folgt mit den Termin-Notizen in M4.
 - **Tests:** pgTAP für Serienexpansion (DST März/Oktober, Jahreswechsel, zweiwöchentlich, Ausnahmen, Serie teilen), Konflikte, RLS (Schüler sieht nur Termine mit eigener Teilnahme und in der Gruppe nur den eigenen Teilnehmereintrag); Jest für `time.ts` (Zürich/Berlin/Hanoi) und Datumsformatierung.
 
 ## M4 – Notizen, Anhänge, Hausaufgaben

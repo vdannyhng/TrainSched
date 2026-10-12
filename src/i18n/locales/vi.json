@@ -16,7 +16,11 @@
     "copied": "Đã sao chép",
     "all": "Tất cả",
     "none": "Không",
-    "optional": "không bắt buộc"
+    "optional": "không bắt buộc",
+    "minutes": "{{count}} phút",
+    "more": "Thêm",
+    "open": "Mở",
+    "done": "Xong"
   },
   "auth": {
     "email": "E-mail",
@@ -142,7 +146,11 @@
     "consentRequired": "Vui lòng xác nhận sự đồng ý của người giám hộ trước.",
     "alreadyLinked": "Học viên này đã có tài khoản ứng dụng.",
     "loadFailed": "Không thể tải dữ liệu.",
-    "notFound": "Không tìm thấy."
+    "notFound": "Không tìm thấy.",
+    "overlap": "Giờ này đã có buổi học.",
+    "participantsRequired": "Vui lòng chọn ít nhất một người.",
+    "cannotPauseSelf": "Bạn không thể tự tạm dừng chính mình.",
+    "exportFailed": "Xuất thất bại."
   },
   "validation": {
     "required": "Bắt buộc",
@@ -155,7 +163,13 @@
     "too_long": "Quá dài.",
     "invalid_phone": "Vui lòng nhập số điện thoại hợp lệ.",
     "invalid_timezone": "Múi giờ không hợp lệ, ví dụ Europe/Zurich.",
-    "guardian_contact_required": "Vui lòng nhập e-mail hoặc số điện thoại của người giám hộ."
+    "guardian_contact_required": "Vui lòng nhập e-mail hoặc số điện thoại của người giám hộ.",
+    "participants_required": "Vui lòng chọn ít nhất một người.",
+    "invalid_date": "Vui lòng chọn ngày hợp lệ.",
+    "invalid_time": "Vui lòng nhập giờ dạng HH:MM, ví dụ 18:00.",
+    "invalid_duration": "Thời lượng từ 15 đến 480 phút.",
+    "invalid_url": "Vui lòng nhập đường dẫn bắt đầu bằng https://.",
+    "end_before_start": "Buổi cuối nằm trước buổi đầu tiên."
   },
   "levels": {
     "label": "Trình độ",
@@ -239,5 +253,155 @@
     "empty": "Chưa có chủ đề.",
     "deleteTitle": "Xóa „{{label}}“?",
     "deleteMessage": "Chủ đề sẽ bị gỡ khỏi tất cả học viên."
+  },
+  "lessons": {
+    "new": "Buổi học mới",
+    "edit": "Sửa buổi học",
+    "editFollowing": "Sửa chuỗi từ buổi này",
+    "today": "Hôm nay",
+    "thisWeek": "Tuần này",
+    "nothingToday": "Hôm nay không có buổi học.",
+    "nothingWeek": "Tuần này không còn buổi học nào.",
+    "upcoming": "Buổi học sắp tới",
+    "past": "Buổi học đã qua",
+    "showPast": "Hiện buổi đã qua",
+    "hidePast": "Ẩn buổi đã qua",
+    "emptyTitle": "Chưa có buổi học",
+    "emptyTeacher": "Hãy tạo buổi học đầu tiên – một buổi hoặc theo chuỗi.",
+    "emptyStudent": "Cô giáo đang sắp xếp lịch học cho bạn.",
+    "planForStudent": "Lên lịch học",
+    "fields": {
+      "participants": "Người tham gia",
+      "participantsHint": "Chọn nhiều người = học nhóm",
+      "searchStudents": "Tìm học viên",
+      "date": "Ngày",
+      "time": "Giờ",
+      "timeHint": "Định dạng HH:MM, ví dụ 18:00",
+      "duration": "Thời lượng",
+      "repeat": "Lặp lại",
+      "endDate": "Buổi cuối (không bắt buộc)",
+      "endDateHint": "Để trống = không kết thúc (lịch được tạo trước 6 tháng)",
+      "format": "Hình thức",
+      "location": "Địa điểm",
+      "meetingUrl": "Đường dẫn phòng học online",
+      "title": "Tiêu đề (không bắt buộc)",
+      "titleHint": "Nếu trống sẽ hiển thị tên học viên",
+      "level": "Trình độ",
+      "topics": "Chủ đề"
+    },
+    "repeat": {
+      "none": "Một lần",
+      "weekly": "Hằng tuần",
+      "biweekly": "2 tuần một lần"
+    },
+    "format": {
+      "online": "Online",
+      "in_person": "Trực tiếp"
+    },
+    "status": {
+      "scheduled": "Đã lên lịch",
+      "held": "Đã học",
+      "cancelled": "Đã hủy"
+    },
+    "attendance": {
+      "pending": "Chưa rõ",
+      "present": "Có mặt",
+      "excused": "Có phép",
+      "absent": "Vắng"
+    },
+    "actions": {
+      "reschedule": "Dời lịch",
+      "cancel": "Hủy",
+      "markHeld": "Đã học",
+      "restore": "Khôi phục buổi học",
+      "edit": "Sửa",
+      "editThis": "Chỉ buổi này",
+      "editFollowing": "Buổi này và các buổi sau",
+      "endSeries": "Kết thúc chuỗi từ đây",
+      "exportIcs": "Xuất sang lịch",
+      "delete": "Xóa buổi học",
+      "join": "Mở phòng học online"
+    },
+    "detail": {
+      "when": "Thời gian",
+      "where": "Địa điểm",
+      "participants": "Người tham gia",
+      "series": "Chuỗi",
+      "seriesInfo": "{{frequency}} từ {{start}}",
+      "seriesUntil": "đến {{end}}",
+      "cancelReason": "Lý do hủy",
+      "groupOf": "Nhóm",
+      "yourTime": "Giờ của bạn"
+    },
+    "reschedule": {
+      "title": "Dời buổi học",
+      "quick": "Chọn nhanh",
+      "plusDay": "+1 ngày",
+      "plusWeek": "+1 tuần",
+      "plusHour": "+1 giờ",
+      "minusHour": "−1 giờ",
+      "newDate": "Ngày mới",
+      "newTime": "Giờ mới",
+      "save": "Dời lịch"
+    },
+    "cancel": {
+      "title": "Hủy buổi học",
+      "reason": "Lý do (không bắt buộc)",
+      "reasonPlaceholder": "ví dụ ốm, ngày lễ …",
+      "confirm": "Hủy buổi học"
+    },
+    "held": {
+      "title": "Đánh dấu đã học",
+      "hint": "Điểm danh từng người",
+      "save": "Lưu"
+    },
+    "endSeries": {
+      "title": "Kết thúc chuỗi từ đây?",
+      "message": "Buổi này và tất cả các buổi đã lên lịch sau đó sẽ bị xóa. Các buổi đã học và đã hủy được giữ lại.",
+      "done": "Đã xóa {{count}} buổi."
+    },
+    "deleteTitle": "Xóa buổi học?",
+    "deleteMessage": "Buổi học sẽ bị xóa vĩnh viễn. Nếu muốn hủy, hãy dùng „Hủy“.",
+    "editScopeTitle": "Bạn muốn thay đổi gì?",
+    "conflicts": {
+      "title": "Vui lòng kiểm tra",
+      "overlap": "Trùng giờ với „{{label}}“ ({{time}})",
+      "buffer": "Cách „{{label}}“ ít hơn {{minutes}} phút ({{time}})",
+      "seriesOverlapHint": "Các buổi bị trùng trong chuỗi sẽ được bỏ qua.",
+      "singleOverlapHint": "Giờ này đã có buổi học. Vui lòng chọn giờ khác.",
+      "saveAnyway": "Vẫn lưu",
+      "change": "Sửa lại"
+    },
+    "seriesCreated": "Đã tạo {{created}} buổi học.",
+    "seriesSkipped": "Bỏ qua {{skipped}} buổi do trùng giờ.",
+    "defaultLabel": "Buổi học"
+  },
+  "calendar": {
+    "title": "Lịch",
+    "day": "Ngày",
+    "week": "Tuần",
+    "month": "Tháng",
+    "today": "Hôm nay",
+    "previous": "Trước",
+    "next": "Sau",
+    "lessonsCount": "{{count}} buổi"
+  },
+  "settings": {
+    "teaching": "Giảng dạy",
+    "buffer": "Thời gian nghỉ giữa các buổi",
+    "bufferHint": "Cảnh báo khi các buổi học quá sát nhau."
+  },
+  "access": {
+    "title": "Quyền truy cập",
+    "active": "Đang hoạt động",
+    "paused": "Tạm dừng từ {{date}}",
+    "pause": "Tạm dừng truy cập",
+    "resume": "Kích hoạt lại",
+    "pauseTitle": "Tạm dừng truy cập?",
+    "pauseMessage": "Người này tạm thời không dùng được ứng dụng. Toàn bộ dữ liệu được giữ lại và bạn có thể kích hoạt lại bất cứ lúc nào.",
+    "pausedScreenTitle": "Tài khoản tạm dừng",
+    "pausedScreenMessage": "Quyền truy cập TrainSched của bạn đang tạm dừng. Dữ liệu của bạn vẫn được giữ lại. Vui lòng liên hệ cô giáo.",
+    "teachers": "Giáo viên",
+    "noTeachers": "Chưa có giáo viên khác."
   }
 }
