@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ erledigt**
+Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅**
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -27,13 +27,14 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - **Tests:** pgTAP für RLS (Schüler sieht nur sich, Lehrer sieht nur eigene Schüler, Admin sieht alles, eingelöste oder abgelaufene Einladung wird abgelehnt), Jest für Zod-Schemas und Auth-Redirect.
 - **[Du]:** Supabase-Konto + Projekt in EU-Region und Expo-Konto anlegen (für Cloud-Betrieb, lokal läuft alles ohne). Node 24 und Docker Desktop sind installiert.
 
-## M2 – Schülerverwaltung + Tags
+## M2 – Schülerverwaltung + Tags ✅
 
 - Schülerliste (FlashList, Suche, Filter nach Status/Level/Topic), Detailseite, Anlegen/Bearbeiten (RHF + Zod).
 - Status aktiv/inaktiv/archiviert; archivierte Schüler sind standardmässig ausgeblendet.
 - Kontaktdaten der Erziehungsberechtigten + Einwilligungsflag bei `is_minor`.
 - Einladung aus dem Schülerprofil erzeugen und teilen (Teilen-Sheet mit Link + Code).
-- Tags: System-Level A1–B2 + frei anlegbare Topics mit Farbe; farbige Chips mit automatischem Textkontrast.
+- Level A1–B2 als feste Werte mit festen Farben + frei anlegbare Themen mit Farbe; farbige Chips mit automatischem Textkontrast.
+- Diakritik-tolerante Suche („Huong“ findet „Hương“), Admin kann Lehrer einladen, Schüler sehen „Mein Kurs“ im Profil.
 - „Lehrernotiz zum Schüler“ als Vorgriff auf `notes` (`visibility = teacher`).
 - **Tests:** RLS für `students`/`tags`/`student_tags`, Komponententests für Formular-Validierung und Chip-Kontrast.
 

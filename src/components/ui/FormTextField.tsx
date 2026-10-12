@@ -6,7 +6,7 @@ import { validationMessage } from '@/lib/validation';
 import { TextField, type TextFieldProps } from './TextField';
 
 type Props<T extends FieldValues> = Omit<TextFieldProps, 'value' | 'onChangeText' | 'error'> & {
-  control: Control<T>;
+  control: Control<T, any, any>;
   name: Path<T>;
 };
 

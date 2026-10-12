@@ -10,6 +10,6 @@
       "@/assets/*": ["./assets/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
-  "exclude": ["node_modules", "supabase/functions/*/index.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "expo-env.d.ts"],
+  "exclude": ["node_modules", ".expo", "supabase/functions/*/index.ts"]
 }

@@ -5,7 +5,7 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 - Architektur: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-**Stand:** M1 (Setup, Auth, Rollen, Einladungen, RLS) ist fertig.
+**Stand:** M1 (Setup, Auth, Rollen, Einladungen, RLS) und M2 (Schülerverwaltung, Themen, Notizen pro Schüler) sind fertig.
 
 ## Voraussetzungen
 

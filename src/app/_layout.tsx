@@ -45,7 +45,9 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
     if (fontsReady && gate !== 'loading') void SplashScreen.hideAsync();
   }, [fontsReady, gate]);
 
-  if (!fontsReady) return null;
+  // Navigator erst rendern, wenn Rolle bekannt ist – sonst leiten die Guards
+  // Deep Links (z. B. /student/123) vorzeitig auf die Startseite um.
+  if (!fontsReady || gate === 'loading') return null;
 
   return (
     <ThemeProvider
@@ -65,7 +67,7 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
       {/* Guards sind nur UX. Rechte erzwingt RLS auf dem Server. */}
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
         <Stack.Screen name="index" />
-        <Stack.Protected guard={gate === 'signedOut' || gate === 'loading'}>
+        <Stack.Protected guard={gate === 'signedOut'}>
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
         <Stack.Protected guard={gate === 'consent'}>

@@ -1,6 +1,6 @@
 # TrainSched – Architektur
 
-Stand: 2026-10-13 · Status: **freigegeben**, M1 umgesetzt
+Stand: 2026-10-13 · Status: **freigegeben**, M1–M2 umgesetzt
 
 ## 1. Getroffene Entscheidungen (aus den Rückfragen)
 
@@ -92,9 +92,10 @@ students            id · teacher_id · profile_id? (null bis Einladung eingelö
                     · status (active|inactive|archived)
                     · is_minor · guardian_name? · guardian_email? · guardian_phone? · guardian_consent_at?
                     · hourly_rate? numeric · currency (EUR|VND)          ← Abrechnung, M6
+                    · search_text GENERATED (klein, ohne Diakritika: „Huong“ findet „Hương“)
 
-tags                id · teacher_id · type (level|topic) · label · color · sort · is_system
-                    (A1, A2, B1, B2 als System-Level-Tags pro Lehrer geseedet, nicht löschbar)
+tags                id · teacher_id · label · color (#RRGGBB)   ← nur Themen; 5 Standard-Themen pro Lehrer
+                    (Level A1–B2 ist bewusst KEIN Tag, sondern Enum mit fester Farbe – eine Quelle der Wahrheit)
 student_tags        student_id · tag_id
 
 lesson_series       id · teacher_id · title? · frequency (weekly|biweekly) · weekday
@@ -115,7 +116,7 @@ lesson_participants lesson_id · student_id · attendance (pending|present|excus
 lesson_tags         lesson_id · tag_id
 ```
 
-### Notizen, Anhänge, Hausaufgaben (M4)
+### Notizen, Anhänge, Hausaufgaben (M4; `notes` pro Schüler existiert seit M2)
 
 ```
 notes               id · teacher_id · author_id · lesson_id? · student_id? (mind. eins gesetzt)
@@ -229,4 +230,4 @@ Regel: Screens in `src/app/` sind dünn. Datenzugriff läuft über `features/*/a
 - **Lehrer-Startscreen „Heute / Diese Woche“:** Jede Terminkarte bietet per Swipe oder Kontextmenü „Verschieben“, „Notiz“ und „Gehalten“. Verschieben geht in 3 Taps (Karte → Verschieben → Slot wählen → Speichern; der Vorschlag „gleiche Zeit nächste Woche“ ist vorausgewählt). Für eine Notiz reichen 2 Taps bis zum Eingabefeld.
 - Touch-Ziele mindestens 48×48 dp, Dynamic Type bzw. Font-Scaling ist erlaubt (kein `allowFontScaling={false}`), Kontrast nach WCAG AA in hell und dunkel.
 - Jede Liste hat einen Lade-, Leer- und Fehlerzustand (mit „Erneut versuchen“).
-- Farbige Chips für Level- und Topic-Tags, die Farben sind auf Kontrast geprüft. Der Text auf dem Chip wird automatisch schwarz oder weiss gesetzt.
+- Farbige Chips für Level und Themen, die Farben sind auf Kontrast geprüft (Test: alle Preset-Farben ≥ 4.5:1). Der Text auf dem Chip wird automatisch schwarz oder weiss gesetzt.

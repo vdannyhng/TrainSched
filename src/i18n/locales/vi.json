@@ -6,7 +6,17 @@
     "retry": "Thử lại",
     "loading": "Đang tải …",
     "back": "Quay lại",
-    "comingSoon": "Sẽ có trong phiên bản tiếp theo."
+    "comingSoon": "Sẽ có trong phiên bản tiếp theo.",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "add": "Thêm",
+    "create": "Tạo",
+    "share": "Chia sẻ",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "all": "Tất cả",
+    "none": "Không",
+    "optional": "không bắt buộc"
   },
   "auth": {
     "email": "E-mail",
@@ -73,17 +83,27 @@
       "emptyTitle": "Chưa có buổi học",
       "emptyMessage": "Khi bạn tạo buổi học, bạn sẽ thấy „Hôm nay“ và „Tuần này“ ở đây."
     },
-    "calendar": { "emptyTitle": "Lịch" },
-    "students": { "emptyTitle": "Chưa có học viên" },
-    "requests": { "emptyTitle": "Không có yêu cầu nào" }
+    "calendar": {
+      "emptyTitle": "Lịch"
+    },
+    "students": {
+      "emptyTitle": "Chưa có học viên"
+    },
+    "requests": {
+      "emptyTitle": "Không có yêu cầu nào"
+    }
   },
   "student": {
     "lessons": {
       "emptyTitle": "Chưa có buổi học",
       "emptyMessage": "Cô giáo đang sắp xếp lịch học cho bạn."
     },
-    "homework": { "emptyTitle": "Không có bài tập" },
-    "materials": { "emptyTitle": "Chưa có tài liệu" }
+    "homework": {
+      "emptyTitle": "Không có bài tập"
+    },
+    "materials": {
+      "emptyTitle": "Chưa có tài liệu"
+    }
   },
   "account": {
     "title": "Tài khoản",
@@ -99,6 +119,14 @@
     "languages": {
       "de": "Deutsch",
       "vi": "Tiếng Việt"
+    },
+    "myCourse": "Khóa học của tôi",
+    "goal": "Mục tiêu học tập",
+    "topics": "Chủ đề",
+    "inviteTeacher": {
+      "title": "Mời giáo viên",
+      "create": "Tạo mã mời",
+      "hint": "Giáo viên mới quản lý học viên của riêng họ. Bạn là quản trị nên xem được tất cả."
     }
   },
   "errors": {
@@ -108,7 +136,13 @@
     "invalidCode": "Mã mời không hợp lệ, đã hết hạn hoặc đã được sử dụng.",
     "emailTaken": "Đã có tài khoản với e-mail này. Vui lòng đăng nhập.",
     "rateLimited": "Quá nhiều lần thử. Vui lòng đợi một chút.",
-    "profileLoad": "Không thể tải hồ sơ của bạn."
+    "profileLoad": "Không thể tải hồ sơ của bạn.",
+    "forbidden": "Bạn không có quyền làm việc này.",
+    "duplicate": "Mục này đã tồn tại.",
+    "consentRequired": "Vui lòng xác nhận sự đồng ý của người giám hộ trước.",
+    "alreadyLinked": "Học viên này đã có tài khoản ứng dụng.",
+    "loadFailed": "Không thể tải dữ liệu.",
+    "notFound": "Không tìm thấy."
   },
   "validation": {
     "required": "Bắt buộc",
@@ -117,6 +151,93 @@
     "password_too_short": "Ít nhất 8 ký tự.",
     "password_too_long": "Tối đa 72 ký tự.",
     "password_letters_digits": "Vui lòng dùng cả chữ và số.",
-    "passwords_mismatch": "Mật khẩu không khớp."
+    "passwords_mismatch": "Mật khẩu không khớp.",
+    "too_long": "Quá dài.",
+    "invalid_phone": "Vui lòng nhập số điện thoại hợp lệ.",
+    "invalid_timezone": "Múi giờ không hợp lệ, ví dụ Europe/Zurich.",
+    "guardian_contact_required": "Vui lòng nhập e-mail hoặc số điện thoại của người giám hộ."
+  },
+  "levels": {
+    "label": "Trình độ",
+    "start": "Trình độ ban đầu",
+    "current": "Trình độ hiện tại"
+  },
+  "status": {
+    "label": "Trạng thái",
+    "current": "Hiện tại",
+    "active": "Đang học",
+    "inactive": "Tạm nghỉ",
+    "archived": "Lưu trữ"
+  },
+  "students": {
+    "title": "Học viên",
+    "new": "Học viên mới",
+    "edit": "Sửa học viên",
+    "searchPlaceholder": "Tìm theo tên hoặc e-mail",
+    "emptyTitle": "Chưa có học viên",
+    "emptyMessage": "Hãy tạo học viên đầu tiên và mời vào ứng dụng.",
+    "noResults": "Không có học viên phù hợp.",
+    "resetFilters": "Xóa bộ lọc",
+    "noAppAccess": "Chưa có tài khoản",
+    "manageTopics": "Chủ đề",
+    "fields": {
+      "firstName": "Tên",
+      "lastName": "Họ",
+      "email": "E-mail",
+      "phone": "Điện thoại",
+      "timezone": "Múi giờ",
+      "timezoneHint": "ví dụ Europe/Zurich, Europe/Berlin, Asia/Ho_Chi_Minh",
+      "locale": "Ngôn ngữ ứng dụng",
+      "goal": "Mục tiêu học tập",
+      "topics": "Chủ đề"
+    },
+    "sections": {
+      "contact": "Liên hệ",
+      "learning": "Học tập",
+      "guardian": "Người giám hộ",
+      "appAccess": "Truy cập ứng dụng",
+      "notes": "Ghi chú"
+    },
+    "minor": "Chưa đủ tuổi",
+    "minorHint": "Cần thông tin liên hệ của người giám hộ.",
+    "guardianName": "Tên",
+    "guardianEmail": "E-mail",
+    "guardianPhone": "Điện thoại",
+    "guardianConsent": "Đã có sự đồng ý của người giám hộ",
+    "guardianConsentHint": "Bắt buộc trước khi mời vào ứng dụng.",
+    "localTime": "Bây giờ là {{time}} tại {{city}}",
+    "deleteTitle": "Xóa {{name}}?",
+    "deleteMessage": "Toàn bộ dữ liệu của học viên này (ghi chú, chủ đề, lời mời) sẽ bị xóa vĩnh viễn.",
+    "deleteButton": "Xóa học viên",
+    "invite": {
+      "linked": "Đã có tài khoản ứng dụng.",
+      "none": "Chưa được mời.",
+      "pending": "Lời mời còn hiệu lực đến {{date}}.",
+      "create": "Tạo lời mời",
+      "renew": "Tạo mã mới",
+      "codeLabel": "Mã mời",
+      "validUntil": "Có hiệu lực đến {{date}}. Chỉ dùng được một lần.",
+      "shareMessage": "Chào{{name}}! Dùng mã này để đăng ký TrainSched: {{code}}\n\nHoặc mở trực tiếp: {{link}}",
+      "onlyOnce": "Vì lý do bảo mật, mã chỉ hiển thị lúc này."
+    },
+    "notes": {
+      "placeholder": "Viết ghi chú …",
+      "add": "Lưu ghi chú",
+      "visibleForStudent": "Học viên xem được",
+      "teacherOnly": "Chỉ mình bạn",
+      "empty": "Chưa có ghi chú.",
+      "deleteTitle": "Xóa ghi chú?"
+    }
+  },
+  "topics": {
+    "title": "Chủ đề",
+    "subtitle": "Chủ đề hiển thị dưới dạng nhãn màu ở học viên và (sắp tới) buổi học.",
+    "label": "Tên chủ đề",
+    "color": "Màu",
+    "add": "Thêm chủ đề",
+    "save": "Lưu chủ đề",
+    "empty": "Chưa có chủ đề.",
+    "deleteTitle": "Xóa „{{label}}“?",
+    "deleteMessage": "Chủ đề sẽ bị gỡ khỏi tất cả học viên."
   }
 }

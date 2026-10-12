@@ -50,3 +50,5 @@ example
 # supabase local
 supabase/.temp
 supabase/.branches
+
+CLAUDE_CODE_PROMPT.*

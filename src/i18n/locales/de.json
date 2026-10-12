@@ -6,7 +6,17 @@
     "retry": "Erneut versuchen",
     "loading": "Wird geladen …",
     "back": "Zurück",
-    "comingSoon": "Kommt in einem der nächsten Meilensteine."
+    "comingSoon": "Kommt in einem der nächsten Meilensteine.",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "add": "Hinzufügen",
+    "create": "Anlegen",
+    "share": "Teilen",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "all": "Alle",
+    "none": "Keins",
+    "optional": "optional"
   },
   "auth": {
     "email": "E-Mail",
@@ -73,17 +83,27 @@
       "emptyTitle": "Noch keine Termine",
       "emptyMessage": "Sobald du Termine anlegst, siehst du hier „Heute“ und „Diese Woche“."
     },
-    "calendar": { "emptyTitle": "Kalender" },
-    "students": { "emptyTitle": "Noch keine Schüler" },
-    "requests": { "emptyTitle": "Keine offenen Anfragen" }
+    "calendar": {
+      "emptyTitle": "Kalender"
+    },
+    "students": {
+      "emptyTitle": "Noch keine Schüler"
+    },
+    "requests": {
+      "emptyTitle": "Keine offenen Anfragen"
+    }
   },
   "student": {
     "lessons": {
       "emptyTitle": "Noch keine Termine",
       "emptyMessage": "Deine Lehrerin plant gerade deine Stunden."
     },
-    "homework": { "emptyTitle": "Keine Hausaufgaben" },
-    "materials": { "emptyTitle": "Noch keine Materialien" }
+    "homework": {
+      "emptyTitle": "Keine Hausaufgaben"
+    },
+    "materials": {
+      "emptyTitle": "Noch keine Materialien"
+    }
   },
   "account": {
     "title": "Konto",
@@ -99,6 +119,14 @@
     "languages": {
       "de": "Deutsch",
       "vi": "Tiếng Việt"
+    },
+    "myCourse": "Mein Kurs",
+    "goal": "Lernziel",
+    "topics": "Themen",
+    "inviteTeacher": {
+      "title": "Lehrer einladen",
+      "create": "Einladungscode erstellen",
+      "hint": "Neue Lehrer verwalten ihre eigenen Schüler. Du als Admin siehst alles."
     }
   },
   "errors": {
@@ -108,7 +136,13 @@
     "invalidCode": "Dieser Einladungscode ist ungültig, abgelaufen oder wurde schon benutzt.",
     "emailTaken": "Mit dieser E-Mail gibt es bereits ein Konto. Bitte melde dich an.",
     "rateLimited": "Zu viele Versuche. Bitte warte einen Moment.",
-    "profileLoad": "Dein Profil konnte nicht geladen werden."
+    "profileLoad": "Dein Profil konnte nicht geladen werden.",
+    "forbidden": "Dafür fehlen dir die Rechte.",
+    "duplicate": "Das gibt es bereits.",
+    "consentRequired": "Bitte zuerst die Einwilligung der Erziehungsberechtigten bestätigen.",
+    "alreadyLinked": "Dieser Schüler hat bereits einen App-Zugang.",
+    "loadFailed": "Daten konnten nicht geladen werden.",
+    "notFound": "Nicht gefunden."
   },
   "validation": {
     "required": "Pflichtfeld",
@@ -117,6 +151,93 @@
     "password_too_short": "Mindestens 8 Zeichen.",
     "password_too_long": "Höchstens 72 Zeichen.",
     "password_letters_digits": "Bitte Buchstaben und Zahlen verwenden.",
-    "passwords_mismatch": "Die Passwörter stimmen nicht überein."
+    "passwords_mismatch": "Die Passwörter stimmen nicht überein.",
+    "too_long": "Zu lang.",
+    "invalid_phone": "Bitte gib eine gültige Telefonnummer ein.",
+    "invalid_timezone": "Unbekannte Zeitzone, z. B. Europe/Zurich.",
+    "guardian_contact_required": "E-Mail oder Telefon der Erziehungsberechtigten angeben."
+  },
+  "levels": {
+    "label": "Niveau",
+    "start": "Startniveau",
+    "current": "Aktuelles Niveau"
+  },
+  "status": {
+    "label": "Status",
+    "current": "Aktuell",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "archived": "Archiviert"
+  },
+  "students": {
+    "title": "Schüler",
+    "new": "Neuer Schüler",
+    "edit": "Schüler bearbeiten",
+    "searchPlaceholder": "Name oder E-Mail suchen",
+    "emptyTitle": "Noch keine Schüler",
+    "emptyMessage": "Lege deinen ersten Schüler an und lade ihn in die App ein.",
+    "noResults": "Keine Schüler für diese Filter.",
+    "resetFilters": "Filter zurücksetzen",
+    "noAppAccess": "Ohne App-Zugang",
+    "manageTopics": "Themen",
+    "fields": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "timezone": "Zeitzone",
+      "timezoneHint": "z. B. Europe/Zurich, Europe/Berlin, Asia/Ho_Chi_Minh",
+      "locale": "Sprache der App",
+      "goal": "Lernziel",
+      "topics": "Themen"
+    },
+    "sections": {
+      "contact": "Kontakt",
+      "learning": "Lernen",
+      "guardian": "Erziehungsberechtigte",
+      "appAccess": "App-Zugang",
+      "notes": "Notizen"
+    },
+    "minor": "Minderjährig",
+    "minorHint": "Kontakt der Erziehungsberechtigten wird benötigt.",
+    "guardianName": "Name",
+    "guardianEmail": "E-Mail",
+    "guardianPhone": "Telefon",
+    "guardianConsent": "Einwilligung der Erziehungsberechtigten liegt vor",
+    "guardianConsentHint": "Voraussetzung für die Einladung in die App.",
+    "localTime": "Jetzt {{time}} in {{city}}",
+    "deleteTitle": "{{name}} löschen?",
+    "deleteMessage": "Alle Daten dieses Schülers (Notizen, Themen, Einladungen) werden endgültig gelöscht.",
+    "deleteButton": "Schüler löschen",
+    "invite": {
+      "linked": "Hat App-Zugang.",
+      "none": "Noch nicht eingeladen.",
+      "pending": "Einladung offen bis {{date}}.",
+      "create": "Einladung erstellen",
+      "renew": "Neuen Code erstellen",
+      "codeLabel": "Einladungscode",
+      "validUntil": "Gültig bis {{date}}. Nur einmal verwendbar.",
+      "shareMessage": "Hallo{{name}}! Mit diesem Code kannst du dich bei TrainSched anmelden: {{code}}\n\nOder direkt öffnen: {{link}}",
+      "onlyOnce": "Der Code wird aus Sicherheitsgründen nur jetzt angezeigt."
+    },
+    "notes": {
+      "placeholder": "Notiz schreiben …",
+      "add": "Notiz speichern",
+      "visibleForStudent": "Für Schüler sichtbar",
+      "teacherOnly": "Nur für dich",
+      "empty": "Noch keine Notizen.",
+      "deleteTitle": "Notiz löschen?"
+    }
+  },
+  "topics": {
+    "title": "Themen",
+    "subtitle": "Themen erscheinen als farbige Chips bei Schülern und (bald) Terminen.",
+    "label": "Name des Themas",
+    "color": "Farbe",
+    "add": "Thema hinzufügen",
+    "save": "Thema speichern",
+    "empty": "Noch keine Themen.",
+    "deleteTitle": "„{{label}}“ löschen?",
+    "deleteMessage": "Das Thema wird bei allen Schülern entfernt."
   }
 }

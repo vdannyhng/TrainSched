@@ -1,19 +1,30 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { AppText, Button, FormMessage, Screen } from '@/components/ui';
+import {
+  AppText,
+  Button,
+  Card,
+  Chip,
+  ChipRow,
+  FormMessage,
+  InfoRow,
+  Screen,
+  Segmented,
+} from '@/components/ui';
 import { signOut, updateProfileLocale } from '@/features/auth/api';
 import { profileQueryKey, useAuth } from '@/features/auth/AuthProvider';
-import { authErrorKey } from '@/features/auth/errors';
+import { useCreateTeacherInvitation, useMyStudent } from '@/features/students/api';
+import { InvitationCodeBox } from '@/features/students/components/InviteCard';
 import { SUPPORTED_LOCALES, type AppLocale } from '@/i18n';
-import { MIN_TOUCH, radius, spacing } from '@/theme/tokens';
-import { useTheme } from '@/theme/useTheme';
+import { LEVEL_COLORS } from '@/lib/colors';
+import { errorKey } from '@/lib/errors';
+import { spacing } from '@/theme/tokens';
 
-/** Konto-Screen für alle Rollen: Profilinfos, Sprache, Abmelden. */
+/** Konto-Screen für alle Rollen: Profilinfos, Sprache, Abmelden (+ rollenspezifische Karten). */
 export function AccountScreen() {
   const { t } = useTranslation();
-  const { colors } = useTheme();
   const { session, profile } = useAuth();
   const queryClient = useQueryClient();
   const userId = session?.user.id;
@@ -30,40 +41,28 @@ export function AccountScreen() {
     <Screen scroll edges={['top', 'left', 'right']}>
       <AppText variant="title">{t('account.title')}</AppText>
 
-      <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-        <Row label={t('account.name')} value={profile.display_name || '–'} />
-        <Row label={t('auth.email')} value={profile.email ?? '–'} />
-        <Row label={t('account.role')} value={t(`account.roles.${profile.role}`)} />
-        <Row label={t('account.timezone')} value={profile.timezone} />
-      </View>
+      <Card>
+        <InfoRow label={t('account.name')} value={profile.display_name || '–'} />
+        <InfoRow label={t('auth.email')} value={profile.email ?? '–'} />
+        <InfoRow label={t('account.role')} value={t(`account.roles.${profile.role}`)} />
+        <InfoRow label={t('account.timezone')} value={profile.timezone} />
+      </Card>
 
-      <AppText variant="heading">{t('account.language')}</AppText>
-      <View style={styles.segment} accessibilityRole="radiogroup">
-        {SUPPORTED_LOCALES.map((locale) => {
-          const selected = profile.locale === locale;
-          return (
-            <Pressable
-              key={locale}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selected, disabled: setLocale.isPending }}
-              disabled={setLocale.isPending}
-              onPress={() => setLocale.mutate(locale)}
-              style={[
-                styles.segmentItem,
-                {
-                  borderColor: selected ? colors.primary : colors.border,
-                  backgroundColor: selected ? colors.primary : colors.surface,
-                },
-              ]}
-            >
-              <AppText variant="bodyStrong" tone={selected ? 'onPrimary' : 'default'}>
-                {t(`account.languages.${locale}`)}
-              </AppText>
-            </Pressable>
-          );
-        })}
-      </View>
-      <FormMessage message={setLocale.error ? t(authErrorKey(setLocale.error)) : undefined} />
+      {profile.role === 'student' ? <MyCourseCard userId={userId} /> : null}
+
+      <Segmented
+        label={t('account.language')}
+        value={profile.locale}
+        disabled={setLocale.isPending}
+        onChange={(locale) => setLocale.mutate(locale)}
+        options={SUPPORTED_LOCALES.map((locale) => ({
+          value: locale,
+          label: t(`account.languages.${locale}`),
+        }))}
+      />
+      <FormMessage message={setLocale.error ? t(errorKey(setLocale.error)) : undefined} />
+
+      {profile.role === 'admin' ? <InviteTeacherCard /> : null}
 
       <View style={styles.spacer} />
       <Button
@@ -76,34 +75,51 @@ export function AccountScreen() {
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+function MyCourseCard({ userId }: { userId: string | undefined }) {
+  const { t } = useTranslation();
+  const mine = useMyStudent(userId);
+  if (!mine.data) return null;
+  const { level, goal, tags } = mine.data;
   return (
-    <View style={styles.row}>
-      <AppText variant="label" tone="muted">
-        {label}
-      </AppText>
-      <AppText>{value}</AppText>
-    </View>
+    <Card title={t('account.myCourse')}>
+      {level ? (
+        <InfoRow label={t('levels.current')} value={<Chip label={level} color={LEVEL_COLORS[level]} />} />
+      ) : null}
+      {goal ? <InfoRow label={t('account.goal')} value={goal} /> : null}
+      {tags.length ? (
+        <InfoRow
+          label={t('account.topics')}
+          value={
+            <ChipRow>
+              {tags.map((tag) => (
+                <Chip key={tag.id} label={tag.label} color={tag.color} />
+              ))}
+            </ChipRow>
+          }
+        />
+      ) : null}
+    </Card>
+  );
+}
+
+function InviteTeacherCard() {
+  const { t } = useTranslation();
+  const invite = useCreateTeacherInvitation();
+  return (
+    <Card title={t('account.inviteTeacher.title')}>
+      <AppText tone="muted">{t('account.inviteTeacher.hint')}</AppText>
+      {invite.data ? <InvitationCodeBox invitation={invite.data} recipientName="" /> : null}
+      <FormMessage message={invite.error ? t(errorKey(invite.error)) : undefined} />
+      <Button
+        title={t('account.inviteTeacher.create')}
+        variant={invite.data ? 'secondary' : 'primary'}
+        loading={invite.isPending}
+        onPress={() => invite.mutate()}
+      />
+    </Card>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: radius.lg,
-    padding: spacing.md,
-    gap: spacing.md,
-  },
-  row: { gap: 2 },
-  segment: { flexDirection: 'row', gap: spacing.sm },
-  segmentItem: {
-    flex: 1,
-    minHeight: MIN_TOUCH,
-    borderWidth: 1.5,
-    borderRadius: radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: spacing.sm,
-  },
   spacer: { flex: 1, minHeight: spacing.lg },
 });

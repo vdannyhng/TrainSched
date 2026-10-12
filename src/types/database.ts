@@ -55,6 +55,38 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"notes": {
+                  Row: {
+                    "author_id": string | null,"body": string,"created_at": string,"id": string,"student_id": string,"teacher_id": string,"updated_at": string,"visibility": Database["public"]['Enums']["note_visibility"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "author_id"?: string | null,"body": string,"created_at"?: string,"id"?: string,"student_id": string,"teacher_id": string,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
+                  }
+                  Update: {
+                    "author_id"?: string | null,"body"?: string,"created_at"?: string,"id"?: string,"student_id"?: string,"teacher_id"?: string,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "notes_author_id_fkey"
+      columns: ["author_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notes_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notes_teacher_id_fkey"
+      columns: ["teacher_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "created_at": string,"display_name": string,"email": string | null,"id": string,"locale": Database["public"]['Enums']["app_locale"],"privacy_consent_at": string | null,"privacy_consent_version": string | null,"reminder_offsets_min": (number)[],"role": Database["public"]['Enums']["app_role"],"timezone": string,"updated_at": string
@@ -69,16 +101,42 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"students": {
+                },"student_tags": {
                   Row: {
-                    "created_at": string,"currency": Database["public"]['Enums']["currency_code"],"current_level": Database["public"]['Enums']["cefr_level"] | null,"email": string | null,"first_name": string,"goal": string | null,"guardian_consent_at": string | null,"guardian_email": string | null,"guardian_name": string | null,"guardian_phone": string | null,"hourly_rate": number | null,"id": string,"is_minor": boolean,"last_name": string | null,"locale": Database["public"]['Enums']["app_locale"],"phone": string | null,"profile_id": string | null,"start_level": Database["public"]['Enums']["cefr_level"] | null,"status": Database["public"]['Enums']["student_status"],"teacher_id": string,"timezone": string,"updated_at": string
+                    "student_id": string,"tag_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"currency"?: Database["public"]['Enums']["currency_code"],"current_level"?: Database["public"]['Enums']["cefr_level"] | null,"email"?: string | null,"first_name": string,"goal"?: string | null,"guardian_consent_at"?: string | null,"guardian_email"?: string | null,"guardian_name"?: string | null,"guardian_phone"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_minor"?: boolean,"last_name"?: string | null,"locale"?: Database["public"]['Enums']["app_locale"],"phone"?: string | null,"profile_id"?: string | null,"start_level"?: Database["public"]['Enums']["cefr_level"] | null,"status"?: Database["public"]['Enums']["student_status"],"teacher_id": string,"timezone"?: string,"updated_at"?: string
+                    "student_id": string,"tag_id": string
                   }
                   Update: {
-                    "created_at"?: string,"currency"?: Database["public"]['Enums']["currency_code"],"current_level"?: Database["public"]['Enums']["cefr_level"] | null,"email"?: string | null,"first_name"?: string,"goal"?: string | null,"guardian_consent_at"?: string | null,"guardian_email"?: string | null,"guardian_name"?: string | null,"guardian_phone"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_minor"?: boolean,"last_name"?: string | null,"locale"?: Database["public"]['Enums']["app_locale"],"phone"?: string | null,"profile_id"?: string | null,"start_level"?: Database["public"]['Enums']["cefr_level"] | null,"status"?: Database["public"]['Enums']["student_status"],"teacher_id"?: string,"timezone"?: string,"updated_at"?: string
+                    "student_id"?: string,"tag_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "student_tags_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "student_tags_tag_id_fkey"
+      columns: ["tag_id"]
+isOneToOne: false
+      referencedRelation: "tags"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"students": {
+                  Row: {
+                    "created_at": string,"currency": Database["public"]['Enums']["currency_code"],"current_level": Database["public"]['Enums']["cefr_level"] | null,"email": string | null,"first_name": string,"goal": string | null,"guardian_consent_at": string | null,"guardian_email": string | null,"guardian_name": string | null,"guardian_phone": string | null,"hourly_rate": number | null,"id": string,"is_minor": boolean,"last_name": string | null,"locale": Database["public"]['Enums']["app_locale"],"phone": string | null,"profile_id": string | null,"search_text": string | null,"start_level": Database["public"]['Enums']["cefr_level"] | null,"status": Database["public"]['Enums']["student_status"],"teacher_id": string,"timezone": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"currency"?: Database["public"]['Enums']["currency_code"],"current_level"?: Database["public"]['Enums']["cefr_level"] | null,"email"?: string | null,"first_name": string,"goal"?: string | null,"guardian_consent_at"?: string | null,"guardian_email"?: string | null,"guardian_name"?: string | null,"guardian_phone"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_minor"?: boolean,"last_name"?: string | null,"locale"?: Database["public"]['Enums']["app_locale"],"phone"?: string | null,"profile_id"?: string | null,"search_text"?: never,"start_level"?: Database["public"]['Enums']["cefr_level"] | null,"status"?: Database["public"]['Enums']["student_status"],"teacher_id": string,"timezone"?: string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"currency"?: Database["public"]['Enums']["currency_code"],"current_level"?: Database["public"]['Enums']["cefr_level"] | null,"email"?: string | null,"first_name"?: string,"goal"?: string | null,"guardian_consent_at"?: string | null,"guardian_email"?: string | null,"guardian_name"?: string | null,"guardian_phone"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_minor"?: boolean,"last_name"?: string | null,"locale"?: Database["public"]['Enums']["app_locale"],"phone"?: string | null,"profile_id"?: string | null,"search_text"?: never,"start_level"?: Database["public"]['Enums']["cefr_level"] | null,"status"?: Database["public"]['Enums']["student_status"],"teacher_id"?: string,"timezone"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -89,6 +147,26 @@ isOneToOne: true
       referencedColumns: ["id"]
     },{
       foreignKeyName: "students_teacher_id_fkey"
+      columns: ["teacher_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"tags": {
+                  Row: {
+                    "color": string,"created_at": string,"id": string,"label": string,"teacher_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "color": string,"created_at"?: string,"id"?: string,"label": string,"teacher_id": string
+                  }
+                  Update: {
+                    "color"?: string,"created_at"?: string,"id"?: string,"label"?: string,"teacher_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "tags_teacher_id_fkey"
       columns: ["teacher_id"]
 isOneToOne: false
       referencedRelation: "profiles"
@@ -144,10 +222,15 @@ isOneToOne: true
                            },
 "revoke_invitation":
 { Args: { "p_invitation_id": string }; Returns: undefined
+                           },
+"student_invitation_status":
+{ Args: { "p_student_id": string }; Returns: {
+              "created_at": string,"expires_at": string
+            }[]
                            }
           }
           Enums: {
-            "app_locale": "de"|"vi","app_role": "admin"|"teacher"|"student","cefr_level": "A1"|"A2"|"B1"|"B2","currency_code": "EUR"|"VND","student_status": "active"|"inactive"|"archived"
+            "app_locale": "de"|"vi","app_role": "admin"|"teacher"|"student","cefr_level": "A1"|"A2"|"B1"|"B2","currency_code": "EUR"|"VND","note_visibility": "student"|"teacher","student_status": "active"|"inactive"|"archived"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -267,7 +350,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_locale": ["de", "vi"],"app_role": ["admin", "teacher", "student"],"cefr_level": ["A1", "A2", "B1", "B2"],"currency_code": ["EUR", "VND"],"student_status": ["active", "inactive", "archived"]
+            "app_locale": ["de", "vi"],"app_role": ["admin", "teacher", "student"],"cefr_level": ["A1", "A2", "B1", "B2"],"currency_code": ["EUR", "VND"],"note_visibility": ["student", "teacher"],"student_status": ["active", "inactive", "archived"]
           }
         }
 } as const
