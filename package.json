@@ -65,7 +65,7 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > src/types/database.ts",
-    "functions:serve": "supabase functions serve --env-file supabase/functions/.env.local"
+    "functions:serve": "supabase functions serve"
   },
   "private": true,
   "jest": {
