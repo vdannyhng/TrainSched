@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 -- Unabhängig von Seed-Daten testen (wird am Ende zurückgerollt).
 delete from auth.users;
-select plan(17);
+select plan(20);
 
 insert into auth.users (id, instance_id, aud, role, email, raw_app_meta_data, created_at, updated_at)
 values
@@ -89,6 +89,23 @@ reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', '{"sub":"00000000-0000-0000-0000-0000000000a1","role":"authenticated"}', true);
 select lives_ok($$select * from public.create_teacher_invitation()$$, 'Admin kann Lehrer einladen');
+insert into invite_codes select 'teacher', code from public.create_teacher_invitation();
+
+-- Wie GoTrue: User wird zunächst OHNE Rolle in app_metadata angelegt
+reset role;
+insert into auth.users (id, instance_id, aud, role, email, raw_app_meta_data, created_at, updated_at)
+values ('00000000-0000-0000-0000-0000000000b9', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'neu@test.local', '{"provider":"email"}', now(), now());
+set local role service_role;
+select ok(
+  public.complete_invitation(
+    (select invitation_id from public.find_open_invitation((select code from invite_codes where label = 'teacher'))),
+    '00000000-0000-0000-0000-0000000000b9'),
+  'Lehrer-Einladung wird eingelöst');
+reset role;
+select is((select role::text from public.profiles where id = '00000000-0000-0000-0000-0000000000b9'), 'teacher',
+  'Rolle kommt aus der Einladung, nicht aus app_metadata beim Insert');
+select is((select count(*)::int from public.tags where teacher_id = '00000000-0000-0000-0000-0000000000b9'), 5,
+  'neuer Lehrer bekommt Einstellungen und Standard-Themen');
 
 select * from finish();
 rollback;
