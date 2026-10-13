@@ -39,6 +39,15 @@ export default function StudentsScreen() {
           {t('students.title')}
         </AppText>
         <Pressable
+          onPress={() => router.push('/notes-search')}
+          accessibilityRole="button"
+          accessibilityLabel={t('notes.search.title')}
+          style={styles.headerButton}
+          hitSlop={4}
+        >
+          <Ionicons name="document-text-outline" size={22} color={colors.primary} />
+        </Pressable>
+        <Pressable
           onPress={() => router.push('/topics')}
           accessibilityRole="button"
           style={styles.headerButton}

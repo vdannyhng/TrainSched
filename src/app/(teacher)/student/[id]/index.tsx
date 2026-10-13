@@ -13,11 +13,14 @@ import {
   LoadingState,
   Screen,
 } from '@/components/ui';
-import { StudentNotes } from '@/features/notes/components/StudentNotes';
+import { AttachmentsSection } from '@/features/attachments/components/AttachmentsSection';
+import { StudentHomeworkCard } from '@/features/homework/components/StudentHomeworkCard';
+import { NotesSection } from '@/features/notes/components/NotesSection';
 import { useCreateInvitation, useInvitationStatus, useStudent } from '@/features/students/api';
 import { InviteCard } from '@/features/students/components/InviteCard';
 import { AccessToggle } from '@/features/settings/components/AccessToggle';
 import { LEVEL_COLORS } from '@/lib/colors';
+import { todayIn } from '@/lib/time';
 import { nowInZone, timezoneCity } from '@/lib/timezones';
 import { MIN_TOUCH, spacing } from '@/theme/tokens';
 
@@ -129,7 +132,16 @@ export default function StudentDetailScreen() {
         linkedContent={s.profile_id ? <AccessToggle profileId={s.profile_id} /> : undefined}
       />
 
-      <StudentNotes studentId={s.id} teacherId={s.teacher_id} />
+      <StudentHomeworkCard studentId={s.id} today={todayIn(s.timezone)} />
+      <NotesSection target={{ studentId: s.id }} teacherId={s.teacher_id} />
+      <AttachmentsSection target={{ studentId: s.id }} teacherId={s.teacher_id} />
+      <Button
+        title={t('notes.search.title')}
+        variant="ghost"
+        onPress={() =>
+          router.push({ pathname: '/notes-search', params: { studentId: s.id, name: s.first_name } })
+        }
+      />
     </Screen>
   );
 }

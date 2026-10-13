@@ -16,7 +16,8 @@
     "copied": "Kopiert",
     "optional": "optional",
     "minutes": "{{count}} Min.",
-    "done": "Fertig"
+    "done": "Fertig",
+    "open": "Öffnen"
   },
   "auth": {
     "email": "E-Mail",
@@ -74,7 +75,7 @@
     "requests": "Anfragen",
     "settings": "Konto",
     "lessons": "Termine",
-    "homework": "Hausaufgaben",
+    "homework": "Aufgaben",
     "materials": "Materialien",
     "profile": "Profil"
   },
@@ -306,7 +307,8 @@
       "endSeries": "Serie ab hier beenden",
       "exportIcs": "In Kalender exportieren",
       "delete": "Termin löschen",
-      "join": "Online-Raum öffnen"
+      "join": "Online-Raum öffnen",
+      "note": "Notiz"
     },
     "detail": {
       "when": "Wann",
@@ -407,5 +409,73 @@
       "until": "Wiederholen bis (optional)",
       "noEnd": "ohne Ende"
     }
+  },
+  "notes": {
+    "title": "Notizen",
+    "placeholder": "Notiz schreiben …",
+    "formatHint": "Formatierung: **fett**, *kursiv*, „- “ für Listen, Links",
+    "add": "Notiz speichern",
+    "visibleForStudent": "Für Schüler sichtbar",
+    "teacherOnly": "Nur für dich",
+    "empty": "Noch keine Notizen.",
+    "deleteTitle": "Notiz löschen?",
+    "quickTitle": "Notiz zum Termin",
+    "search": {
+      "title": "Notizen durchsuchen",
+      "placeholder": "Suchbegriff, z. B. Akkusativ",
+      "noResults": "Keine Notizen gefunden.",
+      "from": "Von",
+      "to": "Bis",
+      "studentFilter": "Nur: {{name}}"
+    }
+  },
+  "attachments": {
+    "title": "Anhänge",
+    "camera": "Foto aufnehmen",
+    "library": "Bild auswählen",
+    "file": "Datei (PDF, Audio)",
+    "empty": "Noch keine Anhänge.",
+    "uploading": "Wird hochgeladen …",
+    "deleteTitle": "„{{name}}“ löschen?",
+    "errors": {
+      "permission": "Der Zugriff auf die Kamera wurde nicht erlaubt. Du kannst ihn in den Einstellungen des Handys aktivieren.",
+      "too_large": "Die Datei ist größer als 20 MB.",
+      "unsupported": "Erlaubt sind Bilder, PDF und Audio."
+    }
+  },
+  "homework": {
+    "title": "Hausaufgaben",
+    "add": "Hausaufgabe hinzufügen",
+    "save": "Hausaufgabe speichern",
+    "fields": {
+      "title": "Aufgabe",
+      "description": "Beschreibung (optional)",
+      "dueDate": "Fällig am (optional)",
+      "for": "Für"
+    },
+    "empty": "Keine Hausaufgaben.",
+    "status": {
+      "open": "Offen",
+      "done": "Erledigt"
+    },
+    "due": "fällig {{date}}",
+    "overdue": "überfällig seit {{date}}",
+    "markDone": "Als erledigt markieren",
+    "markOpen": "Wieder öffnen",
+    "deleteTitle": "Hausaufgabe löschen?",
+    "noneOpen": "Keine offenen Hausaufgaben 🎉",
+    "showDone": "Erledigte anzeigen",
+    "hideDone": "Erledigte ausblenden"
+  },
+  "previous": {
+    "title": "Letzte Stunde",
+    "none": "Das ist die erste Stunde.",
+    "open": "Ganze Stunde öffnen",
+    "nothing": "Keine Notizen oder Hausaufgaben."
+  },
+  "materials": {
+    "notes": "Notizen deiner Lehrerin",
+    "files": "Dateien",
+    "empty": "Hier erscheinen Notizen und Dateien, die deine Lehrerin für dich freigibt."
   }
 }

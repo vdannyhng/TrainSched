@@ -62,6 +62,11 @@ export default function TodayScreen() {
       icon: 'swap-horizontal-outline' as const,
       onPress: () => router.push(`/lesson/${lesson.id}/reschedule`),
     },
+    {
+      label: t('lessons.actions.note'),
+      icon: 'create-outline' as const,
+      onPress: () => router.push(`/lesson/${lesson.id}/note`),
+    },
     ...(lesson.status === 'scheduled' && Date.parse(lesson.start_at) <= openedAt + 3_600_000
       ? [
           {

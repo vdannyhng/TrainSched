@@ -16,7 +16,8 @@
     "copied": "Đã sao chép",
     "optional": "không bắt buộc",
     "minutes": "{{count}} phút",
-    "done": "Xong"
+    "done": "Xong",
+    "open": "Mở"
   },
   "auth": {
     "email": "E-mail",
@@ -306,7 +307,8 @@
       "endSeries": "Kết thúc chuỗi từ đây",
       "exportIcs": "Xuất sang lịch",
       "delete": "Xóa buổi học",
-      "join": "Mở phòng học online"
+      "join": "Mở phòng học online",
+      "note": "Ghi chú"
     },
     "detail": {
       "when": "Thời gian",
@@ -407,5 +409,73 @@
       "until": "Lặp lại đến (không bắt buộc)",
       "noEnd": "không kết thúc"
     }
+  },
+  "notes": {
+    "title": "Ghi chú",
+    "placeholder": "Viết ghi chú …",
+    "formatHint": "Định dạng: **đậm**, *nghiêng*, „- “ cho danh sách, đường dẫn",
+    "add": "Lưu ghi chú",
+    "visibleForStudent": "Học viên xem được",
+    "teacherOnly": "Chỉ mình bạn",
+    "empty": "Chưa có ghi chú.",
+    "deleteTitle": "Xóa ghi chú?",
+    "quickTitle": "Ghi chú buổi học",
+    "search": {
+      "title": "Tìm ghi chú",
+      "placeholder": "Từ khóa, ví dụ Akkusativ",
+      "noResults": "Không tìm thấy ghi chú.",
+      "from": "Từ",
+      "to": "Đến",
+      "studentFilter": "Chỉ: {{name}}"
+    }
+  },
+  "attachments": {
+    "title": "Tệp đính kèm",
+    "camera": "Chụp ảnh",
+    "library": "Chọn ảnh",
+    "file": "Tệp (PDF, âm thanh)",
+    "empty": "Chưa có tệp đính kèm.",
+    "uploading": "Đang tải lên …",
+    "deleteTitle": "Xóa „{{name}}“?",
+    "errors": {
+      "permission": "Chưa cho phép truy cập máy ảnh. Bạn có thể bật trong phần cài đặt của điện thoại.",
+      "too_large": "Tệp lớn hơn 20 MB.",
+      "unsupported": "Chỉ cho phép ảnh, PDF và âm thanh."
+    }
+  },
+  "homework": {
+    "title": "Bài tập về nhà",
+    "add": "Thêm bài tập",
+    "save": "Lưu bài tập",
+    "fields": {
+      "title": "Bài tập",
+      "description": "Mô tả (không bắt buộc)",
+      "dueDate": "Hạn nộp (không bắt buộc)",
+      "for": "Cho"
+    },
+    "empty": "Không có bài tập.",
+    "status": {
+      "open": "Chưa làm",
+      "done": "Đã xong"
+    },
+    "due": "hạn {{date}}",
+    "overdue": "quá hạn từ {{date}}",
+    "markDone": "Đánh dấu đã xong",
+    "markOpen": "Mở lại",
+    "deleteTitle": "Xóa bài tập?",
+    "noneOpen": "Không còn bài tập nào 🎉",
+    "showDone": "Hiện bài đã xong",
+    "hideDone": "Ẩn bài đã xong"
+  },
+  "previous": {
+    "title": "Buổi học trước",
+    "none": "Đây là buổi học đầu tiên.",
+    "open": "Mở buổi học",
+    "nothing": "Không có ghi chú hoặc bài tập."
+  },
+  "materials": {
+    "notes": "Ghi chú của cô giáo",
+    "files": "Tệp",
+    "empty": "Ghi chú và tệp mà cô giáo chia sẻ với bạn sẽ hiển thị ở đây."
   }
 }

@@ -23,7 +23,45 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "blockers": {
+            "attachments": {
+                  Row: {
+                    "created_at": string,"id": string,"lesson_id": string | null,"mime_type": string,"original_name": string,"size_bytes": number,"storage_path": string,"student_id": string | null,"teacher_id": string,"uploaded_by": string | null,"visibility": Database["public"]['Enums']["note_visibility"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"lesson_id"?: string | null,"mime_type": string,"original_name": string,"size_bytes": number,"storage_path": string,"student_id"?: string | null,"teacher_id": string,"uploaded_by"?: string | null,"visibility"?: Database["public"]['Enums']["note_visibility"]
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"lesson_id"?: string | null,"mime_type"?: string,"original_name"?: string,"size_bytes"?: number,"storage_path"?: string,"student_id"?: string | null,"teacher_id"?: string,"uploaded_by"?: string | null,"visibility"?: Database["public"]['Enums']["note_visibility"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "attachments_lesson_id_fkey"
+      columns: ["lesson_id"]
+isOneToOne: false
+      referencedRelation: "lessons"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "attachments_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "attachments_teacher_id_fkey"
+      columns: ["teacher_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "attachments_uploaded_by_fkey"
+      columns: ["uploaded_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"blockers": {
                   Row: {
                     "created_at": string,"end_date": string | null,"id": string,"local_end": string,"local_start": string,"start_date": string,"teacher_id": string,"timezone": string,"title": string,"updated_at": string,"weekdays": (number)[]
                   }
@@ -37,6 +75,38 @@ export type Database = {
                   Relationships: [
                     {
       foreignKeyName: "blockers_teacher_id_fkey"
+      columns: ["teacher_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"homework": {
+                  Row: {
+                    "created_at": string,"description": string | null,"done_at": string | null,"due_date": string | null,"id": string,"lesson_id": string | null,"status": Database["public"]['Enums']["homework_status"],"student_id": string,"teacher_id": string,"title": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"description"?: string | null,"done_at"?: string | null,"due_date"?: string | null,"id"?: string,"lesson_id"?: string | null,"status"?: Database["public"]['Enums']["homework_status"],"student_id": string,"teacher_id": string,"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"description"?: string | null,"done_at"?: string | null,"due_date"?: string | null,"id"?: string,"lesson_id"?: string | null,"status"?: Database["public"]['Enums']["homework_status"],"student_id"?: string,"teacher_id"?: string,"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "homework_lesson_id_fkey"
+      columns: ["lesson_id"]
+isOneToOne: false
+      referencedRelation: "lessons"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "homework_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "homework_teacher_id_fkey"
       columns: ["teacher_id"]
 isOneToOne: false
       referencedRelation: "profiles"
@@ -181,14 +251,14 @@ isOneToOne: false
                   ]
                 },"notes": {
                   Row: {
-                    "author_id": string | null,"body": string,"created_at": string,"id": string,"student_id": string,"teacher_id": string,"updated_at": string,"visibility": Database["public"]['Enums']["note_visibility"]
+                    "author_id": string | null,"body": string,"created_at": string,"id": string,"lesson_id": string | null,"search_text": string | null,"student_id": string | null,"teacher_id": string,"updated_at": string,"visibility": Database["public"]['Enums']["note_visibility"]
                   }
                   ComputedFields: never
                   Insert: {
-                    "author_id"?: string | null,"body": string,"created_at"?: string,"id"?: string,"student_id": string,"teacher_id": string,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
+                    "author_id"?: string | null,"body": string,"created_at"?: string,"id"?: string,"lesson_id"?: string | null,"search_text"?: never,"student_id"?: string | null,"teacher_id": string,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
                   }
                   Update: {
-                    "author_id"?: string | null,"body"?: string,"created_at"?: string,"id"?: string,"student_id"?: string,"teacher_id"?: string,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
+                    "author_id"?: string | null,"body"?: string,"created_at"?: string,"id"?: string,"lesson_id"?: string | null,"search_text"?: never,"student_id"?: string | null,"teacher_id"?: string,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
                   }
                   Relationships: [
                     {
@@ -196,6 +266,12 @@ isOneToOne: false
       columns: ["author_id"]
 isOneToOne: false
       referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notes_lesson_id_fkey"
+      columns: ["lesson_id"]
+isOneToOne: false
+      referencedRelation: "lessons"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "notes_student_id_fkey"
@@ -428,6 +504,9 @@ isOneToOne: true
               "end_at": string,"start_at": string
             }[]
                            },
+"previous_lesson_id":
+{ Args: { "p_lesson_id": string }; Returns: string
+                           },
 "reschedule_lesson":
 { Args: { "p_end_at": string,"p_lesson_id": string,"p_start_at": string }; Returns: undefined
                            },
@@ -437,8 +516,16 @@ isOneToOne: true
 "revoke_invitation":
 { Args: { "p_invitation_id": string }; Returns: undefined
                            },
+"search_notes":
+{ Args: { "p_from"?: string,"p_level"?: Database["public"]['Enums']["cefr_level"],"p_limit"?: number,"p_offset"?: number,"p_query": string,"p_student_id"?: string,"p_tag_id"?: string,"p_to"?: string }; Returns: {
+              "body": string,"created_at": string,"id": string,"lesson_id": string,"lesson_start_at": string,"student_id": string,"student_names": string,"visibility": Database["public"]['Enums']["note_visibility"]
+            }[]
+                           },
 "set_access_paused":
 { Args: { "p_paused": boolean,"p_profile_id": string }; Returns: undefined
+                           },
+"set_homework_status":
+{ Args: { "p_done": boolean,"p_homework_id": string }; Returns: undefined
                            },
 "student_invitation_status":
 { Args: { "p_student_id": string }; Returns: {
@@ -455,7 +542,7 @@ isOneToOne: true
                            }
           }
           Enums: {
-            "app_locale": "de"|"vi","app_role": "admin"|"teacher"|"student","attendance_status": "pending"|"present"|"excused"|"absent","cefr_level": "A1"|"A2"|"B1"|"B2","currency_code": "EUR"|"VND","lesson_format": "online"|"in_person","lesson_status": "scheduled"|"held"|"cancelled","note_visibility": "student"|"teacher","series_frequency": "weekly"|"biweekly","student_status": "active"|"inactive"|"archived"
+            "app_locale": "de"|"vi","app_role": "admin"|"teacher"|"student","attendance_status": "pending"|"present"|"excused"|"absent","cefr_level": "A1"|"A2"|"B1"|"B2","currency_code": "EUR"|"VND","homework_status": "open"|"done","lesson_format": "online"|"in_person","lesson_status": "scheduled"|"held"|"cancelled","note_visibility": "student"|"teacher","series_frequency": "weekly"|"biweekly","student_status": "active"|"inactive"|"archived"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -575,7 +662,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_locale": ["de", "vi"],"app_role": ["admin", "teacher", "student"],"attendance_status": ["pending", "present", "excused", "absent"],"cefr_level": ["A1", "A2", "B1", "B2"],"currency_code": ["EUR", "VND"],"lesson_format": ["online", "in_person"],"lesson_status": ["scheduled", "held", "cancelled"],"note_visibility": ["student", "teacher"],"series_frequency": ["weekly", "biweekly"],"student_status": ["active", "inactive", "archived"]
+            "app_locale": ["de", "vi"],"app_role": ["admin", "teacher", "student"],"attendance_status": ["pending", "present", "excused", "absent"],"cefr_level": ["A1", "A2", "B1", "B2"],"currency_code": ["EUR", "VND"],"homework_status": ["open", "done"],"lesson_format": ["online", "in_person"],"lesson_status": ["scheduled", "held", "cancelled"],"note_visibility": ["student", "teacher"],"series_frequency": ["weekly", "biweekly"],"student_status": ["active", "inactive", "archived"]
           }
         }
 } as const

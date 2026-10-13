@@ -1,6 +1,6 @@
 # TrainSched – Architektur
 
-Stand: 2026-10-13 · Status: **freigegeben**, M1–M3 umgesetzt
+Stand: 2026-10-13 · Status: **freigegeben**, M1–M4 umgesetzt
 
 ## 1. Getroffene Entscheidungen (aus den Rückfragen)
 
@@ -192,6 +192,14 @@ Beträge: `numeric(12,2)`, die Währung steht pro Zeile. Angezeigt wird nur Text
 - Nicht materialisiert: `blocker_occurrences(teacher, from, to)` berechnet die Vorkommen pro Zeitraum (DST-sicher, Wanduhrzeit).
 - Nur Lehrkräfte sehen Blocker (RLS); `check_conflicts` meldet Überschneidungen als Warnung `blocker` (kein hartes Verbot).
 - Kalender: graue, gestrichelte Flächen hinter den Terminen; Startscreen listet sie chronologisch mit.
+
+## 6c. Notizen, Anhänge, Hausaufgaben (M4)
+
+- **Notizen** hängen an einem Termin _oder_ einem Schüler (`lesson_id`/`student_id`), Sichtbarkeit `student`/`teacher`. Termin-Notizen „für Schüler“ sehen alle Teilnehmenden. Format: Markdown light (eigener Parser `src/lib/markdown.ts`, nur http(s)-Links).
+- **Suche** `search_notes()`: generierte Spalte `search_text` (klein, ohne Diakritika) + Trigramm-Index → Teilwörter, „Huong“ findet „Hương“; Filter Schüler/Level/Thema/Zeitraum, paginiert.
+- **Anhänge**: privater Bucket `attachments` (max. 20 MB; Bilder/PDF/Audio), Pfad `{teacher_id}/…`. Fotos werden vor dem Upload auf 1600 px / JPEG 70 % verkleinert. Lesen nur über Signed URLs (1 Std.); Storage-RLS: Lehrkraft sieht/löscht ihren Ordner, Schüler nur Dateien zu für sie sichtbaren Anhängen. Löschen: erst Datei, dann Eintrag.
+- **Hausaufgaben** pro Schüler (bei Gruppen eine Zeile je Teilnehmer), Abhaken per RPC `set_homework_status` (Schüler: nur eigene).
+- **„Letzte Stunde in 1 Minute“**: `previous_lesson_id()` = letzter nicht abgesagter Termin derselben Lehrkraft mit gemeinsamem Teilnehmer.
 
 ## 6b. Konten pausieren (seit M3)
 

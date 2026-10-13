@@ -9,3 +9,4 @@ export { Card, InfoRow } from './Card';
 export { Chip, ChipRow } from './Chip';
 export { Segmented, type SegmentedOption } from './Segmented';
 export { SwitchRow } from './SwitchRow';
+export { MarkdownText } from './MarkdownText';

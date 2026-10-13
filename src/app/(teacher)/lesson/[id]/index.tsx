@@ -12,17 +12,22 @@ import {
   useRestoreLesson,
   useSeries,
 } from '@/features/lessons/api';
+import { AttachmentsSection } from '@/features/attachments/components/AttachmentsSection';
+import { LessonHomeworkSection } from '@/features/homework/components/LessonHomeworkSection';
 import { LessonDetailBody } from '@/features/lessons/components/LessonDetailBody';
-import { useLocale } from '@/features/lessons/hooks';
+import { PreviousLessonCard } from '@/features/lessons/components/PreviousLessonCard';
+import { useLocale, useViewerZone } from '@/features/lessons/hooks';
+import { NotesSection } from '@/features/notes/components/NotesSection';
 import { shareIcs } from '@/features/lessons/shareIcs';
 import { confirmAsync } from '@/lib/confirm';
 import { errorKey } from '@/lib/errors';
-import { formatDayLong } from '@/lib/time';
+import { formatDayLong, todayIn } from '@/lib/time';
 import { spacing } from '@/theme/tokens';
 
 export default function LessonDetailScreen() {
   const { t } = useTranslation();
   const locale = useLocale();
+  const zone = useViewerZone();
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = useLesson(id);
   const series = useSeries(lesson.data?.series_id ?? null);
@@ -130,6 +135,14 @@ export default function LessonDetailScreen() {
             onPress={() => restore.mutate()}
           />
         ) : null}
+      </View>
+
+      <PreviousLessonCard lessonId={l.id} hrefBase="/lesson/" />
+      <NotesSection target={{ lessonId: l.id }} teacherId={l.teacher_id} />
+      <LessonHomeworkSection lesson={l} today={todayIn(zone)} />
+      <AttachmentsSection target={{ lessonId: l.id }} teacherId={l.teacher_id} />
+
+      <View style={styles.actions}>
         <Button title={t('lessons.actions.exportIcs')} variant="ghost" onPress={() => void exportIcs()} />
         {l.series_id && status === 'scheduled' ? (
           <Button

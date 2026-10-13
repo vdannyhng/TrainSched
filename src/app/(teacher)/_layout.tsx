@@ -28,6 +28,8 @@ export default function TeacherLayout() {
       <Stack.Screen name="lesson/[id]/reschedule" options={{ title: t('lessons.reschedule.title') }} />
       <Stack.Screen name="lesson/[id]/cancel" options={{ title: t('lessons.cancel.title') }} />
       <Stack.Screen name="lesson/[id]/held" options={{ title: t('lessons.held.title') }} />
+      <Stack.Screen name="lesson/[id]/note" options={{ title: t('notes.quickTitle') }} />
+      <Stack.Screen name="notes-search" options={{ title: t('notes.search.title') }} />
       <Stack.Screen name="blocker/new" options={{ title: t('blockers.new') }} />
       <Stack.Screen name="blocker/[id]" options={{ title: t('blockers.edit') }} />
     </Stack>

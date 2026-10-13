@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅**
+Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅**
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -54,7 +54,7 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - **Nachgereicht:** Blocker für private Zeiten (einmalig/wöchentlich, nur für Lehrkräfte), kompakte Wochenansicht ohne Scrollen, Tag immer als Zeitleiste, langes Drücken zum Anlegen.
 - **Tests:** pgTAP für Serienexpansion (DST März/Oktober, Jahreswechsel, zweiwöchentlich, Ausnahmen, Serie teilen), Konflikte, RLS (Schüler sieht nur Termine mit eigener Teilnahme und in der Gruppe nur den eigenen Teilnehmereintrag); Jest für `time.ts` (Zürich/Berlin/Hanoi) und Datumsformatierung.
 
-## M4 – Notizen, Anhänge, Hausaufgaben
+## M4 – Notizen, Anhänge, Hausaufgaben ✅
 
 - Notizen pro Termin und pro Schüler, Umschalter „für Schüler sichtbar“ / „nur Lehrer“, Markdown-light (fett, kursiv, Listen, Links) mit eigenem schlanken Renderer.
 - Anhänge: Kamera (komprimiert), Galerie, PDF, Audio; privater Storage-Bucket, Signed URLs, Upload-Fortschritt.

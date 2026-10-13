@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 import { State } from 'react-native-gesture-handler';
 import { fireGestureHandler, getByGestureTestId } from 'react-native-gesture-handler/jest-utils';
 
@@ -28,24 +28,28 @@ async function renderDay(lessons: Lesson[] = []) {
 describe('Timeline – Termin per Gedrückthalten und Ziehen anlegen', () => {
   it('Slot folgt dem Finger im 15-Minuten-Raster', async () => {
     const onCreateSlot = await renderDay();
-    fireGestureHandler(getByGestureTestId(`timeline-${day}`), [
-      { state: State.BEGAN, y: 728 },
-      { state: State.ACTIVE, y: 728 },
-      { y: 750 },
-      { y: 812 }, // +84 px = +1,5 Std.
-      { state: State.END, y: 812 },
-    ]);
+    await act(async () => {
+      fireGestureHandler(getByGestureTestId(`timeline-${day}`), [
+        { state: State.BEGAN, y: 728 },
+        { state: State.ACTIVE, y: 728 },
+        { y: 750 },
+        { y: 812 }, // +84 px = +1,5 Std.
+        { state: State.END, y: 812 },
+      ]);
+    });
     expect(onCreateSlot).toHaveBeenCalledTimes(1);
     expect(onCreateSlot).toHaveBeenCalledWith({ date: day, time: '20:00', durationMin: 60 });
   });
 
   it('Zeit wird auf 06:00 bis 23:00 (Start) begrenzt', async () => {
     const onCreateSlot = await renderDay();
-    fireGestureHandler(getByGestureTestId(`timeline-${day}`), [
-      { state: State.BEGAN, y: 5 },
-      { state: State.ACTIVE, y: 5 },
-      { state: State.END, y: 5 },
-    ]);
+    await act(async () => {
+      fireGestureHandler(getByGestureTestId(`timeline-${day}`), [
+        { state: State.BEGAN, y: 5 },
+        { state: State.ACTIVE, y: 5 },
+        { state: State.END, y: 5 },
+      ]);
+    });
     expect(onCreateSlot).toHaveBeenCalledWith({ date: day, time: '06:00', durationMin: 60 });
   });
 
@@ -63,11 +67,13 @@ describe('Timeline – Termin per Gedrückthalten und Ziehen anlegen', () => {
       tags: [],
     } as unknown as Lesson;
     const onCreateSlot = await renderDay([lesson]);
-    fireGestureHandler(getByGestureTestId(`timeline-${day}`), [
-      { state: State.BEGAN, y: 728 },
-      { state: State.ACTIVE, y: 728 },
-      { state: State.END, y: 728 },
-    ]);
+    await act(async () => {
+      fireGestureHandler(getByGestureTestId(`timeline-${day}`), [
+        { state: State.BEGAN, y: 728 },
+        { state: State.ACTIVE, y: 728 },
+        { state: State.END, y: 728 },
+      ]);
+    });
     expect(onCreateSlot).not.toHaveBeenCalled();
   });
 });
@@ -93,23 +99,27 @@ describe('Timeline – PC (Web): Klicken und mit der Maus ziehen', () => {
   it('Klick legt 60 Min. ab der angeklickten halben Stunde an', async () => {
     const onCreateSlot = await renderWeb();
     // y = 4,4 Std. × 56 px → 10:24 → Slot ab 10:00
-    fireGestureHandler(getByGestureTestId(`timeline-click-${day}`), [
-      { state: State.BEGAN, y: 246 },
-      { state: State.ACTIVE, y: 246 },
-      { state: State.END, y: 246 },
-    ]);
+    await act(async () => {
+      fireGestureHandler(getByGestureTestId(`timeline-click-${day}`), [
+        { state: State.BEGAN, y: 246 },
+        { state: State.ACTIVE, y: 246 },
+        { state: State.END, y: 246 },
+      ]);
+    });
     expect(onCreateSlot).toHaveBeenCalledWith({ date: day, time: '10:00', durationMin: 60 });
   });
 
   it('Ziehen mit der Maus wählt einen Zeitraum (10:00–11:30)', async () => {
     const onCreateSlot = await renderWeb();
     // Start 10:05 (y=229), Ende 11:35 (y=313) → 10:00–11:30
-    fireGestureHandler(getByGestureTestId(`timeline-mouse-${day}`), [
-      { state: State.BEGAN, y: 229, translationY: 0 },
-      { state: State.ACTIVE, y: 240, translationY: 11 },
-      { y: 313, translationY: 84 },
-      { state: State.END, y: 313, translationY: 84 },
-    ]);
+    await act(async () => {
+      fireGestureHandler(getByGestureTestId(`timeline-mouse-${day}`), [
+        { state: State.BEGAN, y: 229, translationY: 0 },
+        { state: State.ACTIVE, y: 240, translationY: 11 },
+        { y: 313, translationY: 84 },
+        { state: State.END, y: 313, translationY: 84 },
+      ]);
+    });
     expect(onCreateSlot).toHaveBeenCalledWith({ date: day, time: '10:00', durationMin: 90 });
   });
 });

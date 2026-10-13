@@ -38,7 +38,15 @@
       ],
       "expo-sqlite",
       "expo-localization",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "TrainSched nutzt deine Fotos, um Bilder (z. B. Arbeitsblätter) an Termine anzuhängen.",
+          "cameraPermission": "TrainSched nutzt die Kamera, um Tafel oder Heft zu fotografieren und an Termine anzuhängen.",
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": false,
