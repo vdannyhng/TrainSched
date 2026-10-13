@@ -3,6 +3,7 @@
 -- Logins (Passwort für alle: Lernen2026):
 --   lehrerin@trainsched.test  → Admin/Lehrerin
 --   schueler@trainsched.test  → Schüler Hương (Zeitzone Asia/Ho_Chi_Minh, UI Vietnamesisch)
+--   lehrer@trainsched.test    → reiner Lehrer (keine Admin-Rechte) mit Demo-Schüler Bảo
 -- Offene Einladung für Schüler „Minh“: Code TEST-2345
 
 do $$
@@ -45,5 +46,38 @@ begin
   insert into public.invitations (teacher_id, student_id, role, code_hash, expires_at)
   values (v_teacher, '33333333-3333-3333-3333-333333333332', 'student',
           private.hash_invite_code('TEST-2345'), now() + interval '365 days');
+end;
+$$;
+
+-- Reiner Lehrer-Account (keine Admin-Rechte) mit eigenem Demo-Schüler.
+-- Idempotent, damit er auch in eine bestehende lokale DB eingespielt werden kann.
+do $$
+declare
+  v_teacher uuid := '44444444-4444-4444-4444-444444444444';
+  v_password text := extensions.crypt('Lernen2026', extensions.gen_salt('bf'));
+begin
+  if exists (select 1 from auth.users where id = v_teacher) then
+    return;
+  end if;
+
+  insert into auth.users (
+    id, instance_id, aud, role, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    confirmation_token, recovery_token, email_change_token_new, email_change
+  ) values
+    (v_teacher, '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated',
+     'lehrer@trainsched.test', v_password, now(),
+     '{"provider":"email","providers":["email"],"role":"teacher"}',
+     '{"display_name":"Thomas Lehrer","timezone":"Europe/Zurich","locale":"de"}', now(), now(), '', '', '', '');
+
+  insert into auth.identities (id, user_id, provider_id, provider, identity_data, last_sign_in_at, created_at, updated_at)
+  values (gen_random_uuid(), v_teacher, v_teacher::text, 'email',
+          jsonb_build_object('sub', v_teacher::text, 'email', 'lehrer@trainsched.test', 'email_verified', true), now(), now(), now());
+
+  update public.profiles set privacy_consent_version = '2026-10', privacy_consent_at = now() where id = v_teacher;
+
+  insert into public.students (id, teacher_id, first_name, last_name, timezone, locale, start_level, current_level, goal, currency)
+  values ('55555555-5555-5555-5555-555555555551', v_teacher, 'Bảo', 'Lê', 'Asia/Ho_Chi_Minh', 'vi', 'A2', 'B1',
+          'Alltagsdeutsch für die Arbeit', 'EUR');
 end;
 $$;
