@@ -157,7 +157,7 @@ select results_eq(
 select throws_ok(
   $$select public.create_lesson('00000000-0000-0000-0000-0000000000b1', '2027-01-05 10:00+00', '2027-01-05 11:00+00',
      'Europe/Zurich', null, 'online', null, null, null, array['00000000-0000-0000-0000-0000000000d3']::uuid[], '{}')$$,
-  '42501', null, 'Schüler eines anderen Lehrers kann nicht teilnehmen');
+  'P0001', 'participants_other_teacher', 'Schüler eines anderen Lehrers kann nicht teilnehmen');
 
 -- ---------------------------------------------------------------------------
 -- Schüler S1

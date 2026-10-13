@@ -180,6 +180,12 @@ Beträge: `numeric(12,2)`, die Währung steht pro Zeile. Angezeigt wird nur Text
 - **Ereignisse** (verschoben, abgesagt, neue Anfrage, Anfrage entschieden): Datenbank-Trigger schreiben in eine `outbox`, die Edge Function `dispatch-notifications` versendet. Dadurch blockiert keine App-Aktion auf den Push-Versand.
 - Inhalte der Pushes sind datensparsam: „Termin morgen 18:00 verschoben“, ohne Notizinhalte.
 
+## 5b. Wem gehört ein Termin?
+
+- Ein Termin gehört genau **einem** Lehrer (`lessons.teacher_id`); alle Teilnehmenden müssen Schüler dieses Lehrers sein (`private.assert_participants_of`, Fehler `participants_other_teacher`).
+- Lehrkräfte planen für eigene Schüler. Die **Admin-Person** kann auch für Schüler anderer Lehrer planen – der Termin wird dann automatisch diesem Lehrer zugeordnet (seine Blocker/Pufferzeit gelten). Die Teilnehmerauswahl beschränkt sich nach dem ersten Schüler auf dessen Lehrer.
+- Schüler können keine Termine anlegen (RLS, getestet in `07_lesson_permissions.test.sql`).
+
 ## 6a. Blocker – private Zeiten der Lehrkraft (seit M3)
 
 - Tabelle `blockers`: Titel, Startdatum, optionales Ende, Wochentage (ISO 1–7), lokale Von/Bis-Zeit, Zeitzone. Einmalig = Start = Ende.

@@ -203,7 +203,8 @@ export default function CalendarScreen() {
               setAnchor(date);
               setView('day');
             }}
-            onLongPressSlot={(date, time) => setSlot({ date, time })}
+            onCreateSlot={setSlot}
+            pendingSlot={slot}
           />
           <AppText variant="caption" tone="muted" style={styles.hint}>
             {t('calendar.longPressHint')}

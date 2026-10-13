@@ -9,7 +9,6 @@ import { LessonForm } from '@/features/lessons/components/LessonForm';
 import { useViewerZone } from '@/features/lessons/hooks';
 import type { LessonFormValues } from '@/features/lessons/schemas';
 import { useSaveLessonFlow, type SaveResult } from '@/features/lessons/useSaveLessonFlow';
-import { useTags } from '@/features/tags/api';
 import { errorKey } from '@/lib/errors';
 import { durationMinutes, localDate, localTime, todayIn } from '@/lib/time';
 
@@ -20,7 +19,6 @@ export default function EditLessonScreen() {
   const zone = useViewerZone();
   const lesson = useLesson(id);
   const series = useSeries(mode === 'following' ? (lesson.data?.series_id ?? null) : null);
-  const tags = useTags(lesson.data?.teacher_id);
   const [result, setResult] = useState<SaveResult | null>(null);
   const flow = useSaveLessonFlow({
     mode,
@@ -30,8 +28,7 @@ export default function EditLessonScreen() {
     onSaved: setResult,
   });
 
-  if (lesson.isPending || tags.isPending || (mode === 'following' && series.isPending))
-    return <LoadingState />;
+  if (lesson.isPending || (mode === 'following' && series.isPending)) return <LoadingState />;
   if (lesson.isError)
     return <ErrorState message={t('errors.loadFailed')} onRetry={() => void lesson.refetch()} />;
 
@@ -72,8 +69,9 @@ export default function EditLessonScreen() {
       />
       <LessonForm
         mode={mode}
+        teacherId={l.teacher_id}
         defaultValues={defaults}
-        tags={tags.data ?? []}
+        fallbackTeacherId={l.teacher_id}
         today={todayIn(zone)}
         submitLabel={t('common.save')}
         submitting={flow.busy && !flow.pending}

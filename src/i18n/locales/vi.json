@@ -150,7 +150,8 @@
     "overlap": "Giờ này đã có buổi học.",
     "participantsRequired": "Vui lòng chọn ít nhất một người.",
     "cannotPauseSelf": "Bạn không thể tự tạm dừng chính mình.",
-    "exportFailed": "Xuất thất bại."
+    "exportFailed": "Xuất thất bại.",
+    "participantsOtherTeacher": "Tất cả người tham gia phải thuộc cùng một giáo viên."
   },
   "validation": {
     "required": "Bắt buộc",
@@ -388,7 +389,7 @@
     "previous": "Trước",
     "next": "Sau",
     "lessonsCount": "{{count}} buổi",
-    "longPressHint": "Nhấn giữ vào chỗ trống để tạo buổi học hoặc lịch bận."
+    "longPressHint": "Nhấn giữ và kéo để tạo buổi học hoặc lịch bận."
   },
   "settings": {
     "teaching": "Giảng dạy",

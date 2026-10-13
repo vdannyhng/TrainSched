@@ -8,15 +8,15 @@ import { normalizeSearch } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import { spacing } from '@/theme/tokens';
 
-type Option = { id: string; first_name: string; last_name: string | null };
+type Option = { id: string; teacher_id: string; first_name: string; last_name: string | null };
 
-function useActiveStudents() {
+export function useActiveStudents() {
   return useQuery({
     queryKey: ['students', 'picker'],
     queryFn: async (): Promise<Option[]> => {
       const { data, error } = await supabase
         .from('students')
-        .select('id, first_name, last_name')
+        .select('id, teacher_id, first_name, last_name')
         .neq('status', 'archived')
         .order('first_name')
         .limit(500);
@@ -30,16 +30,21 @@ type Props = {
   value: string[];
   onChange: (ids: string[]) => void;
   error?: string;
+  /** Nur Schüler dieses Lehrers (z. B. beim Bearbeiten eines bestehenden Termins) */
+  restrictTeacherId?: string;
 };
 
 /** Mehrfachauswahl von Schülern (≥ 2 = Gruppenunterricht). Ausgewählte stehen oben. */
-export function StudentPicker({ value, onChange, error }: Props) {
+export function StudentPicker({ value, onChange, error, restrictTeacherId }: Props) {
   const { t } = useTranslation();
   const students = useActiveStudents();
   const [search, setSearch] = useState('');
   const needle = normalizeSearch(search);
 
-  const all = students.data ?? [];
+  // Ein Termin gehört genau einem Lehrer: nach der ersten Auswahl nur noch Schüler desselben Lehrers.
+  const loaded = students.data ?? [];
+  const teacherScope = restrictTeacherId ?? loaded.find((s) => value.includes(s.id))?.teacher_id;
+  const all = teacherScope ? loaded.filter((s) => s.teacher_id === teacherScope) : loaded;
   const name = (s: Option) => [s.first_name, s.last_name].filter(Boolean).join(' ');
   const selected = all.filter((s) => value.includes(s.id));
   const others = all

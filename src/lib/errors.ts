@@ -8,6 +8,7 @@ export type ErrorKey =
   | 'errors.alreadyLinked'
   | 'errors.overlap'
   | 'errors.participantsRequired'
+  | 'errors.participantsOtherTeacher'
   | 'errors.cannotPauseSelf'
   | 'errors.notFound';
 
@@ -17,6 +18,7 @@ const MESSAGE_KEYS: Record<string, ErrorKey> = {
   guardian_consent_required: 'errors.consentRequired',
   student_already_linked: 'errors.alreadyLinked',
   participants_required: 'errors.participantsRequired',
+  participants_other_teacher: 'errors.participantsOtherTeacher',
   cannot_pause_self: 'errors.cannotPauseSelf',
 };
 

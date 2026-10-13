@@ -150,7 +150,8 @@
     "overlap": "Zu dieser Zeit gibt es schon einen Termin.",
     "participantsRequired": "Bitte mindestens eine Person auswählen.",
     "cannotPauseSelf": "Du kannst dich nicht selbst pausieren.",
-    "exportFailed": "Export fehlgeschlagen."
+    "exportFailed": "Export fehlgeschlagen.",
+    "participantsOtherTeacher": "Alle Teilnehmenden müssen zum selben Lehrer gehören."
   },
   "validation": {
     "required": "Pflichtfeld",
@@ -388,7 +389,7 @@
     "previous": "Zurück",
     "next": "Weiter",
     "lessonsCount": "{{count}} Termine",
-    "longPressHint": "Lange auf eine freie Stelle drücken, um einen Termin oder Blocker anzulegen."
+    "longPressHint": "Gedrückt halten und ziehen, um einen Termin oder Blocker anzulegen."
   },
   "settings": {
     "teaching": "Unterricht",

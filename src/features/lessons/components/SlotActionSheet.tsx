@@ -14,6 +14,12 @@ type Props = {
   onClose: () => void;
 };
 
+function endOf(time: string): string {
+  const [h, m] = time.split(':').map(Number) as [number, number];
+  const end = Math.min(24 * 60, h * 60 + m + 60);
+  return `${String(Math.floor(end / 60)).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`;
+}
+
 /** Auswahl nach langem Drücken im Kalender: Termin oder Blocker an dieser Stelle anlegen. */
 export function SlotActionSheet({ slot, locale, onLesson, onBlocker, onClose }: Props) {
   const { t } = useTranslation();
@@ -30,7 +36,7 @@ export function SlotActionSheet({ slot, locale, onLesson, onBlocker, onClose }: 
         <View style={[styles.sheet, { backgroundColor: colors.surface }]}>
           {slot ? (
             <AppText variant="heading" style={styles.center}>
-              {formatDayLong(slot.date, locale)}, {slot.time}
+              {`${formatDayLong(slot.date, locale)}\n${slot.time}–${endOf(slot.time)}`}
             </AppText>
           ) : null}
           <Button title={t('lessons.new')} onPress={onLesson} />

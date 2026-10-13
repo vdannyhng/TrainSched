@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, Chip, ChipRow, FormTextField, Segmented, TextField } from '@/components/ui';
-import type { Tag } from '@/features/tags/api';
+import { useTags } from '@/features/tags/api';
 import { LEVEL_COLORS, LEVELS, type Level } from '@/lib/colors';
 import type { LocalDate } from '@/lib/time';
 import { validationMessage } from '@/lib/validation';
@@ -12,27 +12,47 @@ import { spacing } from '@/theme/tokens';
 
 import { DURATION_PRESETS, lessonFormSchema, type LessonFormOutput, type LessonFormValues } from '../schemas';
 import { DateField } from './DateField';
-import { StudentPicker } from './StudentPicker';
+import { StudentPicker, useActiveStudents } from './StudentPicker';
 
 export type LessonFormMode = 'create' | 'this' | 'following';
 
 type Props = {
   mode: LessonFormMode;
   defaultValues: LessonFormValues;
-  tags: Tag[];
+  /** Lehrer, dessen Themen ohne Teilnehmerauswahl angezeigt werden (meist das eigene Konto) */
+  fallbackTeacherId: string | undefined;
   today: LocalDate;
   submitLabel: string;
   submitting: boolean;
   onSubmit: (values: LessonFormOutput) => void;
+  /** Lehrer des Termins (Bearbeiten) → Teilnehmerauswahl darauf einschränken */
+  teacherId?: string;
 };
 
-export function LessonForm({ mode, defaultValues, tags, today, submitLabel, submitting, onSubmit }: Props) {
+export function LessonForm({
+  mode,
+  defaultValues,
+  fallbackTeacherId,
+  today,
+  submitLabel,
+  submitting,
+  onSubmit,
+  teacherId,
+}: Props) {
   const { t } = useTranslation();
   const { control, handleSubmit, setValue } = useForm<LessonFormValues, unknown, LessonFormOutput>({
     resolver: zodResolver(lessonFormSchema),
     defaultValues,
   });
   const [repeat, format, durationMin] = useWatch({ control, name: ['repeat', 'format', 'durationMin'] });
+  // Themen gehören zum Lehrer des Termins (Admin kann für andere Lehrer planen)
+  const studentIds = useWatch({ control, name: 'studentIds' });
+  const pickerStudents = useActiveStudents();
+  const ownerId =
+    teacherId ??
+    pickerStudents.data?.find((st) => studentIds.includes(st.id))?.teacher_id ??
+    fallbackTeacherId;
+  const tags = useTags(ownerId).data ?? [];
   const isPreset = (DURATION_PRESETS as readonly number[]).includes(durationMin);
 
   const repeatOptions = (
@@ -49,6 +69,7 @@ export function LessonForm({ mode, defaultValues, tags, today, submitLabel, subm
             <StudentPicker
               value={field.value}
               onChange={field.onChange}
+              restrictTeacherId={teacherId}
               error={fieldState.error ? t(validationMessage(fieldState.error.message)) : undefined}
             />
           )}
@@ -221,7 +242,13 @@ export function LessonForm({ mode, defaultValues, tags, today, submitLabel, subm
         />
       </Card>
 
-      <Button title={submitLabel} loading={submitting} onPress={handleSubmit(onSubmit)} />
+      <Button
+        title={submitLabel}
+        loading={submitting}
+        onPress={handleSubmit((v) =>
+          onSubmit({ ...v, tagIds: v.tagIds.filter((id) => tags.some((tag) => tag.id === id)) }),
+        )}
+      />
     </View>
   );
 }

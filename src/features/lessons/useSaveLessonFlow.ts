@@ -56,6 +56,18 @@ export function useSaveLessonFlow(opts: {
     });
   }
 
+  /** Beim Anlegen gehört der Termin dem Lehrer der Teilnehmenden (Admin kann für andere planen). */
+  async function effectiveTeacherId(v: LessonFormOutput): Promise<string> {
+    if (mode !== 'create') return teacherId!;
+    const { data, error } = await supabase
+      .from('students')
+      .select('teacher_id')
+      .eq('id', v.studentIds[0]!)
+      .single();
+    if (error) throw error;
+    return data.teacher_id;
+  }
+
   async function ignoredLessonIds(): Promise<string[]> {
     if (!lesson) return [];
     if (mode !== 'following' || !lesson.series_id) return [lesson.id];
@@ -71,13 +83,14 @@ export function useSaveLessonFlow(opts: {
 
   async function persist(v: LessonFormOutput): Promise<void> {
     const content = lessonContent(v);
+    const owner = await effectiveTeacherId(v);
     const frequency = v.repeat === 'biweekly' ? 'biweekly' : 'weekly';
     let result: SaveResult = { created: 1, skipped: 0 };
     if (mode === 'create' && v.repeat === 'none') {
       const r = await createLesson.mutateAsync({
         ...content,
         ...lessonRange(v, zone),
-        teacherId: teacherId!,
+        teacherId: owner,
         timezone: zone,
       });
       setPending(null);
@@ -88,7 +101,7 @@ export function useSaveLessonFlow(opts: {
     if (mode === 'create') {
       result = await createSeries.mutateAsync({
         ...content,
-        teacherId: teacherId!,
+        teacherId: owner,
         frequency,
         startDate: v.date,
         endDate: v.endDate || null,
@@ -116,7 +129,11 @@ export function useSaveLessonFlow(opts: {
     setCheckError(null);
     setChecking(true);
     try {
-      const conflicts = await checkConflicts(teacherId!, await ranges(v), await ignoredLessonIds());
+      const conflicts = await checkConflicts(
+        await effectiveTeacherId(v),
+        await ranges(v),
+        await ignoredLessonIds(),
+      );
       if (conflicts.length) {
         setPending({ values: v, conflicts, isSeries: isSeriesValues(v) });
         return;
