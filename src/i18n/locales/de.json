@@ -368,7 +368,8 @@
     "today": "Heute",
     "previous": "Zurück",
     "next": "Weiter",
-    "longPressHint": "Gedrückt halten und ziehen, um einen Termin oder Blocker anzulegen."
+    "longPressHint": "Gedrückt halten und ziehen, um einen Termin oder Blocker anzulegen.",
+    "mouseHint": "Auf eine freie Stelle klicken oder mit der Maus einen Zeitraum ziehen, um einen Termin oder Blocker anzulegen."
   },
   "settings": {
     "teaching": "Unterricht",

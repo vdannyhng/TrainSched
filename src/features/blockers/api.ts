@@ -75,9 +75,10 @@ export function isoWeekday(date: string): number {
   return DateTime.fromISO(date).weekday;
 }
 
-export function emptyBlockerForm(date: string, startTime = '08:00'): BlockerFormValues {
+export function emptyBlockerForm(date: string, startTime = '08:00', durationMin = 60): BlockerFormValues {
   const [h, m] = startTime.split(':').map(Number) as [number, number];
-  const end = `${String(Math.min(23, h + 1)).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+  const endMinutes = Math.min(23 * 60 + 59, h * 60 + m + Math.max(15, durationMin));
+  const end = `${String(Math.floor(endMinutes / 60)).padStart(2, '0')}:${String(endMinutes % 60).padStart(2, '0')}`;
   return {
     title: '',
     date,

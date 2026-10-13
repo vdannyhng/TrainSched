@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, Chip, ChipRow, ErrorState, Segmented } from '@/components/ui';
@@ -11,7 +11,7 @@ import { useBlockerOccurrences } from '@/features/blockers/api';
 import { useLessonsInRange, type Lesson } from '@/features/lessons/api';
 import { MonthGrid } from '@/features/lessons/components/MonthGrid';
 import { SlotActionSheet } from '@/features/lessons/components/SlotActionSheet';
-import { Timeline } from '@/features/lessons/components/Timeline';
+import { Timeline, type Slot } from '@/features/lessons/components/Timeline';
 import { useLocale, useViewerZone } from '@/features/lessons/hooks';
 import { useTags } from '@/features/tags/api';
 import { LEVEL_COLORS, LEVELS, type Level } from '@/lib/colors';
@@ -55,7 +55,7 @@ export default function CalendarScreen() {
   const [anchor, setAnchor] = useState<LocalDate>(today);
   const [level, setLevel] = useState<Level | null>(null);
   const [tagId, setTagId] = useState<string | null>(null);
-  const [slot, setSlot] = useState<{ date: LocalDate; time: string } | null>(null);
+  const [slot, setSlot] = useState<Slot | null>(null);
   const tags = useTags(session?.user.id);
 
   const { start, days } = rangeFor(view, anchor);
@@ -207,7 +207,7 @@ export default function CalendarScreen() {
             pendingSlot={slot}
           />
           <AppText variant="caption" tone="muted" style={styles.hint}>
-            {t('calendar.longPressHint')}
+            {Platform.OS === 'web' ? t('calendar.mouseHint') : t('calendar.longPressHint')}
           </AppText>
         </View>
       )}
@@ -219,12 +219,18 @@ export default function CalendarScreen() {
         onLesson={() => {
           const s = slot!;
           setSlot(null);
-          router.push({ pathname: '/lesson/new', params: { date: s.date, time: s.time } });
+          router.push({
+            pathname: '/lesson/new',
+            params: { date: s.date, time: s.time, duration: String(s.durationMin ?? 60) },
+          });
         }}
         onBlocker={() => {
           const s = slot!;
           setSlot(null);
-          router.push({ pathname: '/blocker/new', params: { date: s.date, time: s.time } });
+          router.push({
+            pathname: '/blocker/new',
+            params: { date: s.date, time: s.time, duration: String(s.durationMin ?? 60) },
+          });
         }}
       />
     </SafeAreaView>

@@ -7,16 +7,16 @@ import { radius, spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 type Props = {
-  slot: { date: LocalDate; time: string } | null;
+  slot: { date: LocalDate; time: string; durationMin?: number } | null;
   locale: string;
   onLesson: () => void;
   onBlocker: () => void;
   onClose: () => void;
 };
 
-function endOf(time: string): string {
+function endOf(time: string, durationMin = 60): string {
   const [h, m] = time.split(':').map(Number) as [number, number];
-  const end = Math.min(24 * 60, h * 60 + m + 60);
+  const end = Math.min(24 * 60, h * 60 + m + durationMin);
   return `${String(Math.floor(end / 60)).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`;
 }
 
@@ -36,7 +36,7 @@ export function SlotActionSheet({ slot, locale, onLesson, onBlocker, onClose }: 
         <View style={[styles.sheet, { backgroundColor: colors.surface }]}>
           {slot ? (
             <AppText variant="heading" style={styles.center}>
-              {`${formatDayLong(slot.date, locale)}\n${slot.time}–${endOf(slot.time)}`}
+              {`${formatDayLong(slot.date, locale)}\n${slot.time}–${endOf(slot.time, slot.durationMin)}`}
             </AppText>
           ) : null}
           <Button title={t('lessons.new')} onPress={onLesson} />

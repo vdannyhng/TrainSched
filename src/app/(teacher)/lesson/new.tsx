@@ -15,7 +15,12 @@ import { isValidLocalDate, isValidLocalTime, todayIn } from '@/lib/time';
 export default function NewLessonScreen() {
   const { t } = useTranslation();
   const { session } = useAuth();
-  const params = useLocalSearchParams<{ date?: string; studentId?: string; time?: string }>();
+  const params = useLocalSearchParams<{
+    date?: string;
+    studentId?: string;
+    time?: string;
+    duration?: string;
+  }>();
   const zone = useViewerZone();
   const today = todayIn(zone);
   const [seriesResult, setSeriesResult] = useState<SaveResult | null>(null);
@@ -26,6 +31,9 @@ export default function NewLessonScreen() {
     onSaved: (r) => setSeriesResult(r),
   });
 
+  const durationParam = Number(params.duration);
+  const duration =
+    Number.isInteger(durationParam) && durationParam >= 15 && durationParam <= 480 ? durationParam : null;
   const date = params.date && isValidLocalDate(params.date) && params.date >= today ? params.date : today;
 
   if (seriesResult && seriesResult.created !== 1) {
@@ -46,11 +54,15 @@ export default function NewLessonScreen() {
     <Screen scroll edges={['bottom', 'left', 'right']} scrollToEnd={!!flow.pending || !!flow.error}>
       <LessonForm
         mode="create"
-        defaultValues={emptyLessonForm(
-          date,
-          params.studentId ? [params.studentId] : [],
-          params.time && isValidLocalTime(params.time) ? params.time : undefined,
-        )}
+        defaultValues={{
+          ...emptyLessonForm(
+            date,
+            params.studentId ? [params.studentId] : [],
+            params.time && isValidLocalTime(params.time) ? params.time : undefined,
+          ),
+          // Dauer aus dem Kalender (Ziehen mit der Maus), sonst Standard
+          ...(duration ? { durationMin: duration } : {}),
+        }}
         fallbackTeacherId={session?.user.id}
         today={today}
         submitLabel={t('common.create')}

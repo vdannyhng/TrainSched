@@ -12,7 +12,7 @@ import { isValidLocalDate, isValidLocalTime, todayIn } from '@/lib/time';
 export default function NewBlockerScreen() {
   const { t } = useTranslation();
   const { session } = useAuth();
-  const params = useLocalSearchParams<{ date?: string; time?: string }>();
+  const params = useLocalSearchParams<{ date?: string; time?: string; duration?: string }>();
   const zone = useViewerZone();
   const today = todayIn(zone);
   const save = useSaveBlocker(session?.user.id);
@@ -24,7 +24,7 @@ export default function NewBlockerScreen() {
     <Screen scroll edges={['bottom', 'left', 'right']}>
       <FormMessage message={save.error ? t(errorKey(save.error)) : undefined} />
       <BlockerForm
-        defaultValues={emptyBlockerForm(date, time)}
+        defaultValues={emptyBlockerForm(date, time, Number(params.duration) || undefined)}
         today={today}
         submitLabel={t('common.create')}
         submitting={save.isPending}

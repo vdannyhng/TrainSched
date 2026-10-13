@@ -15,16 +15,25 @@ import { radius, spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 import { lessonLabel, type Lesson } from '../api';
+import {
+  centeredStart,
+  clickStart,
+  DEFAULT_DURATION_MIN,
+  dragRange,
+  minutesAtY,
+  toTime,
+} from './timelineMath';
 
 const GUTTER = 40;
 const FIRST_HOUR = 6;
 const LAST_HOUR = 24;
 const DAY_HOUR_HEIGHT = 56; // Tagesansicht: feste Höhe, scrollbar
 const MIN_WEEK_HOUR_HEIGHT = 18; // Woche: passt sich an, scrollt nur bei sehr wenig Platz
-const SNAP_MIN = 15;
-const NEW_DURATION_MIN = 60;
 
-export type Slot = { date: LocalDate; time: string };
+/** Gewählter Slot; durationMin nur beim Ziehen mit der Maus (PC), sonst 60 Min. */
+export type Slot = { date: LocalDate; time: string; durationMin?: number };
+
+const IS_WEB = Platform.OS === 'web';
 
 type Props = {
   days: LocalDate[];
@@ -40,15 +49,13 @@ type Props = {
   onCreateSlot?: (slot: Slot) => void;
   /** Bereits gewählter Slot bleibt markiert, solange die Auswahl offen ist */
   pendingSlot?: Slot | null;
+  /** Eingabeart: Handy = gedrückt halten + ziehen, PC = klicken / mit der Maus ziehen (Standard: nach Plattform) */
+  pointer?: 'touch' | 'mouse';
 };
 
 function minutesOf(iso: string, zone: string): number {
   const d = DateTime.fromISO(iso, { zone });
   return d.hour * 60 + d.minute;
-}
-
-function toTime(minutes: number): string {
-  return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
 }
 
 function haptic(kind: 'start' | 'tick') {
@@ -74,6 +81,7 @@ export function Timeline({
   onPressDay,
   onCreateSlot,
   pendingSlot,
+  pointer = IS_WEB ? 'mouse' : 'touch',
 }: Props) {
   // Gesten-Callbacks (vom Gesture Handler außerhalb des Renderns aufgerufen) lesen eine Ref.
   // Der React Compiler kann das nicht unterscheiden → Komponente bewusst ausgenommen.
@@ -82,7 +90,9 @@ export function Timeline({
   const { colors } = useTheme();
   const [bodyHeight, setBodyHeight] = useState(0);
   const [now] = useState(() => new Date().toISOString());
-  const [drag, setDrag] = useState<{ day: LocalDate; start: number } | null>(null);
+  const [drag, setDrag] = useState<{ day: LocalDate; start: number; end: number; anchor: number } | null>(
+    null,
+  );
   const scrollRef = useRef<ScrollView>(null);
   const compact = days.length > 1;
   const visible = lessons.filter((l) => l.status !== 'cancelled');
@@ -126,63 +136,115 @@ export function Timeline({
   }, [compact, initialY, days]);
 
   // ---------------------------------------------------------------------------
-  // Gedrückt halten + ziehen → neuen Slot wählen (15-Min.-Raster, Haptik)
+  // Neuen Slot wählen
+  //   Handy: gedrückt halten (0,3 s) + ziehen – 60-Min.-Block folgt dem Finger, Haptik.
+  //   PC:    klicken → 60 Min. ab der halben Stunde; mit der Maus ziehen → Zeitraum wählen.
   // ---------------------------------------------------------------------------
-  const startAt = (y: number) => {
-    const raw = firstHour * 60 + (y / hourHeight) * 60 - NEW_DURATION_MIN / 2;
-    const snapped = Math.round(raw / SNAP_MIN) * SNAP_MIN;
-    return Math.max(firstHour * 60, Math.min(LAST_HOUR * 60 - NEW_DURATION_MIN, snapped));
-  };
-  const overlapsLesson = (day: LocalDate, start: number) =>
-    visible.some((l) => {
-      if (localDate(l.start_at, zone) !== day) return false;
-      const s = minutesOf(l.start_at, zone);
-      const e = minutesOf(l.end_at, zone) || 24 * 60;
-      return start + SNAP_MIN < e && start + NEW_DURATION_MIN - SNAP_MIN > s;
+  type DragState = { day: LocalDate; start: number; end: number; anchor: number };
+  const at = (y: number) => minutesAtY(y, firstHour, hourHeight);
+
+  const itemAt = (day: LocalDate, minutes: number, includeBlockers: boolean) =>
+    [...visible, ...(includeBlockers ? blockers : [])].some((x) => {
+      if (localDate(x.start_at, zone) !== day) return false;
+      const s0 = minutesOf(x.start_at, zone);
+      const e0 = minutesOf(x.end_at, zone) || 24 * 60;
+      return minutes >= s0 && minutes < e0;
     });
 
   // Zieh-Zustand zusätzlich in einer Ref: Gesten-Events können schneller kommen als gerendert wird –
   // so lesen alle Callbacks immer den neuesten Stand. `drag` (State) steuert nur die Anzeige.
-  const liveRef = useRef<{ day: LocalDate; start: number } | null>(null);
-  const update = (value: { day: LocalDate; start: number } | null) => {
+  const liveRef = useRef<DragState | null>(null);
+  const anchorRef = useRef<number | null>(null);
+  const update = (value: DragState | null) => {
     liveRef.current = value;
     setDrag(value);
   };
+  const finish = () => {
+    const current = liveRef.current;
+    update(null);
+    if (current) {
+      onCreateSlot?.({
+        date: current.day,
+        time: toTime(current.start),
+        durationMin: current.end - current.start,
+      });
+    }
+  };
 
-  const gestureFor = (day: LocalDate) =>
+  const enabled = !!onCreateSlot && hourHeight > 0;
+
+  const touchGesture = (day: LocalDate) =>
     Gesture.Pan()
       .withTestId(`timeline-${day}`)
-      .enabled(!!onCreateSlot && hourHeight > 0)
+      .enabled(enabled)
       .activateAfterLongPress(300)
       .runOnJS(true)
       .onStart((e) => {
-        const start = startAt(e.y);
-        if (overlapsLesson(day, start)) return;
-        update({ day, start });
+        const start = centeredStart(at(e.y), firstHour);
+        if (itemAt(day, start + DEFAULT_DURATION_MIN / 2, false)) return;
+        update({ day, start, end: start + DEFAULT_DURATION_MIN, anchor: start });
         haptic('start');
       })
       .onUpdate((e) => {
         const current = liveRef.current;
         if (!current || current.day !== day) return;
-        const start = startAt(e.y);
+        const start = centeredStart(at(e.y), firstHour);
         if (start === current.start) return;
-        update({ day, start });
+        update({ ...current, start, end: start + DEFAULT_DURATION_MIN });
         haptic('tick');
       })
-      .onEnd(() => {
-        const current = liveRef.current;
-        update(null);
-        if (current) onCreateSlot?.({ date: current.day, time: toTime(current.start) });
-      })
+      .onEnd(finish)
       .onFinalize(() => {
         if (liveRef.current) update(null);
       });
 
-  const ghostFor = (day: LocalDate): number | null => {
-    if (drag?.day === day) return drag.start;
+  const mouseGesture = (day: LocalDate) => {
+    const drag = Gesture.Pan()
+      .withTestId(`timeline-mouse-${day}`)
+      .enabled(enabled)
+      .minDistance(4)
+      .runOnJS(true)
+      // Startpunkt beim Drücken der Maustaste merken (beim Aktivieren ist die Maus schon weiter)
+      .onBegin((e) => {
+        anchorRef.current = at(e.y);
+      })
+      .onStart((e) => {
+        const anchor = anchorRef.current ?? at(e.y);
+        if (itemAt(day, anchor, false)) return;
+        update({ day, anchor, ...dragRange(anchor, at(e.y), firstHour) });
+      })
+      .onUpdate((e) => {
+        const current = liveRef.current;
+        if (!current || current.day !== day) return;
+        const range = dragRange(current.anchor, at(e.y), firstHour);
+        if (range.start !== current.start || range.end !== current.end) update({ ...current, ...range });
+      })
+      .onEnd(finish)
+      .onFinalize(() => {
+        if (liveRef.current) update(null);
+      });
+    const click = Gesture.Tap()
+      .withTestId(`timeline-click-${day}`)
+      .enabled(enabled)
+      .runOnJS(true)
+      .onEnd((e, success) => {
+        const minutes = at(e.y);
+        // Klicks auf Termine/Blocker öffnen diese – hier nichts anlegen
+        if (!success || itemAt(day, minutes, true)) return;
+        const start = clickStart(minutes, firstHour);
+        onCreateSlot?.({ date: day, time: toTime(start), durationMin: DEFAULT_DURATION_MIN });
+      });
+    return Gesture.Exclusive(drag, click);
+  };
+
+  const gestureFor = (day: LocalDate) => (pointer === 'mouse' ? mouseGesture(day) : touchGesture(day));
+
+  const ghostFor = (day: LocalDate): { start: number; end: number } | null => {
+    if (drag?.day === day) return { start: drag.start, end: drag.end };
     if (pendingSlot?.date === day) {
       const [h, m] = pendingSlot.time.split(':').map(Number) as [number, number];
-      return h * 60 + m;
+      const start = h * 60 + m;
+      return { start, end: start + (pendingSlot.durationMin ?? DEFAULT_DURATION_MIN) };
     }
     return null;
   };
@@ -211,7 +273,11 @@ export function Timeline({
         return (
           <GestureDetector key={day} gesture={gestureFor(day)}>
             <View
-              style={[styles.column, { borderLeftColor: colors.border }]}
+              style={[
+                styles.column,
+                pointer === 'mouse' && styles.noSelect,
+                { borderLeftColor: colors.border },
+              ]}
               accessibilityHint={onCreateSlot ? t('calendar.longPressHint') : undefined}
             >
               {Array.from({ length: hours }, (_, i) => (
@@ -317,8 +383,8 @@ export function Timeline({
                     styles.ghost,
                     compact && styles.centered,
                     {
-                      top: yOf(ghost),
-                      height: (NEW_DURATION_MIN / 60) * hourHeight - 2,
+                      top: yOf(ghost.start),
+                      height: ((ghost.end - ghost.start) / 60) * hourHeight - 2,
                       borderColor: colors.primary,
                       backgroundColor: `${colors.primary}33`,
                     },
@@ -330,7 +396,7 @@ export function Timeline({
                     numberOfLines={2}
                     style={[styles.small, compact && styles.centerText]}
                   >
-                    {compact ? toTime(ghost) : `${toTime(ghost)}–${toTime(ghost + NEW_DURATION_MIN)}`}
+                    {compact ? toTime(ghost.start) : `${toTime(ghost.start)}–${toTime(ghost.end)}`}
                   </AppText>
                 </View>
               ) : null}
@@ -446,4 +512,6 @@ const styles = StyleSheet.create({
   dayBlock: { gap: 2, paddingHorizontal: spacing.xs },
   row: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   nowLine: { position: 'absolute', left: 0, right: 0, height: 2 },
+  // Web: beim Ziehen mit der Maus keinen Text markieren
+  noSelect: { userSelect: 'none', cursor: 'pointer' } as object,
 });

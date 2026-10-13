@@ -368,7 +368,8 @@
     "today": "Hôm nay",
     "previous": "Trước",
     "next": "Sau",
-    "longPressHint": "Nhấn giữ và kéo để tạo buổi học hoặc lịch bận."
+    "longPressHint": "Nhấn giữ và kéo để tạo buổi học hoặc lịch bận.",
+    "mouseHint": "Nhấp vào chỗ trống hoặc kéo chuột chọn khoảng thời gian để tạo buổi học hoặc lịch bận."
   },
   "settings": {
     "teaching": "Giảng dạy",
