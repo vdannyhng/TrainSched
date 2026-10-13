@@ -65,7 +65,7 @@ export function AccountScreen() {
       <FormMessage message={setLocale.error ? t(errorKey(setLocale.error)) : undefined} />
 
       {profile.role !== 'student' ? <TeachingCard teacherId={userId} /> : null}
-      {profile.role !== 'student' ? <InviteTeacherCard isAdmin={profile.role === 'admin'} /> : null}
+      {profile.role === 'admin' ? <InviteTeacherCard /> : null}
       {profile.role === 'admin' ? <TeachersCard selfId={userId} /> : null}
 
       <View style={styles.spacer} />
@@ -147,15 +147,12 @@ function TeachersCard({ selfId }: { selfId: string | undefined }) {
   );
 }
 
-function InviteTeacherCard({ isAdmin }: { isAdmin: boolean }) {
+function InviteTeacherCard() {
   const { t } = useTranslation();
   const invite = useCreateTeacherInvitation();
   return (
     <Card title={t('account.inviteTeacher.title')}>
-      <AppText tone="muted">
-        {t('account.inviteTeacher.hint')}
-        {isAdmin ? ` ${t('account.inviteTeacher.adminHint')}` : ''}
-      </AppText>
+      <AppText tone="muted">{t('account.inviteTeacher.hint')}</AppText>
       {invite.data ? <InvitationCodeBox invitation={invite.data} recipientName="" /> : null}
       <FormMessage message={invite.error ? t(errorKey(invite.error)) : undefined} />
       <Button

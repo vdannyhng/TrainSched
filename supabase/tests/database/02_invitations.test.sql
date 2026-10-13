@@ -35,7 +35,7 @@ select throws_ok(
   $$select * from public.create_student_invitation('00000000-0000-0000-0000-0000000000d2')$$,
   'P0001', 'guardian_consent_required', 'Minderjährige brauchen dokumentierte Einwilligung');
 select throws_ok($$select * from public.find_open_invitation('X')$$, '42501', null, 'find_open_invitation ist für Nutzer gesperrt');
-select lives_ok($$select * from public.create_teacher_invitation()$$, 'Lehrer können weitere Lehrer einladen');
+select throws_ok($$select * from public.create_teacher_invitation()$$, '42501', null, 'Nur die Admin-Person kann Lehrer einladen (Lehrer nicht)');
 
 -- Lehrer T2 darf für Schüler von T1 nichts tun
 select set_config('request.jwt.claims', '{"sub":"00000000-0000-0000-0000-0000000000b2","role":"authenticated"}', true);
