@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, Chip, ChipRow, FormTextField, Segmented, SwitchRow } from '@/components/ui';
 import type { Tag } from '@/features/tags/api';
-import { LEVEL_COLORS, LEVELS, type Level } from '@/lib/colors';
+import { LEVELS, type Level } from '@/lib/colors';
 import { COMMON_TIMEZONES, timezoneCity } from '@/lib/timezones';
 import { spacing } from '@/theme/tokens';
 
@@ -223,11 +223,6 @@ export function StudentForm({ defaultValues, tags, onSubmit, submitting, submitL
       <Button title={submitLabel} loading={submitting} onPress={handleSubmit(onSubmit)} />
     </View>
   );
-}
-
-/** Level-Chip mit fester Farbe. */
-export function LevelChip({ level }: { level: Level }) {
-  return <Chip label={level} color={LEVEL_COLORS[level]} />;
 }
 
 const styles = StyleSheet.create({

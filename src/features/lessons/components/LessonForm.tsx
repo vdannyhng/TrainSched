@@ -7,7 +7,7 @@ import { AppText, Button, Card, Chip, ChipRow, FormTextField, Segmented, TextFie
 import { useAuth } from '@/features/auth/AuthProvider';
 import { useProfileName } from '@/features/settings/api';
 import { useTags } from '@/features/tags/api';
-import { LEVEL_COLORS, LEVELS, type Level } from '@/lib/colors';
+import { LEVELS, type Level } from '@/lib/colors';
 import type { LocalDate } from '@/lib/time';
 import { validationMessage } from '@/lib/validation';
 import { spacing } from '@/theme/tokens';
@@ -257,10 +257,6 @@ export function LessonForm({
       />
     </View>
   );
-}
-
-export function levelColor(level: Level | null | undefined): string | undefined {
-  return level ? LEVEL_COLORS[level] : undefined;
 }
 
 const styles = StyleSheet.create({

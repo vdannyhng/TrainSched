@@ -188,6 +188,8 @@ export function useDeleteStudent() {
     onSuccess: (_data, id) => {
       queryClient.removeQueries({ queryKey: studentKeys.detail(id) });
       void queryClient.invalidateQueries({ queryKey: studentKeys.all });
+      // Einzeltermine/Serien des Schülers werden serverseitig mitgelöscht
+      void queryClient.invalidateQueries({ queryKey: ['lessons'] });
     },
   });
 }

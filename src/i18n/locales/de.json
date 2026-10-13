@@ -14,12 +14,8 @@
     "share": "Teilen",
     "copy": "Kopieren",
     "copied": "Kopiert",
-    "all": "Alle",
-    "none": "Keins",
     "optional": "optional",
     "minutes": "{{count}} Min.",
-    "more": "Mehr",
-    "open": "Öffnen",
     "done": "Fertig"
   },
   "auth": {
@@ -83,25 +79,11 @@
     "profile": "Profil"
   },
   "teacher": {
-    "today": {
-      "emptyTitle": "Noch keine Termine",
-      "emptyMessage": "Sobald du Termine anlegst, siehst du hier „Heute“ und „Diese Woche“."
-    },
-    "calendar": {
-      "emptyTitle": "Kalender"
-    },
-    "students": {
-      "emptyTitle": "Noch keine Schüler"
-    },
     "requests": {
       "emptyTitle": "Keine offenen Anfragen"
     }
   },
   "student": {
-    "lessons": {
-      "emptyTitle": "Noch keine Termine",
-      "emptyMessage": "Deine Lehrerin plant gerade deine Stunden."
-    },
     "homework": {
       "emptyTitle": "Keine Hausaufgaben"
     },
@@ -224,7 +206,7 @@
     "guardianConsentHint": "Voraussetzung für die Einladung in die App.",
     "localTime": "Jetzt {{time}} in {{city}}",
     "deleteTitle": "{{name}} löschen?",
-    "deleteMessage": "Alle Daten dieses Schülers (Notizen, Themen, Einladungen) werden endgültig gelöscht.",
+    "deleteMessage": "Alle Daten dieses Schülers werden endgültig gelöscht: Notizen, Themen, Einladungen sowie seine Einzeltermine und Serien. Gruppentermine bleiben für die anderen bestehen.",
     "deleteButton": "Schüler löschen",
     "invite": {
       "linked": "Hat App-Zugang.",
@@ -333,9 +315,7 @@
       "series": "Serie",
       "seriesInfo": "{{frequency}} seit {{start}}",
       "seriesUntil": "bis {{end}}",
-      "cancelReason": "Grund der Absage",
-      "groupOf": "Gruppe",
-      "yourTime": "Deine Zeit"
+      "cancelReason": "Grund der Absage"
     },
     "reschedule": {
       "title": "Termin verschieben",
@@ -361,8 +341,7 @@
     },
     "endSeries": {
       "title": "Serie ab hier beenden?",
-      "message": "Dieser und alle folgenden geplanten Termine der Serie werden gelöscht. Gehaltene und abgesagte bleiben erhalten.",
-      "done": "{{count}} Termine entfernt."
+      "message": "Dieser und alle folgenden geplanten Termine der Serie werden gelöscht. Gehaltene und abgesagte bleiben erhalten."
     },
     "deleteTitle": "Termin löschen?",
     "deleteMessage": "Der Termin wird endgültig gelöscht. Zum Absagen lieber „Absagen“ verwenden.",
@@ -383,14 +362,12 @@
     "defaultLabel": "Unterricht"
   },
   "calendar": {
-    "title": "Kalender",
     "day": "Tag",
     "week": "Woche",
     "month": "Monat",
     "today": "Heute",
     "previous": "Zurück",
     "next": "Weiter",
-    "lessonsCount": "{{count}} Termine",
     "longPressHint": "Gedrückt halten und ziehen, um einen Termin oder Blocker anzulegen."
   },
   "settings": {
@@ -399,7 +376,6 @@
     "bufferHint": "Warnung, wenn Termine näher beieinander liegen."
   },
   "access": {
-    "title": "App-Zugang",
     "active": "Zugang aktiv",
     "paused": "Zugang pausiert seit {{date}}",
     "pause": "Zugang pausieren",

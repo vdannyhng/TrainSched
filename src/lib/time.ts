@@ -58,10 +58,6 @@ export function startOfWeek(date: LocalDate): LocalDate {
   return DateTime.fromISO(date).startOf('week').toISODate()!;
 }
 
-export function startOfMonth(date: LocalDate): LocalDate {
-  return DateTime.fromISO(date).startOf('month').toISODate()!;
-}
-
 /** UTC-Grenzen [from, to) für lokale Tage [start, start + days) in einer Zone. */
 export function rangeForDays(start: LocalDate, days: number, zone: string): { from: string; to: string } {
   const from = DateTime.fromISO(start, { zone }).startOf('day');

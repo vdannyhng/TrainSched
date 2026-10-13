@@ -53,7 +53,11 @@ Deno.serve(async (req) => {
     },
   });
   if (createError || !created.user) {
-    if (createError?.status === 422 || createError?.code === 'email_exists') return fail('email_taken', 409);
+    const code = createError?.code;
+    if (code === 'email_exists' || code === 'user_already_exists') return fail('email_taken', 409);
+    if (code === 'weak_password' || code === 'email_address_invalid' || code === 'validation_failed') {
+      return fail('invalid_input', 400);
+    }
     console.error('createUser', createError);
     return fail('server_error', 500);
   }
