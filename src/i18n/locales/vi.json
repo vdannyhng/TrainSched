@@ -112,7 +112,8 @@
     "inviteTeacher": {
       "title": "Mời giáo viên",
       "create": "Tạo mã mời",
-      "hint": "Giáo viên mới quản lý học viên của riêng họ. Bạn là quản trị nên xem được tất cả."
+      "hint": "Giáo viên mới quản lý học viên của riêng họ và không thấy học viên của bạn.",
+      "adminHint": "Bạn là quản trị nên xem được tất cả."
     }
   },
   "errors": {

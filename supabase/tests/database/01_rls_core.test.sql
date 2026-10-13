@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 -- Unabhängig von Seed-Daten testen (wird am Ende zurückgerollt).
 delete from auth.users;
-select plan(24);
+select plan(25);
 
 -- ---------------------------------------------------------------------------
 -- Fixtures (als postgres, RLS greift hier nicht)
@@ -50,6 +50,7 @@ select throws_ok(
   $$insert into public.students (teacher_id, first_name) values ('00000000-0000-0000-0000-0000000000c1', 'Fake')$$,
   '42501', null, 'S1 kann keine Schüler anlegen');
 select throws_ok($$select * from public.create_student_invitation('00000000-0000-0000-0000-0000000000d3')$$, '42501', null, 'S1 kann keine Einladung erzeugen');
+select throws_ok($$select * from public.create_teacher_invitation()$$, '42501', null, 'S1 kann keine Lehrer einladen');
 
 -- ---------------------------------------------------------------------------
 -- Lehrer T1

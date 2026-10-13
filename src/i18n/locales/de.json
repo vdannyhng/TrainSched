@@ -112,7 +112,8 @@
     "inviteTeacher": {
       "title": "Lehrer einladen",
       "create": "Einladungscode erstellen",
-      "hint": "Neue Lehrer verwalten ihre eigenen Schüler. Du als Admin siehst alles."
+      "hint": "Neue Lehrer verwalten ihre eigenen Schüler und sehen deine nicht.",
+      "adminHint": "Du als Admin siehst alles."
     }
   },
   "errors": {
