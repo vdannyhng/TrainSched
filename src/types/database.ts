@@ -23,7 +23,27 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "invitations": {
+            "blockers": {
+                  Row: {
+                    "created_at": string,"end_date": string | null,"id": string,"local_end": string,"local_start": string,"start_date": string,"teacher_id": string,"timezone": string,"title": string,"updated_at": string,"weekdays": (number)[]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"end_date"?: string | null,"id"?: string,"local_end": string,"local_start": string,"start_date": string,"teacher_id": string,"timezone": string,"title": string,"updated_at"?: string,"weekdays": (number)[]
+                  }
+                  Update: {
+                    "created_at"?: string,"end_date"?: string | null,"id"?: string,"local_end"?: string,"local_start"?: string,"start_date"?: string,"teacher_id"?: string,"timezone"?: string,"title"?: string,"updated_at"?: string,"weekdays"?: (number)[]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "blockers_teacher_id_fkey"
+      columns: ["teacher_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"invitations": {
                   Row: {
                     "code_hash": string,"created_at": string,"expires_at": string,"id": string,"redeemed_at": string | null,"redeemed_by": string | null,"revoked_at": string | null,"role": Database["public"]['Enums']["app_role"],"student_id": string | null,"teacher_id": string
                   }
@@ -357,6 +377,11 @@ isOneToOne: true
           Functions: {
             "accept_privacy_policy":
 { Args: { "p_version": string }; Returns: undefined
+                           },
+"blocker_occurrences":
+{ Args: { "p_from": string,"p_teacher_id": string,"p_to": string }; Returns: {
+              "blocker_id": string,"end_at": string,"start_at": string,"title": string
+            }[]
                            },
 "cancel_lesson":
 { Args: { "p_lesson_id": string,"p_reason": string }; Returns: undefined

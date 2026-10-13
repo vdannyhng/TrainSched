@@ -180,6 +180,13 @@ Beträge: `numeric(12,2)`, die Währung steht pro Zeile. Angezeigt wird nur Text
 - **Ereignisse** (verschoben, abgesagt, neue Anfrage, Anfrage entschieden): Datenbank-Trigger schreiben in eine `outbox`, die Edge Function `dispatch-notifications` versendet. Dadurch blockiert keine App-Aktion auf den Push-Versand.
 - Inhalte der Pushes sind datensparsam: „Termin morgen 18:00 verschoben“, ohne Notizinhalte.
 
+## 6a. Blocker – private Zeiten der Lehrkraft (seit M3)
+
+- Tabelle `blockers`: Titel, Startdatum, optionales Ende, Wochentage (ISO 1–7), lokale Von/Bis-Zeit, Zeitzone. Einmalig = Start = Ende.
+- Nicht materialisiert: `blocker_occurrences(teacher, from, to)` berechnet die Vorkommen pro Zeitraum (DST-sicher, Wanduhrzeit).
+- Nur Lehrkräfte sehen Blocker (RLS); `check_conflicts` meldet Überschneidungen als Warnung `blocker` (kein hartes Verbot).
+- Kalender: graue, gestrichelte Flächen hinter den Terminen; Startscreen listet sie chronologisch mit.
+
 ## 6b. Konten pausieren (seit M3)
 
 - `profiles.access_paused_at`: Ein pausiertes Konto kann sich anmelden, sieht aber nur den Hinweis „Zugang pausiert“.
@@ -194,6 +201,8 @@ Beträge: `numeric(12,2)`, die Währung steht pro Zeile. Angezeigt wird nur Text
 - **Löschen:** Edge Function `delete-account`. Ein Schüler löscht sein Konto in der App, wie Apple es verlangt. Der Lehrer kann einen Schüler mit allen Notizen, Anhängen und Hausaufgaben löschen (Cascade + Storage-Cleanup).
 - **Export:** Edge Function `export-data` liefert JSON + Anhänge als ZIP (M7).
 - Keine Secrets im Repo: In `.env` stehen nur `EXPO_PUBLIC_SUPABASE_URL` und `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (öffentlich by design, der Schutz kommt von RLS). Der Service-Role-Key existiert nur als Supabase-Function-Secret. `.env.example` wird committed.
+
+**Hinweis Datumsformatierung:** Wochentags-/Monatsnamen nie über Luxon-`toFormat('ccc'|'LLL')` bilden – das nutzt `Intl.formatToParts`, das auf iOS (Hermes) `null` liefert. Stattdessen `toLocaleString({ weekday: 'short' … })`. Ein Test erzwingt das.
 
 ## 8. Ordnerstruktur
 

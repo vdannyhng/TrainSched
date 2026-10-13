@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AppText, Button, Chip, ChipRow, EmptyState, ErrorState, LoadingState } from '@/components/ui';
 import { useStudentList, type StatusFilter, type StudentFilters } from '@/features/students/api';
 import { StudentListItem } from '@/features/students/components/StudentListItem';
+import { useAuth } from '@/features/auth/AuthProvider';
 import { useTags } from '@/features/tags/api';
 import { LEVEL_COLORS, LEVELS } from '@/lib/colors';
 import { MIN_TOUCH, radius, spacing, typography } from '@/theme/tokens';
@@ -24,7 +25,8 @@ export default function StudentsScreen() {
   // Suche erst nach dem Tippen auslösen, Filter-Chips sofort.
   const deferredSearch = useDeferredValue(filters.search);
   const query = useStudentList({ ...filters, search: deferredSearch });
-  const tags = useTags();
+  const { session } = useAuth();
+  const tags = useTags(session?.user.id);
 
   const students = query.data?.pages.flat() ?? [];
   const filtersActive =

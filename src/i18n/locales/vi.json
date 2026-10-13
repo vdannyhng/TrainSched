@@ -169,7 +169,9 @@
     "invalid_time": "Vui lòng nhập giờ dạng HH:MM, ví dụ 18:00.",
     "invalid_duration": "Thời lượng từ 15 đến 480 phút.",
     "invalid_url": "Vui lòng nhập đường dẫn bắt đầu bằng https://.",
-    "end_before_start": "Buổi cuối nằm trước buổi đầu tiên."
+    "end_before_start": "Buổi cuối nằm trước buổi đầu tiên.",
+    "end_before_start_time": "Giờ kết thúc phải sau giờ bắt đầu.",
+    "weekdays_required": "Vui lòng chọn ít nhất một ngày."
   },
   "levels": {
     "label": "Trình độ",
@@ -370,7 +372,8 @@
       "seriesOverlapHint": "Các buổi bị trùng trong chuỗi sẽ được bỏ qua.",
       "singleOverlapHint": "Giờ này đã có buổi học. Vui lòng chọn giờ khác.",
       "saveAnyway": "Vẫn lưu",
-      "change": "Sửa lại"
+      "change": "Sửa lại",
+      "blocker": "Trùng với lịch bận „{{label}}“ ({{time}})"
     },
     "seriesCreated": "Đã tạo {{created}} buổi học.",
     "seriesSkipped": "Bỏ qua {{skipped}} buổi do trùng giờ.",
@@ -384,7 +387,8 @@
     "today": "Hôm nay",
     "previous": "Trước",
     "next": "Sau",
-    "lessonsCount": "{{count}} buổi"
+    "lessonsCount": "{{count}} buổi",
+    "longPressHint": "Nhấn giữ vào chỗ trống để tạo buổi học hoặc lịch bận."
   },
   "settings": {
     "teaching": "Giảng dạy",
@@ -403,5 +407,25 @@
     "pausedScreenMessage": "Quyền truy cập TrainSched của bạn đang tạm dừng. Dữ liệu của bạn vẫn được giữ lại. Vui lòng liên hệ cô giáo.",
     "teachers": "Giáo viên",
     "noTeachers": "Chưa có giáo viên khác."
+  },
+  "blockers": {
+    "title": "Lịch bận",
+    "new": "Thêm lịch bận",
+    "edit": "Sửa lịch bận",
+    "hint": "Thời gian riêng, ví dụ công việc khác. Chỉ bạn thấy lịch bận – học viên không thấy.",
+    "delete": "Xóa lịch bận",
+    "deleteTitle": "Xóa „{{title}}“?",
+    "deleteSeriesMessage": "Tất cả các lần lặp lại của lịch bận này sẽ bị xóa.",
+    "fields": {
+      "title": "Tên",
+      "titlePlaceholder": "ví dụ Đi làm, Khám bệnh",
+      "from": "Từ ngày",
+      "start": "Từ",
+      "end": "Đến",
+      "weekdays": "Vào các ngày",
+      "workdays": "T2–T6",
+      "until": "Lặp lại đến (không bắt buộc)",
+      "noEnd": "không kết thúc"
+    }
   }
 }

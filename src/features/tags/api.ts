@@ -7,16 +7,29 @@ export type Tag = Pick<Tables<'tags'>, 'id' | 'label' | 'color'>;
 
 export const tagKeys = {
   all: ['tags'] as const,
+  teacher: (teacherId: string) => ['tags', teacherId] as const,
 };
 
-export async function listTags(): Promise<Tag[]> {
-  const { data, error } = await supabase.from('tags').select('id, label, color').order('label');
+/**
+ * Themen einer Lehrkraft. Immer nach Lehrer filtern: Die Admin-Person darf per RLS
+ * die Themen aller Lehrer sehen – in Formularen/Filtern sollen aber nur die passenden erscheinen.
+ */
+export async function listTags(teacherId: string): Promise<Tag[]> {
+  const { data, error } = await supabase
+    .from('tags')
+    .select('id, label, color')
+    .eq('teacher_id', teacherId)
+    .order('label');
   if (error) throw error;
   return data;
 }
 
-export function useTags() {
-  return useQuery({ queryKey: tagKeys.all, queryFn: listTags });
+export function useTags(teacherId: string | undefined) {
+  return useQuery({
+    queryKey: tagKeys.teacher(teacherId ?? ''),
+    enabled: !!teacherId,
+    queryFn: () => listTags(teacherId!),
+  });
 }
 
 export type TagInput = { label: string; color: string };

@@ -15,7 +15,7 @@ export default function EditStudentScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const student = useStudent(id);
-  const tags = useTags();
+  const tags = useTags(student.data?.teacher_id);
   const update = useUpdateStudent(student.data);
   const remove = useDeleteStudent();
 

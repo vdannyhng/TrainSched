@@ -169,7 +169,9 @@
     "invalid_time": "Bitte Uhrzeit als HH:MM eingeben, z. B. 18:00.",
     "invalid_duration": "Dauer zwischen 15 und 480 Minuten.",
     "invalid_url": "Bitte einen Link mit https:// eingeben.",
-    "end_before_start": "Der letzte Termin liegt vor dem ersten."
+    "end_before_start": "Der letzte Termin liegt vor dem ersten.",
+    "end_before_start_time": "Das Ende muss nach dem Beginn liegen.",
+    "weekdays_required": "Bitte mindestens einen Wochentag wählen."
   },
   "levels": {
     "label": "Niveau",
@@ -370,7 +372,8 @@
       "seriesOverlapHint": "Überschneidende Serientermine werden übersprungen.",
       "singleOverlapHint": "Zu dieser Zeit gibt es schon einen Termin. Bitte wähle eine andere Zeit.",
       "saveAnyway": "Trotzdem speichern",
-      "change": "Ändern"
+      "change": "Ändern",
+      "blocker": "Liegt in deinem Blocker „{{label}}“ ({{time}})"
     },
     "seriesCreated": "{{created}} Termine angelegt.",
     "seriesSkipped": "{{skipped}} wegen Überschneidung übersprungen.",
@@ -384,7 +387,8 @@
     "today": "Heute",
     "previous": "Zurück",
     "next": "Weiter",
-    "lessonsCount": "{{count}} Termine"
+    "lessonsCount": "{{count}} Termine",
+    "longPressHint": "Lange auf eine freie Stelle drücken, um einen Termin oder Blocker anzulegen."
   },
   "settings": {
     "teaching": "Unterricht",
@@ -403,5 +407,25 @@
     "pausedScreenMessage": "Dein Zugang zu TrainSched ist im Moment pausiert. Deine Daten bleiben erhalten. Bitte wende dich an deine Lehrerin.",
     "teachers": "Lehrer",
     "noTeachers": "Noch keine weiteren Lehrer."
+  },
+  "blockers": {
+    "title": "Blocker",
+    "new": "Blocker anlegen",
+    "edit": "Blocker bearbeiten",
+    "hint": "Private Zeit, z. B. deine andere Arbeit. Nur du siehst Blocker – Schüler nicht.",
+    "delete": "Blocker löschen",
+    "deleteTitle": "„{{title}}“ löschen?",
+    "deleteSeriesMessage": "Alle Wiederholungen dieses Blockers werden entfernt.",
+    "fields": {
+      "title": "Bezeichnung",
+      "titlePlaceholder": "z. B. Arbeit, Arzttermin",
+      "from": "Ab",
+      "start": "Von",
+      "end": "Bis",
+      "weekdays": "An diesen Tagen",
+      "workdays": "Mo–Fr",
+      "until": "Wiederholen bis (optional)",
+      "noEnd": "ohne Ende"
+    }
   }
 }

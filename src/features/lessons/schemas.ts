@@ -39,11 +39,11 @@ export const lessonFormSchema = z
 export type LessonFormValues = z.input<typeof lessonFormSchema>;
 export type LessonFormOutput = z.output<typeof lessonFormSchema>;
 
-export function emptyLessonForm(date: string, studentIds: string[] = []): LessonFormValues {
+export function emptyLessonForm(date: string, studentIds: string[] = [], time = '18:00'): LessonFormValues {
   return {
     studentIds,
     date,
-    time: '18:00',
+    time,
     durationMin: 60,
     repeat: 'none',
     endDate: '',

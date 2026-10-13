@@ -42,13 +42,15 @@ export function ConflictNotice({
           const time = `${formatDayShort(localDate(c.start_at, zone), locale)} ${formatTimeRange(c.start_at, c.end_at, zone, locale)}`;
           return (
             <AppText
-              key={`${c.range_index}-${c.lesson_id}`}
+              key={`${c.range_index}-${c.lesson_id ?? c.start_at}`}
               tone={c.kind === 'overlap' ? 'danger' : 'default'}
             >
               •{' '}
               {c.kind === 'overlap'
                 ? t('lessons.conflicts.overlap', { label: c.label ?? '–', time })
-                : t('lessons.conflicts.buffer', { label: c.label ?? '–', time, minutes: bufferMinutes })}
+                : c.kind === 'blocker'
+                  ? t('lessons.conflicts.blocker', { label: c.label ?? '–', time })
+                  : t('lessons.conflicts.buffer', { label: c.label ?? '–', time, minutes: bufferMinutes })}
             </AppText>
           );
         })}

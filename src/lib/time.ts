@@ -96,11 +96,25 @@ export function formatTimeRange(startIso: string, endIso: string, zone: string, 
   return `${formatTime(startIso, zone, locale)}–${formatTime(endIso, zone, locale)}`;
 }
 
+// Hinweis: Namen von Wochentagen/Monaten NIE über Luxon-`toFormat('ccc'|'LLL')` bilden –
+// das nutzt Intl.formatToParts, das auf iOS (Hermes) null liefert. `toLocaleString` nutzt
+// Intl.DateTimeFormat#format und funktioniert überall.
+
 /** z. B. „Di., 17. März“ */
 export function formatDayShort(date: LocalDate, locale: string): string {
   return DateTime.fromISO(date)
     .setLocale(locale)
-    .toFormat(locale === 'vi' ? 'ccc, d/M' : 'ccc, d. LLL');
+    .toLocaleString({ weekday: 'short', day: 'numeric', month: 'short' });
+}
+
+/** z. B. „12. Okt.“ */
+export function formatDayMonth(date: LocalDate, locale: string): string {
+  return DateTime.fromISO(date).setLocale(locale).toLocaleString({ day: 'numeric', month: 'short' });
+}
+
+/** Kurzer Wochentag, z. B. „Mo.“ / „Th 2“ */
+export function formatWeekdayShort(date: LocalDate, locale: string): string {
+  return DateTime.fromISO(date).setLocale(locale).toLocaleString({ weekday: 'short' });
 }
 
 /** z. B. „Dienstag, 17. März 2026“ */
@@ -119,7 +133,9 @@ export function formatMonth(date: LocalDate, locale: string): string {
 
 export function weekdayShortNames(locale: string): string[] {
   const monday = DateTime.fromISO('2026-01-05');
-  return Array.from({ length: 7 }, (_, i) => monday.plus({ days: i }).setLocale(locale).toFormat('ccc'));
+  return Array.from({ length: 7 }, (_, i) =>
+    formatWeekdayShort(monday.plus({ days: i }).toISODate()!, locale),
+  );
 }
 
 /** Stadtname aus IANA-Zone („Asia/Ho_Chi_Minh“ → „Ho Chi Minh“). */

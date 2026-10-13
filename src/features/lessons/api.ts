@@ -117,8 +117,8 @@ export function useSeries(id: string | null) {
 // ---------------------------------------------------------------------------
 export type Conflict = {
   range_index: number;
-  kind: 'overlap' | 'buffer';
-  lesson_id: string;
+  kind: 'overlap' | 'buffer' | 'blocker';
+  lesson_id: string | null;
   start_at: string;
   end_at: string;
   label: string | null;

@@ -20,7 +20,7 @@ export default function EditLessonScreen() {
   const zone = useViewerZone();
   const lesson = useLesson(id);
   const series = useSeries(mode === 'following' ? (lesson.data?.series_id ?? null) : null);
-  const tags = useTags();
+  const tags = useTags(lesson.data?.teacher_id);
   const [result, setResult] = useState<SaveResult | null>(null);
   const flow = useSaveLessonFlow({
     mode,
@@ -66,9 +66,18 @@ export default function EditLessonScreen() {
   };
 
   return (
-    <Screen scroll edges={['bottom', 'left', 'right']}>
+    <Screen scroll edges={['bottom', 'left', 'right']} scrollToEnd={!!flow.pending || !!flow.error}>
       <Stack.Screen
         options={{ title: mode === 'following' ? t('lessons.editFollowing') : t('lessons.edit') }}
+      />
+      <LessonForm
+        mode={mode}
+        defaultValues={defaults}
+        tags={tags.data ?? []}
+        today={todayIn(zone)}
+        submitLabel={t('common.save')}
+        submitting={flow.busy && !flow.pending}
+        onSubmit={(v) => void flow.submit(v)}
       />
       {flow.pending ? (
         <ConflictNotice
@@ -81,15 +90,6 @@ export default function EditLessonScreen() {
         />
       ) : null}
       <FormMessage message={flow.error ? t(errorKey(flow.error)) : undefined} />
-      <LessonForm
-        mode={mode}
-        defaultValues={defaults}
-        tags={tags.data ?? []}
-        today={todayIn(zone)}
-        submitLabel={t('common.save')}
-        submitting={flow.busy && !flow.pending}
-        onSubmit={(v) => void flow.submit(v)}
-      />
     </Screen>
   );
 }

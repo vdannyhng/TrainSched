@@ -11,15 +11,15 @@ import { emptyLessonForm } from '@/features/lessons/schemas';
 import { useSaveLessonFlow, type SaveResult } from '@/features/lessons/useSaveLessonFlow';
 import { useTags } from '@/features/tags/api';
 import { errorKey } from '@/lib/errors';
-import { isValidLocalDate, todayIn } from '@/lib/time';
+import { isValidLocalDate, isValidLocalTime, todayIn } from '@/lib/time';
 
 export default function NewLessonScreen() {
   const { t } = useTranslation();
   const { session } = useAuth();
-  const params = useLocalSearchParams<{ date?: string; studentId?: string }>();
+  const params = useLocalSearchParams<{ date?: string; studentId?: string; time?: string }>();
   const zone = useViewerZone();
   const today = todayIn(zone);
-  const tags = useTags();
+  const tags = useTags(session?.user.id);
   const [seriesResult, setSeriesResult] = useState<SaveResult | null>(null);
   const flow = useSaveLessonFlow({
     mode: 'create',
@@ -47,7 +47,20 @@ export default function NewLessonScreen() {
   }
 
   return (
-    <Screen scroll edges={['bottom', 'left', 'right']}>
+    <Screen scroll edges={['bottom', 'left', 'right']} scrollToEnd={!!flow.pending || !!flow.error}>
+      <LessonForm
+        mode="create"
+        defaultValues={emptyLessonForm(
+          date,
+          params.studentId ? [params.studentId] : [],
+          params.time && isValidLocalTime(params.time) ? params.time : undefined,
+        )}
+        tags={tags.data ?? []}
+        today={today}
+        submitLabel={t('common.create')}
+        submitting={flow.busy && !flow.pending}
+        onSubmit={(v) => void flow.submit(v)}
+      />
       {flow.pending ? (
         <ConflictNotice
           conflicts={flow.pending.conflicts}
@@ -59,15 +72,6 @@ export default function NewLessonScreen() {
         />
       ) : null}
       <FormMessage message={flow.error ? t(errorKey(flow.error)) : undefined} />
-      <LessonForm
-        mode="create"
-        defaultValues={emptyLessonForm(date, params.studentId ? [params.studentId] : [])}
-        tags={tags.data ?? []}
-        today={today}
-        submitLabel={t('common.create')}
-        submitting={flow.busy && !flow.pending}
-        onSubmit={(v) => void flow.submit(v)}
-      />
     </Screen>
   );
 }

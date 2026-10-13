@@ -29,7 +29,7 @@ export default function TopicsScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const { session } = useAuth();
-  const tags = useTags();
+  const tags = useTags(session?.user.id);
   const save = useSaveTag(session?.user.id);
   const remove = useDeleteTag();
   const [draft, setDraft] = useState<Draft>(EMPTY_DRAFT);

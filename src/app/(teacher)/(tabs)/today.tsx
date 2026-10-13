@@ -6,17 +6,32 @@ import { Pressable, RefreshControl, ScrollView, StyleSheet, View } from 'react-n
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, Button, EmptyState, ErrorState, LoadingState } from '@/components/ui';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useBlockerOccurrences, type BlockerOccurrence } from '@/features/blockers/api';
 import { useLessonsInRange, type Lesson } from '@/features/lessons/api';
 import { LessonCard } from '@/features/lessons/components/LessonCard';
 import { useLocale, useViewerZone } from '@/features/lessons/hooks';
-import { addDays, formatDayLong, localDate, rangeForDays, startOfWeek, todayIn } from '@/lib/time';
+import {
+  addDays,
+  formatDayLong,
+  formatTimeRange,
+  localDate,
+  rangeForDays,
+  startOfWeek,
+  todayIn,
+} from '@/lib/time';
 import { MIN_TOUCH, radius, spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
-/** Startscreen Lehrer: Heute + Rest der Woche, mit Schnellaktionen (Verschieben in ≤ 3 Taps). */
+type Item =
+  | { kind: 'lesson'; at: string; lesson: Lesson }
+  | { kind: 'blocker'; at: string; blocker: BlockerOccurrence };
+
+/** Startscreen Lehrer: Heute + Rest der Woche inkl. Blocker, mit Schnellaktionen (Verschieben in ≤ 3 Taps). */
 export default function TodayScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const { session } = useAuth();
   const zone = useViewerZone();
   const locale = useLocale();
   const today = todayIn(zone);
@@ -24,17 +39,22 @@ export default function TodayScreen() {
   const days = Math.max(1, Math.round((Date.parse(weekEnd) - Date.parse(today)) / 86_400_000));
   const { from, to } = rangeForDays(today, days, zone);
   const query = useLessonsInRange(from, to);
+  const blockers = useBlockerOccurrences(session?.user.id, from, to);
   // Zeitpunkt einmal beim Öffnen festhalten (Render muss rein bleiben).
   const [openedAt] = useState(() => Date.now());
 
   const lessons = query.data ?? [];
-  const todays = lessons.filter((l) => localDate(l.start_at, zone) === today);
-  const later = lessons.filter((l) => localDate(l.start_at, zone) !== today);
-  const byDay = later.reduce<Record<string, Lesson[]>>((acc, l) => {
-    const d = localDate(l.start_at, zone);
-    (acc[d] ??= []).push(l);
-    return acc;
-  }, {});
+  const items: Item[] = [
+    ...lessons.map((lesson) => ({ kind: 'lesson' as const, at: lesson.start_at, lesson })),
+    ...(blockers.data ?? []).map((blocker) => ({ kind: 'blocker' as const, at: blocker.start_at, blocker })),
+  ].sort((a, b) => a.at.localeCompare(b.at));
+  const todays = items.filter((i) => localDate(i.at, zone) === today);
+  const byDay = items
+    .filter((i) => localDate(i.at, zone) !== today)
+    .reduce<Record<string, Item[]>>((acc, i) => {
+      (acc[localDate(i.at, zone)] ??= []).push(i);
+      return acc;
+    }, {});
 
   const actions = (lesson: Lesson) => [
     {
@@ -53,6 +73,29 @@ export default function TodayScreen() {
       : []),
   ];
 
+  const renderItem = (item: Item) =>
+    item.kind === 'lesson' ? (
+      <LessonCard key={item.lesson.id} lesson={item.lesson} actions={actions(item.lesson)} />
+    ) : (
+      <Pressable
+        key={`${item.blocker.blocker_id}-${item.at}`}
+        accessibilityRole="button"
+        accessibilityLabel={`${t('blockers.title')}: ${item.blocker.title}`}
+        onPress={() => router.push(`/blocker/${item.blocker.blocker_id}`)}
+        style={[styles.blocker, { borderColor: colors.border, backgroundColor: colors.surfaceMuted }]}
+      >
+        <Ionicons name="lock-closed-outline" size={16} color={colors.textMuted} />
+        <AppText tone="muted" variant="label">
+          {formatTimeRange(item.blocker.start_at, item.blocker.end_at, zone, locale)}
+        </AppText>
+        <AppText tone="muted" numberOfLines={1} style={styles.flex}>
+          {item.blocker.title}
+        </AppText>
+      </Pressable>
+    );
+
+  const newLesson = () => router.push({ pathname: '/lesson/new', params: { date: today } });
+
   return (
     <SafeAreaView
       edges={['top', 'left', 'right']}
@@ -61,7 +104,13 @@ export default function TodayScreen() {
       <ScrollView
         contentContainerStyle={styles.content}
         refreshControl={
-          <RefreshControl refreshing={query.isRefetching} onRefresh={() => void query.refetch()} />
+          <RefreshControl
+            refreshing={query.isRefetching}
+            onRefresh={() => {
+              void query.refetch();
+              void blockers.refetch();
+            }}
+          />
         }
       >
         <View style={styles.titleRow}>
@@ -72,7 +121,7 @@ export default function TodayScreen() {
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('lessons.new')}
-            onPress={() => router.push({ pathname: '/lesson/new', params: { date: today } })}
+            onPress={newLesson}
             style={[styles.addButton, { backgroundColor: colors.primary }]}
           >
             <Ionicons name="add" size={28} color={colors.onPrimary} />
@@ -83,37 +132,30 @@ export default function TodayScreen() {
           <LoadingState />
         ) : query.isError ? (
           <ErrorState message={t('errors.loadFailed')} onRetry={() => void query.refetch()} />
-        ) : lessons.length === 0 ? (
+        ) : items.length === 0 ? (
           <EmptyState
             icon="calendar-outline"
             title={t('lessons.emptyTitle')}
             message={t('lessons.emptyTeacher')}
-            action={
-              <Button
-                title={t('lessons.new')}
-                onPress={() => router.push({ pathname: '/lesson/new', params: { date: today } })}
-              />
-            }
+            action={<Button title={t('lessons.new')} onPress={newLesson} />}
           />
         ) : (
           <>
             {todays.length === 0 ? <AppText tone="muted">{t('lessons.nothingToday')}</AppText> : null}
-            {todays.map((lesson) => (
-              <LessonCard key={lesson.id} lesson={lesson} actions={actions(lesson)} />
-            ))}
+            {todays.map(renderItem)}
 
             <AppText variant="heading" style={styles.section}>
               {t('lessons.thisWeek')}
             </AppText>
-            {later.length === 0 ? <AppText tone="muted">{t('lessons.nothingWeek')}</AppText> : null}
-            {Object.entries(byDay).map(([day, dayLessons]) => (
+            {Object.keys(byDay).length === 0 ? (
+              <AppText tone="muted">{t('lessons.nothingWeek')}</AppText>
+            ) : null}
+            {Object.entries(byDay).map(([day, dayItems]) => (
               <View key={day} style={styles.day}>
                 <AppText variant="label" tone="muted">
                   {formatDayLong(day, locale)}
                 </AppText>
-                {dayLessons.map((lesson) => (
-                  <LessonCard key={lesson.id} lesson={lesson} actions={actions(lesson)} />
-                ))}
+                {dayItems.map(renderItem)}
               </View>
             ))}
           </>
@@ -136,4 +178,14 @@ const styles = StyleSheet.create({
   },
   section: { marginTop: spacing.md },
   day: { gap: spacing.sm },
+  blocker: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    minHeight: MIN_TOUCH,
+    paddingHorizontal: spacing.md,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderStyle: 'dashed',
+  },
 });

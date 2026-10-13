@@ -6,9 +6,11 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AppText, Chip, ChipRow, ErrorState, Segmented } from '@/components/ui';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useBlockerOccurrences } from '@/features/blockers/api';
 import { useLessonsInRange, type Lesson } from '@/features/lessons/api';
-import { LessonCard } from '@/features/lessons/components/LessonCard';
 import { MonthGrid } from '@/features/lessons/components/MonthGrid';
+import { SlotActionSheet } from '@/features/lessons/components/SlotActionSheet';
 import { Timeline } from '@/features/lessons/components/Timeline';
 import { useLocale, useViewerZone } from '@/features/lessons/hooks';
 import { useTags } from '@/features/tags/api';
@@ -17,7 +19,7 @@ import {
   addDays,
   addMonths,
   daysOf,
-  formatDayLong,
+  formatDayMonth,
   formatDayShort,
   formatMonth,
   localDate,
@@ -30,31 +32,38 @@ import {
 import { MIN_TOUCH, radius, spacing } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
-type View_ = 'day' | 'week' | 'month';
+type CalendarView = 'day' | 'week' | 'month';
 
-function rangeFor(view: View_, anchor: LocalDate): { start: LocalDate; days: number } {
+function rangeFor(view: CalendarView, anchor: LocalDate): { start: LocalDate; days: number } {
   if (view === 'day') return { start: anchor, days: 1 };
   if (view === 'week') return { start: startOfWeek(anchor), days: 7 };
-  const grid = monthGrid(anchor);
-  return { start: grid[0]![0]!.date, days: 42 };
+  return { start: monthGrid(anchor)[0]![0]!.date, days: 42 };
 }
 
+/**
+ * Kalender: Tag und Woche als Zeitleiste (passt ohne Scrollen auf den Bildschirm),
+ * Monat als Raster. Langes Drücken auf eine freie Stelle → Termin oder Blocker anlegen.
+ */
 export default function CalendarScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const { session } = useAuth();
   const zone = useViewerZone();
   const locale = useLocale();
   const today = todayIn(zone);
-  const [view, setView] = useState<View_>('week');
+  const [view, setView] = useState<CalendarView>('week');
   const [anchor, setAnchor] = useState<LocalDate>(today);
   const [level, setLevel] = useState<Level | null>(null);
   const [tagId, setTagId] = useState<string | null>(null);
-  const tags = useTags();
+  const [slot, setSlot] = useState<{ date: LocalDate; time: string } | null>(null);
+  const tags = useTags(session?.user.id);
 
   const { start, days } = rangeFor(view, anchor);
   const { from, to } = rangeForDays(start, days, zone);
   const query = useLessonsInRange(from, to);
+  const blockers = useBlockerOccurrences(session?.user.id, from, to);
 
+  const filtersActive = level !== null || tagId !== null;
   const lessons = (query.data ?? []).filter(
     (l) => (!level || l.level === level) && (!tagId || l.tags.some((tag) => tag.id === tagId)),
   );
@@ -64,11 +73,12 @@ export default function CalendarScreen() {
       view === 'day' ? addDays(a, dir) : view === 'week' ? addDays(a, 7 * dir) : addMonths(a, dir),
     );
 
+  // Kurze Titel, damit sie neben den Knöpfen nicht abgeschnitten werden
   const title =
     view === 'day'
-      ? formatDayLong(anchor, locale)
+      ? formatDayShort(anchor, locale)
       : view === 'week'
-        ? `${formatDayShort(start, locale)} – ${formatDayShort(addDays(start, 6), locale)}`
+        ? `${formatDayMonth(start, locale)} – ${formatDayMonth(addDays(start, 6), locale)}`
         : formatMonth(anchor, locale);
 
   const openLesson = (lesson: Lesson) => router.push(`/lesson/${lesson.id}`);
@@ -86,17 +96,48 @@ export default function CalendarScreen() {
       style={[styles.flex, { backgroundColor: colors.background }]}
     >
       <View style={styles.header}>
-        <View style={styles.titleRow}>
-          <AppText variant="title" style={styles.flex}>
-            {t('calendar.title')}
+        <View style={styles.nav}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('calendar.previous')}
+            onPress={() => step(-1)}
+            style={styles.iconButton}
+          >
+            <Ionicons name="chevron-back" size={24} color={colors.primary} />
+          </Pressable>
+          <AppText variant="bodyStrong" style={styles.navTitle} numberOfLines={1}>
+            {title}
           </AppText>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('calendar.next')}
+            onPress={() => step(1)}
+            style={styles.iconButton}
+          >
+            <Ionicons name="chevron-forward" size={24} color={colors.primary} />
+          </Pressable>
+          {anchor !== today ? (
+            <Pressable accessibilityRole="button" onPress={() => setAnchor(today)} style={styles.todayButton}>
+              <AppText tone="primary" variant="label">
+                {t('calendar.today')}
+              </AppText>
+            </Pressable>
+          ) : null}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('blockers.new')}
+            onPress={() => router.push({ pathname: '/blocker/new', params: { date: anchor } })}
+            style={styles.iconButton}
+          >
+            <Ionicons name="lock-closed-outline" size={22} color={colors.primary} />
+          </Pressable>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('lessons.new')}
             onPress={() => router.push({ pathname: '/lesson/new', params: { date: anchor } })}
-            style={[styles.roundButton, { backgroundColor: colors.primary }]}
+            style={[styles.addButton, { backgroundColor: colors.primary }]}
           >
-            <Ionicons name="add" size={28} color={colors.onPrimary} />
+            <Ionicons name="add" size={26} color={colors.onPrimary} />
           </Pressable>
         </View>
         <Segmented
@@ -108,35 +149,7 @@ export default function CalendarScreen() {
             { value: 'month', label: t('calendar.month') },
           ]}
         />
-        <View style={styles.nav}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('calendar.previous')}
-            onPress={() => step(-1)}
-            style={styles.navButton}
-          >
-            <Ionicons name="chevron-back" size={24} color={colors.primary} />
-          </Pressable>
-          <AppText variant="bodyStrong" style={styles.navTitle} numberOfLines={1}>
-            {title}
-          </AppText>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('calendar.next')}
-            onPress={() => step(1)}
-            style={styles.navButton}
-          >
-            <Ionicons name="chevron-forward" size={24} color={colors.primary} />
-          </Pressable>
-          {anchor !== today ? (
-            <Pressable accessibilityRole="button" onPress={() => setAnchor(today)} style={styles.todayButton}>
-              <AppText tone="primary" variant="label">
-                {t('calendar.today')}
-              </AppText>
-            </Pressable>
-          ) : null}
-        </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
           <ChipRow>
             {LEVELS.map((l) => (
               <Chip
@@ -174,68 +187,66 @@ export default function CalendarScreen() {
               setView('day');
             }}
           />
-          <AppText variant="label" tone="muted">
-            {t('calendar.lessonsCount', {
-              count: lessons.filter((l) => localDate(l.start_at, zone).slice(0, 7) === anchor.slice(0, 7))
-                .length,
-            })}
-          </AppText>
         </ScrollView>
-      ) : view === 'day' ? (
-        <View style={styles.flex}>
-          {lessons.length > 0 && lessons.length <= 6 ? (
-            <ScrollView contentContainerStyle={styles.dayList}>
-              {lessons.map((lesson) => (
-                <LessonCard key={lesson.id} lesson={lesson} />
-              ))}
-            </ScrollView>
-          ) : (
-            <Timeline
-              days={[anchor]}
-              lessons={lessons}
-              zone={zone}
-              locale={locale}
-              today={today}
-              onPressLesson={openLesson}
-            />
-          )}
-        </View>
       ) : (
-        <View style={[styles.flex, styles.timelinePad]}>
+        <View style={[styles.flex, styles.timeline]}>
           <Timeline
-            days={daysOf(start, 7)}
+            days={view === 'day' ? [anchor] : daysOf(start, 7)}
             lessons={lessons}
+            blockers={filtersActive ? [] : (blockers.data ?? [])}
             zone={zone}
             locale={locale}
             today={today}
             onPressLesson={openLesson}
+            onPressBlocker={(b) => router.push(`/blocker/${b.blocker_id}`)}
             onPressDay={(date) => {
               setAnchor(date);
               setView('day');
             }}
+            onLongPressSlot={(date, time) => setSlot({ date, time })}
           />
+          <AppText variant="caption" tone="muted" style={styles.hint}>
+            {t('calendar.longPressHint')}
+          </AppText>
         </View>
       )}
+
+      <SlotActionSheet
+        slot={slot}
+        locale={locale}
+        onClose={() => setSlot(null)}
+        onLesson={() => {
+          const s = slot!;
+          setSlot(null);
+          router.push({ pathname: '/lesson/new', params: { date: s.date, time: s.time } });
+        }}
+        onBlocker={() => {
+          const s = slot!;
+          setSlot(null);
+          router.push({ pathname: '/blocker/new', params: { date: s.date, time: s.time } });
+        }}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  header: { padding: spacing.lg, paddingBottom: spacing.sm, gap: spacing.sm },
-  titleRow: { flexDirection: 'row', alignItems: 'center' },
-  roundButton: {
-    width: MIN_TOUCH,
-    height: MIN_TOUCH,
+  header: { paddingHorizontal: spacing.md, paddingTop: spacing.sm, gap: spacing.sm },
+  nav: { flexDirection: 'row', alignItems: 'center' },
+  iconButton: { width: MIN_TOUCH - 4, height: MIN_TOUCH, alignItems: 'center', justifyContent: 'center' },
+  addButton: {
+    width: 40,
+    height: 40,
     borderRadius: radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: spacing.xs,
   },
-  nav: { flexDirection: 'row', alignItems: 'center' },
-  navButton: { width: MIN_TOUCH, height: MIN_TOUCH, alignItems: 'center', justifyContent: 'center' },
   navTitle: { flex: 1, textAlign: 'center' },
-  todayButton: { minHeight: MIN_TOUCH, justifyContent: 'center', paddingHorizontal: spacing.sm },
-  monthContent: { padding: spacing.lg, gap: spacing.md },
-  dayList: { padding: spacing.lg, gap: spacing.sm },
-  timelinePad: { paddingHorizontal: spacing.sm },
+  todayButton: { minHeight: MIN_TOUCH, justifyContent: 'center', paddingHorizontal: spacing.xs },
+  chips: { paddingBottom: spacing.xs },
+  monthContent: { padding: spacing.md, gap: spacing.md },
+  timeline: { paddingHorizontal: spacing.xs, paddingBottom: spacing.xs },
+  hint: { textAlign: 'center', paddingTop: 2 },
 });

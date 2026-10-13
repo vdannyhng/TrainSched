@@ -1,7 +1,13 @@
+/// <reference types="node" />
 import { DateTime } from 'luxon';
+
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 import {
   addDays,
+  formatDayShort,
+  weekdayShortNames,
   durationMinutes,
   formatTime,
   isValidLocalDate,
@@ -87,5 +93,18 @@ describe('Bereiche & Raster', () => {
     expect(isValidLocalTime('8:00')).toBe(false);
     expect(isValidLocalDate('2026-02-30')).toBe(false);
     expect(addDays('2026-12-31', 1)).toBe('2027-01-01');
+  });
+});
+
+describe('Formatierung ohne formatToParts (iOS/Hermes)', () => {
+  it('Kurzformate enthalten echte Namen', () => {
+    expect(formatDayShort('2026-10-12', 'de')).toMatch(/Mo.*12.*Okt/);
+    expect(weekdayShortNames('de')).toHaveLength(7);
+    expect(weekdayShortNames('de').join(' ')).not.toContain('null');
+  });
+
+  it('nutzt keine Namens-Tokens in toFormat (liefern auf Hermes null)', () => {
+    const source = readFileSync(join(__dirname, '..', 'time.ts'), 'utf8');
+    expect(source).not.toMatch(/\.toFormat\(\s*['"`][^'"`]*(ccc|EEE|LLL|MMM)/);
   });
 });

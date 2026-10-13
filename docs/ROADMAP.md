@@ -51,6 +51,7 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - ICS-Export eines Termins über das Teilen-Sheet.
 - **Zusatz:** Konten pausieren (Lehrer → eigene Schüler, Admin → alle), serverseitig per RLS; Pufferzeit in den Kontoeinstellungen.
 - Notiz-Schnellaktion auf der Terminkarte folgt mit den Termin-Notizen in M4.
+- **Nachgereicht:** Blocker für private Zeiten (einmalig/wöchentlich, nur für Lehrkräfte), kompakte Wochenansicht ohne Scrollen, Tag immer als Zeitleiste, langes Drücken zum Anlegen.
 - **Tests:** pgTAP für Serienexpansion (DST März/Oktober, Jahreswechsel, zweiwöchentlich, Ausnahmen, Serie teilen), Konflikte, RLS (Schüler sieht nur Termine mit eigener Teilnahme und in der Gruppe nur den eigenen Teilnehmereintrag); Jest für `time.ts` (Zürich/Berlin/Hanoi) und Datumsformatierung.
 
 ## M4 – Notizen, Anhänge, Hausaufgaben

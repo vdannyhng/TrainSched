@@ -66,12 +66,14 @@ export function DateField({ label, value, today, onChange, error, placeholder, o
       ) : null}
 
       <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
-        <Pressable
-          style={styles.backdrop}
-          onPress={() => setOpen(false)}
-          accessibilityLabel={t('common.cancel')}
-        >
-          <Pressable style={[styles.sheet, { backgroundColor: colors.surface }]} onPress={() => undefined}>
+        <View style={styles.backdrop}>
+          {/* Hintergrund als Geschwister des Inhalts – verschachtelte Buttons erzeugen Fehler (child/parent) */}
+          <Pressable
+            style={StyleSheet.absoluteFill}
+            onPress={() => setOpen(false)}
+            accessibilityLabel={t('common.cancel')}
+          />
+          <View style={[styles.sheet, { backgroundColor: colors.surface }]}>
             <View style={styles.header}>
               <Pressable
                 accessibilityRole="button"
@@ -104,8 +106,8 @@ export function DateField({ label, value, today, onChange, error, placeholder, o
               }}
             />
             <Button title={t('common.cancel')} variant="ghost" onPress={() => setOpen(false)} />
-          </Pressable>
-        </Pressable>
+          </View>
+        </View>
       </Modal>
     </View>
   );

@@ -12,7 +12,7 @@ import { errorKey } from '@/lib/errors';
 export default function NewStudentScreen() {
   const { t } = useTranslation();
   const { session } = useAuth();
-  const tags = useTags();
+  const tags = useTags(session?.user.id);
   const create = useCreateStudent(session?.user.id);
 
   if (tags.isPending) return <LoadingState />;
