@@ -290,7 +290,8 @@
       "title": "Tiêu đề (không bắt buộc)",
       "titleHint": "Nếu trống sẽ hiển thị tên học viên",
       "level": "Trình độ",
-      "topics": "Chủ đề"
+      "topics": "Chủ đề",
+      "forTeacher": "Buổi học này được tạo cho {{name}} (các học viên đã chọn thuộc giáo viên này)."
     },
     "repeat": {
       "none": "Một lần",
@@ -374,7 +375,8 @@
       "singleOverlapHint": "Giờ này đã có buổi học. Vui lòng chọn giờ khác.",
       "saveAnyway": "Vẫn lưu",
       "change": "Sửa lại",
-      "blocker": "Trùng với lịch bận „{{label}}“ ({{time}})"
+      "blocker": "Trùng với lịch bận „{{label}}“ ({{time}})",
+      "blockerOf": "Trùng với lịch bận „{{label}}“ của {{owner}} ({{time}})"
     },
     "seriesCreated": "Đã tạo {{created}} buổi học.",
     "seriesSkipped": "Bỏ qua {{skipped}} buổi do trùng giờ.",

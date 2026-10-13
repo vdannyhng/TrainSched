@@ -17,7 +17,7 @@ import {
 import type { LessonFormMode } from './components/LessonForm';
 import { lessonContent, lessonRange, type LessonFormOutput } from './schemas';
 
-type Pending = { values: LessonFormOutput; conflicts: Conflict[]; isSeries: boolean };
+type Pending = { values: LessonFormOutput; conflicts: Conflict[]; isSeries: boolean; ownerId: string };
 export type SaveResult = { created: number; skipped: number };
 
 /**
@@ -32,12 +32,13 @@ export function useSaveLessonFlow(opts: {
   onSaved?: (result: SaveResult) => void;
 }) {
   const { mode, teacherId, zone, lesson } = opts;
-  const settings = useTeacherSettings(teacherId);
+  const [pending, setPending] = useState<Pending | null>(null);
+  // Pufferzeit des Lehrers, dem der Termin gehört (bei Admin-Planung evtl. ein anderer)
+  const settings = useTeacherSettings(pending?.ownerId ?? teacherId);
   const createLesson = useCreateLesson();
   const createSeries = useCreateSeries();
   const updateLesson = useUpdateLesson(lesson?.id ?? '');
   const updateFollowing = useUpdateSeriesFrom(lesson?.id ?? '');
-  const [pending, setPending] = useState<Pending | null>(null);
   const [checking, setChecking] = useState(false);
   const [checkError, setCheckError] = useState<unknown>(null);
 
@@ -129,13 +130,10 @@ export function useSaveLessonFlow(opts: {
     setCheckError(null);
     setChecking(true);
     try {
-      const conflicts = await checkConflicts(
-        await effectiveTeacherId(v),
-        await ranges(v),
-        await ignoredLessonIds(),
-      );
+      const ownerId = await effectiveTeacherId(v);
+      const conflicts = await checkConflicts(ownerId, await ranges(v), await ignoredLessonIds());
       if (conflicts.length) {
-        setPending({ values: v, conflicts, isSeries: isSeriesValues(v) });
+        setPending({ values: v, conflicts, isSeries: isSeriesValues(v), ownerId });
         return;
       }
       await persist(v);

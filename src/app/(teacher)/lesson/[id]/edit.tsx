@@ -82,6 +82,7 @@ export default function EditLessonScreen() {
           conflicts={flow.pending.conflicts}
           bufferMinutes={flow.bufferMinutes}
           isSeries={flow.pending.isSeries}
+          ownerId={flow.pending.ownerId}
           confirming={flow.busy}
           onConfirm={() => void flow.confirm()}
           onCancel={flow.dismiss}

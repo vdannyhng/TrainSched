@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card } from '@/components/ui';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useProfileName } from '@/features/settings/api';
 import { formatDayShort, formatTimeRange, localDate } from '@/lib/time';
 import { spacing } from '@/theme/tokens';
 
@@ -15,6 +17,8 @@ type Props = {
   onConfirm: () => void;
   onCancel: () => void;
   confirming: boolean;
+  /** Lehrer, dem der Termin gehört – weicht er vom angemeldeten Nutzer ab, wird er genannt */
+  ownerId?: string;
 };
 
 /**
@@ -28,10 +32,14 @@ export function ConflictNotice({
   onConfirm,
   onCancel,
   confirming,
+  ownerId,
 }: Props) {
   const { t } = useTranslation();
   const zone = useViewerZone();
   const locale = useLocale();
+  const { session } = useAuth();
+  const foreignOwner = ownerId && ownerId !== session?.user.id ? ownerId : null;
+  const ownerName = useProfileName(foreignOwner).data;
   const hasOverlap = conflicts.some((c) => c.kind === 'overlap');
   const blocked = hasOverlap && !isSeries;
 
@@ -49,7 +57,9 @@ export function ConflictNotice({
               {c.kind === 'overlap'
                 ? t('lessons.conflicts.overlap', { label: c.label ?? '–', time })
                 : c.kind === 'blocker'
-                  ? t('lessons.conflicts.blocker', { label: c.label ?? '–', time })
+                  ? ownerName
+                    ? t('lessons.conflicts.blockerOf', { label: c.label ?? '–', time, owner: ownerName })
+                    : t('lessons.conflicts.blocker', { label: c.label ?? '–', time })
                   : t('lessons.conflicts.buffer', { label: c.label ?? '–', time, minutes: bufferMinutes })}
             </AppText>
           );

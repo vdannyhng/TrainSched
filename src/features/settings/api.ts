@@ -87,3 +87,21 @@ export function useTeachers(enabled: boolean) {
     },
   });
 }
+
+/** Anzeigename eines Profils (z. B. Lehrer, dem ein Termin gehört). */
+export function useProfileName(profileId: string | null | undefined) {
+  return useQuery({
+    queryKey: ['profile-name', profileId],
+    enabled: !!profileId,
+    staleTime: 5 * 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('display_name, email')
+        .eq('id', profileId!)
+        .maybeSingle();
+      if (error) throw error;
+      return data?.display_name || data?.email || null;
+    },
+  });
+}

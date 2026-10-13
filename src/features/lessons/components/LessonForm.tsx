@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText, Button, Card, Chip, ChipRow, FormTextField, Segmented, TextField } from '@/components/ui';
+import { useAuth } from '@/features/auth/AuthProvider';
+import { useProfileName } from '@/features/settings/api';
 import { useTags } from '@/features/tags/api';
 import { LEVEL_COLORS, LEVELS, type Level } from '@/lib/colors';
 import type { LocalDate } from '@/lib/time';
@@ -53,6 +55,9 @@ export function LessonForm({
     pickerStudents.data?.find((st) => studentIds.includes(st.id))?.teacher_id ??
     fallbackTeacherId;
   const tags = useTags(ownerId).data ?? [];
+  const { session } = useAuth();
+  const foreignOwner = studentIds.length > 0 && ownerId && ownerId !== session?.user.id ? ownerId : null;
+  const ownerName = useProfileName(foreignOwner).data;
   const isPreset = (DURATION_PRESETS as readonly number[]).includes(durationMin);
 
   const repeatOptions = (
@@ -70,6 +75,7 @@ export function LessonForm({
               value={field.value}
               onChange={field.onChange}
               restrictTeacherId={teacherId}
+              ownerHint={ownerName ? t('lessons.fields.forTeacher', { name: ownerName }) : undefined}
               error={fieldState.error ? t(validationMessage(fieldState.error.message)) : undefined}
             />
           )}

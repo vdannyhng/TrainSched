@@ -290,7 +290,8 @@
       "title": "Titel (optional)",
       "titleHint": "Sonst werden die Namen angezeigt",
       "level": "Niveau",
-      "topics": "Themen"
+      "topics": "Themen",
+      "forTeacher": "Dieser Termin wird für {{name}} angelegt (die gewählten Schüler gehören zu diesem Lehrer)."
     },
     "repeat": {
       "none": "Einmalig",
@@ -374,7 +375,8 @@
       "singleOverlapHint": "Zu dieser Zeit gibt es schon einen Termin. Bitte wähle eine andere Zeit.",
       "saveAnyway": "Trotzdem speichern",
       "change": "Ändern",
-      "blocker": "Liegt in deinem Blocker „{{label}}“ ({{time}})"
+      "blocker": "Liegt in deinem Blocker „{{label}}“ ({{time}})",
+      "blockerOf": "Liegt im Blocker „{{label}}“ von {{owner}} ({{time}})"
     },
     "seriesCreated": "{{created}} Termine angelegt.",
     "seriesSkipped": "{{skipped}} wegen Überschneidung übersprungen.",

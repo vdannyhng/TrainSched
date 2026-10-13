@@ -32,10 +32,12 @@ type Props = {
   error?: string;
   /** Nur Schüler dieses Lehrers (z. B. beim Bearbeiten eines bestehenden Termins) */
   restrictTeacherId?: string;
+  /** Hinweis, wenn der Termin einem anderen Lehrer gehört (Admin-Planung) */
+  ownerHint?: string;
 };
 
 /** Mehrfachauswahl von Schülern (≥ 2 = Gruppenunterricht). Ausgewählte stehen oben. */
-export function StudentPicker({ value, onChange, error, restrictTeacherId }: Props) {
+export function StudentPicker({ value, onChange, error, restrictTeacherId, ownerHint }: Props) {
   const { t } = useTranslation();
   const students = useActiveStudents();
   const [search, setSearch] = useState('');
@@ -74,6 +76,7 @@ export function StudentPicker({ value, onChange, error, restrictTeacherId }: Pro
           ))}
         </ChipRow>
       ) : null}
+      {ownerHint ? <AppText tone="primary">{ownerHint}</AppText> : null}
       {all.length > 12 ? (
         <TextField
           label={t('lessons.fields.searchStudents')}
