@@ -353,6 +353,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"student_level_changes": {
+                  Row: {
+                    "changed_at": string,"changed_by": string | null,"id": string,"level": Database["public"]['Enums']["cefr_level"] | null,"student_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "changed_at"?: string,"changed_by"?: string | null,"id"?: string,"level"?: Database["public"]['Enums']["cefr_level"] | null,"student_id": string
+                  }
+                  Update: {
+                    "changed_at"?: string,"changed_by"?: string | null,"id"?: string,"level"?: Database["public"]['Enums']["cefr_level"] | null,"student_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "student_level_changes_changed_by_fkey"
+      columns: ["changed_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "student_level_changes_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"student_tags": {
                   Row: {
                     "student_id": string,"tag_id": string
