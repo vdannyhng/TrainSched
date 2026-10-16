@@ -13,24 +13,24 @@ Stand: 2026-10-13 · Status: **freigegeben**, M1–M4 umgesetzt
 
 ## 2. Tech-Stack
 
-| Bereich          | Wahl                                                                                                                 | Begründung / Abweichung                                                                         |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| App              | Expo SDK 57, React Native, TypeScript `strict`, Expo Router                                                          | wie vorgeschlagen                                                                               |
-| Backend          | Supabase: Auth, Postgres, RLS, Storage, Edge Functions, `pg_cron`                                                    | wie vorgeschlagen; Projekt in EU-Region (Frankfurt `eu-central-1` oder Zürich, falls verfügbar) |
-| Daten-Layer      | TanStack Query (+ `persistQueryClient` für Offline-Lesen), supabase-js                                               | wie vorgeschlagen                                                                               |
-| Formulare        | React Hook Form + Zod; dieselben Zod-Schemas für Formular und API-Grenze                                             | wie vorgeschlagen                                                                               |
-| Datum/Zeit       | **Luxon** in der App (IANA-Zeitzonen, DST-sicher); **Serien-Expansion in Postgres**                                  | Abweichung: kein `rrule`-String bzw. keine rrule.js-Library, Begründung siehe §5                |
-| Kalender-UI      | `@howljs/calendar-kit` (Tag/Woche, Timeline) + `react-native-calendars` (Monat)                                      | wird in M3 per Spike geprüft, Fallback ist ein eigener Timeline-View                            |
-| Listen           | `@shopify/flash-list`                                                                                                | Virtualisierung                                                                                 |
-| Medien           | `expo-image-picker` (Kamera/Galerie), `expo-image-manipulator` (Komprimierung), `expo-document-picker`, `expo-audio` |                                                                                                 |
-| Push             | `expo-notifications` + Expo Push Service, Versand aus Edge Functions                                                 | Remote-Push auf Android läuft nicht in Expo Go, ab M5 braucht es einen **Dev Build**            |
-| Kalender-Export  | ICS-Datei (Teilen-Sheet) in M3; ICS-Abo-Feed per Edge Function später                                                |                                                                                                 |
-| i18n             | `i18next` + `react-i18next` + `expo-localization`                                                                    |                                                                                                 |
-| Schrift          | **Be Vietnam Pro** (`@expo-google-fonts`): vollständige vietnamesische Diakritika, gut lesbar                        | wird mit Teststrings geprüft („Nguyễn Thị Hương“, „Ừ, được rồi“)                                |
-| Session-Speicher | `expo-sqlite/localStorage` (Empfehlung der Expo-Doku für Supabase)                                                   | SecureStore ist auf ca. 2 KB begrenzt und für JWT-Sessions zu klein                             |
-| Tests            | Jest + React Native Testing Library; **pgTAP** über `supabase test db` für RLS und SQL-Funktionen                    |                                                                                                 |
-| Qualität         | ESLint (expo config) + Prettier, `tsc --noEmit` in `npm run check`                                                   |                                                                                                 |
-| Builds           | EAS Build + EAS Submit, Profile `development` / `preview` / `production`                                             |                                                                                                 |
+| Bereich          | Wahl                                                                                                                 | Begründung / Abweichung                                                                                                                         |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| App              | Expo SDK 57, React Native, TypeScript `strict`, Expo Router                                                          | wie vorgeschlagen                                                                                                                               |
+| Backend          | Supabase: Auth, Postgres, RLS, Storage, Edge Functions, `pg_cron`                                                    | wie vorgeschlagen; Projekt in EU-Region (Frankfurt `eu-central-1` oder Zürich, falls verfügbar)                                                 |
+| Daten-Layer      | TanStack Query (+ `persistQueryClient` für Offline-Lesen), supabase-js                                               | wie vorgeschlagen                                                                                                                               |
+| Formulare        | React Hook Form + Zod; dieselben Zod-Schemas für Formular und API-Grenze                                             | wie vorgeschlagen                                                                                                                               |
+| Datum/Zeit       | **Luxon** in der App (IANA-Zeitzonen, DST-sicher); **Serien-Expansion in Postgres**                                  | Abweichung: kein `rrule`-String bzw. keine rrule.js-Library, Begründung siehe §5                                                                |
+| Kalender-UI      | `@howljs/calendar-kit` (Tag/Woche, Timeline) + `react-native-calendars` (Monat)                                      | wird in M3 per Spike geprüft, Fallback ist ein eigener Timeline-View                                                                            |
+| Listen           | `@shopify/flash-list`                                                                                                | Virtualisierung                                                                                                                                 |
+| Medien           | `expo-image-picker` (Kamera/Galerie), `expo-image-manipulator` (Komprimierung), `expo-document-picker`, `expo-audio` |                                                                                                                                                 |
+| Push             | `expo-notifications` + Expo Push Service, Versand aus Edge Functions                                                 | Remote-Push auf Android läuft nicht in Expo Go → **Dev Build** (`eas build --profile development`); iOS-Expo-Go funktioniert mit EAS-Projekt-ID |
+| Kalender-Export  | ICS-Datei (Teilen-Sheet) in M3; ICS-Abo-Feed per Edge Function später                                                |                                                                                                                                                 |
+| i18n             | `i18next` + `react-i18next` + `expo-localization`                                                                    |                                                                                                                                                 |
+| Schrift          | **Be Vietnam Pro** (`@expo-google-fonts`): vollständige vietnamesische Diakritika, gut lesbar                        | wird mit Teststrings geprüft („Nguyễn Thị Hương“, „Ừ, được rồi“)                                                                                |
+| Session-Speicher | `expo-sqlite/localStorage` (Empfehlung der Expo-Doku für Supabase)                                                   | SecureStore ist auf ca. 2 KB begrenzt und für JWT-Sessions zu klein                                                                             |
+| Tests            | Jest + React Native Testing Library; **pgTAP** über `supabase test db` für RLS und SQL-Funktionen                    |                                                                                                                                                 |
+| Qualität         | ESLint (expo config) + Prettier, `tsc --noEmit` in `npm run check`                                                   |                                                                                                                                                 |
+| Builds           | EAS Build + EAS Submit, Profile `development` / `preview` / `production`                                             |                                                                                                                                                 |
 
 **Voraussetzungen auf deinem Rechner:** Node 24 LTS (installiert). Ausserdem Docker Desktop (für die lokale Supabase und die SQL-Tests), Supabase CLI und ein Expo-Konto. Für die Stores: Apple Developer Program (99 USD/Jahr) und Google Play Console (25 USD einmalig). Einen Mac braucht es dank EAS nicht.
 
@@ -131,11 +131,13 @@ homework            id · teacher_id · lesson_id? · student_id · title · des
 ### Benachrichtigungen & Anfragen (M5)
 
 ```
-push_tokens         id · profile_id · expo_token (unique) · platform · last_seen_at
-notification_log    id · profile_id · lesson_id? · kind · offset_min? · sent_at   ← Dedupe der Erinnerungen
-change_requests     id · teacher_id · lesson_id · student_id · type (reschedule|cancel)
-                    · reason? · proposed_slots tstzrange[] · is_late (Absagefrist unterschritten)
-                    · status (pending|accepted|declined|withdrawn) · decided_by? · decided_at? · response?
+push_tokens          token (PK, Expo-Format) · user_id · platform · updated_at   ← Gerätewechsel: Token zieht um
+lesson_requests      id · lesson_id · student_id · teacher_id · kind (reschedule|cancel) · message?
+                     · proposed_starts timestamptz[] (1–3, Dauer wie Termin) · is_late (Absagefrist unterschritten)
+                     · status (pending|accepted|declined|withdrawn) · response? · chosen_start?
+                     · created_by · decided_by? · decided_at?          ← max. 1 offene Anfrage pro Termin+Schüler
+notification_outbox  id · user_id · kind · lesson_id? · request_id? · payload · dedupe_key (unique)
+                     · claimed_at? · attempts · sent_at? · last_error?
 ```
 
 ### Später (M6+)
@@ -144,7 +146,6 @@ change_requests     id · teacher_id · lesson_id · student_id · type (resched
 availability_slots  teacher_id · weekday · local_start · local_end · timezone · valid_from/to
 packages            id · teacher_id · student_id · name · hours_total · price · currency · purchased_at
 payments            id · teacher_id · student_id · package_id? · amount · currency · paid_at · note
-level_history       student_id · level · changed_at
 library_items       id · teacher_id · kind (worksheet|vocab) · title · level · topic tags · storage_path?/content
 library_assignments library_item_id · student_id · assigned_at
 ```
@@ -176,8 +177,9 @@ Beträge: `numeric(12,2)`, die Währung steht pro Zeile. Angezeigt wird nur Text
 
 ## 6. Benachrichtigungen
 
-- **Erinnerungen:** Ein `pg_cron`-Job ruft alle 5 Minuten die Edge Function `send-reminders` auf. Sie sucht Termine, deren Startzeit minus Offset (pro Nutzer, z. B. 24 h und 1 h) ins aktuelle Fenster fällt, und sendet über die Expo Push API. `notification_log` verhindert Doppelversand.
-- **Ereignisse** (verschoben, abgesagt, neue Anfrage, Anfrage entschieden): Datenbank-Trigger schreiben in eine `outbox`, die Edge Function `dispatch-notifications` versendet. Dadurch blockiert keine App-Aktion auf den Push-Versand.
+- **Outbox:** Alles, was einen Push auslöst, landet in `notification_outbox`. Ereignisse (verschoben, abgesagt, neue Anfrage, Anfrage entschieden) schreiben Trigger auf `lessons` und `lesson_requests`, Erinnerungen ein `pg_cron`-Job alle 5 Minuten (`private.enqueue_reminders`: fällig, wenn Beginn − Vorlauf in den letzten 10 Minuten liegt; der Vorlauf ist pro Nutzer in `profiles.reminder_offsets_min` gespeichert). `dedupe_key` verhindert Doppelte, Serienänderungen ergeben eine Nachricht pro Person und Transaktion. Wer die Änderung selbst ausgelöst hat, bekommt nichts.
+- **Versand:** Ein Statement-Trigger auf der Outbox (plus `pg_cron` jede Minute als Wiederholung) ruft per `pg_net` die Edge Function `send-push` auf. URL und Secret liegen im Vault. Die Funktion reserviert Einträge mit `claim_push_batch` (`for update skip locked`), rendert Titel und Text in Sprache und Zeitzone des Empfängers (`supabase/functions/_shared/pushText.ts`, auch in Jest getestet) und sendet an den Expo Push Service. `DeviceNotRegistered` löscht das Token, andere Fehler werden bis zu 5-mal wiederholt.
+- **Anfragen:** Nur über RPCs (`create_lesson_request`, `withdraw_lesson_request`, `decide_lesson_request`). Annehmen verschiebt den Termin auf den gewählten Slot (Exclusion-Constraint schützt vor Doppelbuchung) bzw. sagt ihn ab. Im Gruppentermin entschuldigt eine Absage nur die anfragende Person.
 - Inhalte der Pushes sind datensparsam: „Termin morgen 18:00 verschoben“, ohne Notizinhalte.
 
 ## 5b. Wem gehört ein Termin?

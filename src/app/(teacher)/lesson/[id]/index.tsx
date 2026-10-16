@@ -18,6 +18,7 @@ import { LessonDetailBody } from '@/features/lessons/components/LessonDetailBody
 import { PreviousLessonCard } from '@/features/lessons/components/PreviousLessonCard';
 import { useLocale, useViewerZone } from '@/features/lessons/hooks';
 import { NotesSection } from '@/features/notes/components/NotesSection';
+import { LessonPendingRequests } from '@/features/requests/components/LessonPendingRequests';
 import { shareIcs } from '@/features/lessons/shareIcs';
 import { confirmAsync } from '@/lib/confirm';
 import { errorKey } from '@/lib/errors';
@@ -62,6 +63,7 @@ export default function LessonDetailScreen() {
     <Screen scroll edges={['bottom', 'left', 'right']}>
       <Stack.Screen options={{ title: '' }} />
       <LessonDetailBody lesson={l} showAttendance />
+      <LessonPendingRequests lessonId={l.id} />
 
       {series.data ? (
         <Card title={t('lessons.detail.series')}>

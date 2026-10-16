@@ -81,7 +81,8 @@
   },
   "teacher": {
     "requests": {
-      "emptyTitle": "Keine offenen Anfragen"
+      "emptyTitle": "Keine offenen Anfragen",
+      "emptyMessage": "Wenn Schüler verschieben oder absagen möchten, erscheint das hier."
     }
   },
   "student": {
@@ -134,7 +135,11 @@
     "participantsRequired": "Bitte mindestens eine Person auswählen.",
     "cannotPauseSelf": "Du kannst dich nicht selbst pausieren.",
     "exportFailed": "Export fehlgeschlagen.",
-    "participantsOtherTeacher": "Alle Teilnehmenden müssen zum selben Lehrer gehören."
+    "participantsOtherTeacher": "Alle Teilnehmenden müssen zum selben Lehrer gehören.",
+    "requestPending": "Für diesen Termin gibt es schon eine offene Anfrage.",
+    "invalidSlots": "Bitte gültige Ersatztermine in der Zukunft wählen.",
+    "lessonNotOpen": "Dieser Termin ist nicht mehr geplant.",
+    "requestClosed": "Über diese Anfrage wurde schon entschieden."
   },
   "validation": {
     "required": "Pflichtfeld",
@@ -155,7 +160,10 @@
     "invalid_url": "Bitte einen Link mit https:// eingeben.",
     "end_before_start": "Der letzte Termin liegt vor dem ersten.",
     "end_before_start_time": "Das Ende muss nach dem Beginn liegen.",
-    "weekdays_required": "Bitte mindestens einen Wochentag wählen."
+    "weekdays_required": "Bitte mindestens einen Wochentag wählen.",
+    "slot_in_past": "Der Vorschlag liegt in der Vergangenheit.",
+    "slot_duplicate": "Zwei Vorschläge sind identisch.",
+    "slots_required": "Bitte mindestens einen Ersatztermin vorschlagen."
   },
   "levels": {
     "label": "Niveau",
@@ -477,5 +485,78 @@
     "notes": "Notizen deiner Lehrerin",
     "files": "Dateien",
     "empty": "Hier erscheinen Notizen und Dateien, die deine Lehrerin für dich freigibt."
+  },
+  "requests": {
+    "title": "Anfrage",
+    "open": "Offen",
+    "closed": "Erledigt",
+    "kind": {
+      "reschedule": "Verschieben",
+      "cancel": "Absage"
+    },
+    "status": {
+      "pending": "Offen",
+      "accepted": "Angenommen",
+      "declined": "Abgelehnt",
+      "withdrawn": "Zurückgezogen"
+    },
+    "late": "Kurzfristig",
+    "lateHint": "Die Absagefrist ist vorbei (bis {{deadline}}). Die Lehrkraft entscheidet trotzdem.",
+    "lateTeacher": "Kurzfristig angefragt – nach Ablauf der Absagefrist.",
+    "ask": "Verschieben oder absagen",
+    "askHint": "Schlage bis zu 3 Ersatztermine vor oder bitte um Absage.",
+    "formTitle": "Änderung anfragen",
+    "whatKind": "Was möchtest du?",
+    "slots": "Ersatztermine",
+    "slotsHint": "Bis zu 3 Vorschläge, Zeiten in deiner Zeitzone ({{zone}}).",
+    "slot": "Vorschlag {{n}}",
+    "addSlot": "Weiteren Vorschlag hinzufügen",
+    "removeSlot": "Vorschlag entfernen",
+    "message": "Nachricht (optional)",
+    "messagePlaceholder": "z. B. Ich bin krank.",
+    "send": "Anfrage senden",
+    "withdraw": "Anfrage zurückziehen",
+    "yourRequests": "Deine Anfragen",
+    "proposed": "Vorschläge",
+    "chosen": "Neuer Termin",
+    "response": "Antwort",
+    "responseHint": "Optional – der Schüler sieht die Antwort.",
+    "from": "Von",
+    "lesson": "Termin",
+    "pickSlot": "Ersatztermin wählen",
+    "free": "Frei",
+    "conflict": {
+      "overlap": "Überschneidung: {{label}}",
+      "buffer": "Zu knapp an: {{label}}",
+      "blocker": "Blocker: {{label}}"
+    },
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "groupCancelHint": "Gruppentermin: Annehmen entschuldigt nur diese Person, der Termin bleibt bestehen.",
+    "lessonClosed": "Der Termin ist nicht mehr geplant (abgesagt oder gehalten).",
+    "requestedAt": "Angefragt am {{when}}",
+    "decidedAt": "Entschieden am {{when}}"
+  },
+  "push": {
+    "title": "Benachrichtigungen",
+    "status": {
+      "enabled": "Auf diesem Gerät aktiv",
+      "undetermined": "Noch nicht aktiviert",
+      "denied": "In den Systemeinstellungen ausgeschaltet",
+      "unconfigured": "Noch nicht eingerichtet (EAS-Projekt fehlt)",
+      "unsupported": "Auf diesem Gerät nicht verfügbar (nur auf dem Handy)"
+    },
+    "enable": "Aktivieren",
+    "openSettings": "Einstellungen öffnen",
+    "reminders": "Erinnerung vor Terminen",
+    "remindersHint": "Mehrfachauswahl möglich. Ohne Auswahl gibt es keine Erinnerungen.",
+    "offsets": {
+      "15": "15 Min.",
+      "60": "1 Std.",
+      "180": "3 Std.",
+      "1440": "1 Tag",
+      "2880": "2 Tage"
+    },
+    "device": "Dieses Gerät"
   }
 }

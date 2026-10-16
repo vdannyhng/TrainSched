@@ -5,6 +5,8 @@ import type { AppLocale } from '@/i18n';
 import { supabase } from '@/lib/supabase';
 import type { Tables } from '@/types/database';
 
+import { unregisterPush } from '../push/push';
+
 import type { AcceptInviteErrorCode } from '../../../supabase/functions/_shared/inviteSchema';
 import { AppError, inviteErrorKey } from './errors';
 import { acceptInviteSchema, type InviteFormValues, type SignInValues } from './schemas';
@@ -23,6 +25,7 @@ export async function signIn(values: SignInValues) {
 }
 
 export async function signOut() {
+  await unregisterPush();
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }

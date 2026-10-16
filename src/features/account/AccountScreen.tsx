@@ -15,6 +15,7 @@ import {
 } from '@/components/ui';
 import { signOut, updateProfileLocale } from '@/features/auth/api';
 import { profileQueryKey, useAuth } from '@/features/auth/AuthProvider';
+import { NotificationsCard } from '@/features/push/NotificationsCard';
 import { useTeachers, useTeacherSettings, useUpdateBuffer } from '@/features/settings/api';
 import { AccessToggle } from '@/features/settings/components/AccessToggle';
 import { useCreateTeacherInvitation, useMyStudent } from '@/features/students/api';
@@ -63,6 +64,8 @@ export function AccountScreen() {
         }))}
       />
       <FormMessage message={setLocale.error ? t(errorKey(setLocale.error)) : undefined} />
+
+      <NotificationsCard profile={profile} />
 
       {profile.role !== 'student' ? <TeachingCard teacherId={userId} /> : null}
       {profile.role === 'admin' ? <InviteTeacherCard /> : null}

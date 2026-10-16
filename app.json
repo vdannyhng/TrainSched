@@ -46,6 +46,13 @@
           "cameraPermission": "TrainSched nutzt die Kamera, um Tafel oder Heft zu fotografieren und an Termine anzuhängen.",
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#1F5F8B",
+          "defaultChannel": "default"
+        }
       ]
     ],
     "experiments": {

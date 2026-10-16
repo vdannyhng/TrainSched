@@ -111,3 +111,16 @@ begin
   where id = '55555555-5555-5555-5555-555555555551';
 end;
 $$;
+
+-- Push-Versand lokal: Datenbank (pg_net) ruft die Edge Function send-push über das Docker-Netz auf.
+-- Das Secret muss zu PUSH_DISPATCH_SECRET in supabase/functions/.env passen (siehe .env.example).
+do $$
+begin
+  if not exists (select 1 from vault.secrets where name = 'push_dispatch_url') then
+    perform vault.create_secret('http://supabase_kong_TrainSched:8000/functions/v1/send-push', 'push_dispatch_url');
+  end if;
+  if not exists (select 1 from vault.secrets where name = 'push_dispatch_secret') then
+    perform vault.create_secret('local-dev-push-secret', 'push_dispatch_secret');
+  end if;
+end;
+$$;

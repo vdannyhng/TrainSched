@@ -12,9 +12,10 @@ import { useViewerZone } from '@/features/lessons/hooks';
 import { PreviousLessonCard } from '@/features/lessons/components/PreviousLessonCard';
 import { shareIcs } from '@/features/lessons/shareIcs';
 import { NotesSection } from '@/features/notes/components/NotesSection';
+import { StudentRequestsCard } from '@/features/requests/components/StudentRequestsCard';
 import { todayIn } from '@/lib/time';
 
-/** Termin aus Schülersicht: Details, Notizen, Hausaufgaben (abhaken), Dateien, Kalender-Export. */
+/** Termin aus Schülersicht: Details, Anfragen (verschieben/absagen), Notizen, Hausaufgaben (abhaken), Dateien, Kalender-Export. */
 export default function MyLessonScreen() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -31,6 +32,7 @@ export default function MyLessonScreen() {
   return (
     <Screen scroll edges={['bottom', 'left', 'right']}>
       <LessonDetailBody lesson={l} showAttendance={false} />
+      <StudentRequestsCard lesson={l} />
       <PreviousLessonCard lessonId={l.id} hrefBase="/my-lesson/" />
       {homework.data?.length ? (
         <Card title={t('homework.title')}>

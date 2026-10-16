@@ -16,10 +16,13 @@ import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
+import { configureNotifications } from '@/features/push/push';
+import { PushBridge } from '@/features/push/PushBridge';
 import { queryClient } from '@/lib/queryClient';
 import { useTheme } from '@/theme/useTheme';
 
 void SplashScreen.preventAutoHideAsync();
+configureNotifications();
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
@@ -41,7 +44,7 @@ export default function RootLayout() {
 }
 
 function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
-  const { gate } = useAuth();
+  const { gate, session } = useAuth();
   const { scheme, colors } = useTheme();
   const base = scheme === 'dark' ? DarkTheme : DefaultTheme;
 
@@ -88,6 +91,7 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
         </Stack.Protected>
         <Stack.Screen name="reset-password" />
       </Stack>
+      {session && (gate === 'teacher' || gate === 'student') ? <PushBridge userId={session.user.id} /> : null}
     </ThemeProvider>
   );
 }

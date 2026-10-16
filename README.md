@@ -5,7 +5,7 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 - Architektur: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-**Stand:** M1–M4 fertig: Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche.
+**Stand:** M1–M5 fertig (MVP): Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen) und Push-Benachrichtigungen.
 
 ## Voraussetzungen
 
@@ -22,19 +22,38 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 npm install
 npm run db:start          # startet Supabase lokal in Docker (beim ersten Mal dauert es)
 cp .env.example .env.local
+cp supabase/functions/.env.example supabase/functions/.env
 ```
 
 In `.env.local` den `PUBLISHABLE_KEY` aus der Ausgabe von `npm run db:start` eintragen. Mit `npx supabase status` lässt er sich jederzeit wieder anzeigen.
 
 ```bash
 npm run db:reset          # Migrationen + Demo-Daten (supabase/seed.sql) einspielen
-npm run functions:serve   # Edge Functions lokal (für Einladungen nötig), eigenes Terminal
-npm start                 # Expo Dev-Server, QR-Code mit Expo Go scannen
+npm run functions:serve   # Edge Functions lokal (Einladungen + Push-Versand), eigenes Terminal
+npm start                 # Expo Dev-Server für Expo Go, QR-Code scannen
 ```
 
 ### Auf dem Handy testen
 
 Das Handy kann `127.0.0.1` nicht erreichen. Setze in `.env.local` deshalb die **LAN-IP deines PCs** ein, z. B. `EXPO_PUBLIC_SUPABASE_URL=http://192.168.1.23:54321`. Die IP zeigt `ipconfig` unter „IPv4-Adresse“. PC und Handy müssen im selben WLAN sein. Danach `npm start` neu starten.
+
+### Push-Benachrichtigungen
+
+Ablauf: Trigger und Cron schreiben in `notification_outbox` → `pg_net` ruft die Edge Function `send-push` auf → diese schickt die Nachricht über den Expo Push Service an alle Geräte des Empfängers. Lokal sind URL und Secret über `supabase/seed.sql` (Vault) und `supabase/functions/.env` bereits verdrahtet.
+
+Damit ein Handy ein Push-Token bekommt, braucht die App eine **EAS-Projekt-ID** (einmalig, mit Expo-Konto):
+
+```bash
+npx eas-cli@latest login
+npx eas-cli@latest init      # trägt extra.eas.projectId in app.json ein
+```
+
+- **iPhone mit Expo Go:** Danach App neu laden, im Konto unter „Benachrichtigungen“ erlauben.
+- **Android:** Expo Go kann seit SDK 53 keine Pushes mehr. Dafür einen Dev Build bauen und mit `npm run start:dev` starten:
+  ```bash
+  npx eas-cli@latest build --profile development --platform android
+  ```
+- Für den Store-Release braucht es zusätzlich die APNs-/FCM-Zugangsdaten (Apple Developer, Google Play). EAS fragt beim Build danach.
 
 ### Demo-Zugänge (nur lokal)
 
@@ -50,7 +69,8 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
 
 | Befehl                    | Zweck                                                         |
 | ------------------------- | ------------------------------------------------------------- |
-| `npm start`               | Expo Dev-Server                                               |
+| `npm start`               | Expo Dev-Server für Expo Go                                   |
+| `npm run start:dev`       | Expo Dev-Server für den eigenen Dev Build (`eas build`)       |
 | `npm run check`           | TypeScript (`tsc --noEmit`) + ESLint + Prettier-Check         |
 | `npm test`                | Jest + React Native Testing Library                           |
 | `npm run test:db`         | pgTAP-Tests für RLS und SQL-Funktionen (Supabase muss laufen) |
@@ -69,6 +89,13 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
    npx supabase link --project-ref <ref>
    npx supabase db push
    npx supabase functions deploy accept-invite --no-verify-jwt
+   npx supabase functions deploy send-push --no-verify-jwt
+   npx supabase secrets set PUSH_DISPATCH_SECRET=<langes-zufälliges-secret>
+   ```
+   Im SQL-Editor die Vault-Secrets für den Push-Versand setzen (gleiches Secret):
+   ```sql
+   select vault.create_secret('https://<ref>.supabase.co/functions/v1/send-push', 'push_dispatch_url');
+   select vault.create_secret('<langes-zufälliges-secret>', 'push_dispatch_secret');
    ```
 5. Die erste Admin-Person anlegen: Im Dashboard unter Authentication → Users einen User erstellen, dann im SQL-Editor ausführen:
    ```sql
@@ -86,4 +113,5 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
 
 - Rechte werden **serverseitig per Row Level Security** erzwungen. Die Rollen-Weiterleitung in der App ist nur UX.
 - Die offene Registrierung ist gesperrt. Konten entstehen ausschliesslich über Einladungscodes (Edge Function `accept-invite`).
-- Im Repo stehen keine Secrets. `.env.local` ist per `.gitignore` ausgeschlossen, nur `.env.example` wird committed.
+- Im Repo stehen keine Secrets. `.env.local` und `supabase/functions/.env` sind per `.gitignore` ausgeschlossen, nur die `.env.example`-Dateien werden committed. Das Secret `local-dev-push-secret` gilt nur lokal.
+- `send-push` ist nicht für die App gedacht: Die Funktion prüft ein gemeinsames Secret, das nur die Datenbank kennt. Push-Tokens und Outbox sind für Nutzer nicht schreibbar, alle Änderungen laufen über geprüfte RPCs.

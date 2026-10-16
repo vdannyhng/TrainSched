@@ -171,6 +171,50 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"lesson_requests": {
+                  Row: {
+                    "chosen_start": string | null,"created_at": string,"created_by": string | null,"decided_at": string | null,"decided_by": string | null,"id": string,"is_late": boolean,"kind": Database["public"]['Enums']["request_kind"],"lesson_id": string,"message": string | null,"proposed_starts": (string)[],"response": string | null,"status": Database["public"]['Enums']["request_status"],"student_id": string,"teacher_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "chosen_start"?: string | null,"created_at"?: string,"created_by"?: string | null,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"is_late"?: boolean,"kind": Database["public"]['Enums']["request_kind"],"lesson_id": string,"message"?: string | null,"proposed_starts"?: (string)[],"response"?: string | null,"status"?: Database["public"]['Enums']["request_status"],"student_id": string,"teacher_id": string
+                  }
+                  Update: {
+                    "chosen_start"?: string | null,"created_at"?: string,"created_by"?: string | null,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"is_late"?: boolean,"kind"?: Database["public"]['Enums']["request_kind"],"lesson_id"?: string,"message"?: string | null,"proposed_starts"?: (string)[],"response"?: string | null,"status"?: Database["public"]['Enums']["request_status"],"student_id"?: string,"teacher_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "lesson_requests_created_by_fkey"
+      columns: ["created_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "lesson_requests_decided_by_fkey"
+      columns: ["decided_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "lesson_requests_lesson_id_fkey"
+      columns: ["lesson_id"]
+isOneToOne: false
+      referencedRelation: "lessons"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "lesson_requests_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "lesson_requests_teacher_id_fkey"
+      columns: ["teacher_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"lesson_series": {
                   Row: {
                     "created_at": string,"duration_min": number,"end_date": string | null,"format": Database["public"]['Enums']["lesson_format"],"frequency": Database["public"]['Enums']["series_frequency"],"id": string,"level": Database["public"]['Enums']["cefr_level"] | null,"local_start_time": string,"location": string | null,"materialized_until": string | null,"meeting_url": string | null,"start_date": string,"teacher_id": string,"timezone": string,"title": string | null,"updated_at": string
@@ -287,6 +331,38 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"notification_outbox": {
+                  Row: {
+                    "attempts": number,"claimed_at": string | null,"created_at": string,"dedupe_key": string | null,"id": number,"kind": string,"last_error": string | null,"lesson_id": string | null,"payload": NonNullable<Json>,"request_id": string | null,"sent_at": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempts"?: number,"claimed_at"?: string | null,"created_at"?: string,"dedupe_key"?: string | null,"id"?: never,"kind": string,"last_error"?: string | null,"lesson_id"?: string | null,"payload"?: NonNullable<Json>,"request_id"?: string | null,"sent_at"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "attempts"?: number,"claimed_at"?: string | null,"created_at"?: string,"dedupe_key"?: string | null,"id"?: never,"kind"?: string,"last_error"?: string | null,"lesson_id"?: string | null,"payload"?: NonNullable<Json>,"request_id"?: string | null,"sent_at"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "notification_outbox_lesson_id_fkey"
+      columns: ["lesson_id"]
+isOneToOne: false
+      referencedRelation: "lessons"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notification_outbox_request_id_fkey"
+      columns: ["request_id"]
+isOneToOne: false
+      referencedRelation: "lesson_requests"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "notification_outbox_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "access_paused_at": string | null,"created_at": string,"display_name": string,"email": string | null,"id": string,"locale": Database["public"]['Enums']["app_locale"],"privacy_consent_at": string | null,"privacy_consent_version": string | null,"reminder_offsets_min": (number)[],"role": Database["public"]['Enums']["app_role"],"timezone": string,"updated_at": string
@@ -300,6 +376,26 @@ isOneToOne: false
                   }
                   Relationships: [
                     
+                  ]
+                },"push_tokens": {
+                  Row: {
+                    "platform": string,"token": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "platform": string,"token": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "platform"?: string,"token"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "push_tokens_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"series_participants": {
                   Row: {
@@ -493,11 +589,19 @@ isOneToOne: true
               "end_at": string,"kind": string,"label": string,"lesson_id": string,"range_index": number,"start_at": string
             }[]
                            },
+"claim_push_batch":
+{ Args: { "p_limit"?: number }; Returns: {
+              "id": number,"kind": string,"lesson_end": string,"lesson_id": string,"lesson_label": string,"lesson_start": string,"locale": Database["public"]['Enums']["app_locale"],"payload": Json,"recipient_role": Database["public"]['Enums']["app_role"],"request_id": string,"request_kind": Database["public"]['Enums']["request_kind"],"student_name": string,"timezone": string,"tokens": (string)[]
+            }[]
+                           },
 "complete_invitation":
 { Args: { "p_invitation_id": string,"p_user_id": string }; Returns: boolean
                            },
 "create_lesson":
 { Args: { "p_end_at": string,"p_format": Database["public"]['Enums']["lesson_format"],"p_level": Database["public"]['Enums']["cefr_level"],"p_location": string,"p_meeting_url": string,"p_start_at": string,"p_student_ids": (string)[],"p_tag_ids": (string)[],"p_teacher_id": string,"p_timezone": string,"p_title": string }; Returns: string
+                           },
+"create_lesson_request":
+{ Args: { "p_kind": Database["public"]['Enums']["request_kind"],"p_lesson_id": string,"p_message": string,"p_proposed_starts": (string)[] }; Returns: string
                            },
 "create_lesson_series":
 { Args: { "p_duration_min": number,"p_end_date": string,"p_format": Database["public"]['Enums']["lesson_format"],"p_frequency": Database["public"]['Enums']["series_frequency"],"p_level": Database["public"]['Enums']["cefr_level"],"p_local_start_time": string,"p_location": string,"p_meeting_url": string,"p_start_date": string,"p_student_ids": (string)[],"p_tag_ids": (string)[],"p_teacher_id": string,"p_timezone": string,"p_title": string }; Returns: {
@@ -514,6 +618,9 @@ isOneToOne: true
               "code": string,"expires_at": string
             }[]
                            },
+"decide_lesson_request":
+{ Args: { "p_accept": boolean,"p_chosen_start": string,"p_request_id": string,"p_response": string }; Returns: undefined
+                           },
 "end_series":
 { Args: { "p_lesson_id": string }; Returns: number
                            },
@@ -521,6 +628,9 @@ isOneToOne: true
 { Args: { "p_code": string }; Returns: {
               "display_name": string,"invitation_id": string,"locale": Database["public"]['Enums']["app_locale"],"role": Database["public"]['Enums']["app_role"],"student_id": string,"timezone": string
             }[]
+                           },
+"lesson_cancel_deadline":
+{ Args: { "p_lesson_id": string }; Returns: string
                            },
 "mark_lesson_held":
 { Args: { "p_attendance": Json,"p_lesson_id": string }; Returns: undefined
@@ -532,6 +642,9 @@ isOneToOne: true
                            },
 "previous_lesson_id":
 { Args: { "p_lesson_id": string }; Returns: string
+                           },
+"register_push_token":
+{ Args: { "p_platform": string,"p_token": string }; Returns: undefined
                            },
 "reschedule_lesson":
 { Args: { "p_end_at": string,"p_lesson_id": string,"p_start_at": string }; Returns: undefined
@@ -558,6 +671,9 @@ isOneToOne: true
               "created_at": string,"expires_at": string
             }[]
                            },
+"unregister_push_token":
+{ Args: { "p_token": string }; Returns: undefined
+                           },
 "update_lesson":
 { Args: { "p_end_at": string,"p_format": Database["public"]['Enums']["lesson_format"],"p_lesson_id": string,"p_level": Database["public"]['Enums']["cefr_level"],"p_location": string,"p_meeting_url": string,"p_start_at": string,"p_student_ids": (string)[],"p_tag_ids": (string)[],"p_title": string }; Returns: undefined
                            },
@@ -565,10 +681,13 @@ isOneToOne: true
 { Args: { "p_duration_min": number,"p_format": Database["public"]['Enums']["lesson_format"],"p_frequency": Database["public"]['Enums']["series_frequency"],"p_lesson_id": string,"p_level": Database["public"]['Enums']["cefr_level"],"p_local_start_time": string,"p_location": string,"p_meeting_url": string,"p_start_date": string,"p_student_ids": (string)[],"p_tag_ids": (string)[],"p_title": string }; Returns: {
               "created": number,"series_id": string,"skipped": number
             }[]
+                           },
+"withdraw_lesson_request":
+{ Args: { "p_request_id": string }; Returns: undefined
                            }
           }
           Enums: {
-            "app_locale": "de"|"vi","app_role": "admin"|"teacher"|"student","attendance_status": "pending"|"present"|"excused"|"absent","cefr_level": "A1"|"A2"|"B1"|"B2","currency_code": "EUR"|"VND","homework_status": "open"|"done","lesson_format": "online"|"in_person","lesson_status": "scheduled"|"held"|"cancelled","note_visibility": "student"|"teacher","series_frequency": "weekly"|"biweekly","student_status": "active"|"inactive"|"archived"
+            "app_locale": "de"|"vi","app_role": "admin"|"teacher"|"student","attendance_status": "pending"|"present"|"excused"|"absent","cefr_level": "A1"|"A2"|"B1"|"B2","currency_code": "EUR"|"VND","homework_status": "open"|"done","lesson_format": "online"|"in_person","lesson_status": "scheduled"|"held"|"cancelled","note_visibility": "student"|"teacher","request_kind": "reschedule"|"cancel","request_status": "pending"|"accepted"|"declined"|"withdrawn","series_frequency": "weekly"|"biweekly","student_status": "active"|"inactive"|"archived"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -688,7 +807,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_locale": ["de", "vi"],"app_role": ["admin", "teacher", "student"],"attendance_status": ["pending", "present", "excused", "absent"],"cefr_level": ["A1", "A2", "B1", "B2"],"currency_code": ["EUR", "VND"],"homework_status": ["open", "done"],"lesson_format": ["online", "in_person"],"lesson_status": ["scheduled", "held", "cancelled"],"note_visibility": ["student", "teacher"],"series_frequency": ["weekly", "biweekly"],"student_status": ["active", "inactive", "archived"]
+            "app_locale": ["de", "vi"],"app_role": ["admin", "teacher", "student"],"attendance_status": ["pending", "present", "excused", "absent"],"cefr_level": ["A1", "A2", "B1", "B2"],"currency_code": ["EUR", "VND"],"homework_status": ["open", "done"],"lesson_format": ["online", "in_person"],"lesson_status": ["scheduled", "held", "cancelled"],"note_visibility": ["student", "teacher"],"request_kind": ["reschedule", "cancel"],"request_status": ["pending", "accepted", "declined", "withdrawn"],"series_frequency": ["weekly", "biweekly"],"student_status": ["active", "inactive", "archived"]
           }
         }
 } as const

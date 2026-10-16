@@ -81,7 +81,8 @@
   },
   "teacher": {
     "requests": {
-      "emptyTitle": "Không có yêu cầu nào"
+      "emptyTitle": "Không có yêu cầu nào",
+      "emptyMessage": "Khi học viên muốn dời hoặc hủy buổi học, yêu cầu sẽ hiện ở đây."
     }
   },
   "student": {
@@ -134,7 +135,11 @@
     "participantsRequired": "Vui lòng chọn ít nhất một người.",
     "cannotPauseSelf": "Bạn không thể tự tạm dừng chính mình.",
     "exportFailed": "Xuất thất bại.",
-    "participantsOtherTeacher": "Tất cả người tham gia phải thuộc cùng một giáo viên."
+    "participantsOtherTeacher": "Tất cả người tham gia phải thuộc cùng một giáo viên.",
+    "requestPending": "Buổi học này đã có một yêu cầu đang chờ.",
+    "invalidSlots": "Vui lòng chọn thời gian thay thế hợp lệ trong tương lai.",
+    "lessonNotOpen": "Buổi học này không còn trong lịch.",
+    "requestClosed": "Yêu cầu này đã được quyết định."
   },
   "validation": {
     "required": "Bắt buộc",
@@ -155,7 +160,10 @@
     "invalid_url": "Vui lòng nhập đường dẫn bắt đầu bằng https://.",
     "end_before_start": "Buổi cuối nằm trước buổi đầu tiên.",
     "end_before_start_time": "Giờ kết thúc phải sau giờ bắt đầu.",
-    "weekdays_required": "Vui lòng chọn ít nhất một ngày."
+    "weekdays_required": "Vui lòng chọn ít nhất một ngày.",
+    "slot_in_past": "Thời gian đề xuất đã qua.",
+    "slot_duplicate": "Có hai đề xuất trùng nhau.",
+    "slots_required": "Vui lòng đề xuất ít nhất một thời gian thay thế."
   },
   "levels": {
     "label": "Trình độ",
@@ -477,5 +485,78 @@
     "notes": "Ghi chú của cô giáo",
     "files": "Tệp",
     "empty": "Ghi chú và tệp mà cô giáo chia sẻ với bạn sẽ hiển thị ở đây."
+  },
+  "requests": {
+    "title": "Yêu cầu",
+    "open": "Đang chờ",
+    "closed": "Đã xử lý",
+    "kind": {
+      "reschedule": "Dời lịch",
+      "cancel": "Hủy buổi"
+    },
+    "status": {
+      "pending": "Đang chờ",
+      "accepted": "Đã chấp nhận",
+      "declined": "Bị từ chối",
+      "withdrawn": "Đã rút lại"
+    },
+    "late": "Sát giờ",
+    "lateHint": "Đã quá hạn hủy (trước {{deadline}}). Giáo viên vẫn sẽ quyết định.",
+    "lateTeacher": "Yêu cầu sát giờ – sau hạn hủy.",
+    "ask": "Dời hoặc hủy buổi học",
+    "askHint": "Đề xuất tối đa 3 thời gian thay thế hoặc xin hủy buổi.",
+    "formTitle": "Gửi yêu cầu thay đổi",
+    "whatKind": "Bạn muốn làm gì?",
+    "slots": "Thời gian thay thế",
+    "slotsHint": "Tối đa 3 đề xuất, theo múi giờ của bạn ({{zone}}).",
+    "slot": "Đề xuất {{n}}",
+    "addSlot": "Thêm đề xuất",
+    "removeSlot": "Xóa đề xuất",
+    "message": "Lời nhắn (không bắt buộc)",
+    "messagePlaceholder": "Ví dụ: Em bị ốm.",
+    "send": "Gửi yêu cầu",
+    "withdraw": "Rút lại yêu cầu",
+    "yourRequests": "Yêu cầu của bạn",
+    "proposed": "Đề xuất",
+    "chosen": "Thời gian mới",
+    "response": "Trả lời",
+    "responseHint": "Không bắt buộc – học viên sẽ thấy câu trả lời.",
+    "from": "Từ",
+    "lesson": "Buổi học",
+    "pickSlot": "Chọn thời gian thay thế",
+    "free": "Trống",
+    "conflict": {
+      "overlap": "Trùng lịch: {{label}}",
+      "buffer": "Quá sát: {{label}}",
+      "blocker": "Lịch bận: {{label}}"
+    },
+    "accept": "Chấp nhận",
+    "decline": "Từ chối",
+    "groupCancelHint": "Buổi học nhóm: chấp nhận chỉ cho người này nghỉ có phép, buổi học vẫn diễn ra.",
+    "lessonClosed": "Buổi học không còn trong lịch (đã hủy hoặc đã học).",
+    "requestedAt": "Gửi lúc {{when}}",
+    "decidedAt": "Quyết định lúc {{when}}"
+  },
+  "push": {
+    "title": "Thông báo",
+    "status": {
+      "enabled": "Đang bật trên thiết bị này",
+      "undetermined": "Chưa bật",
+      "denied": "Đã tắt trong cài đặt hệ thống",
+      "unconfigured": "Chưa thiết lập (thiếu dự án EAS)",
+      "unsupported": "Không khả dụng trên thiết bị này (chỉ trên điện thoại)"
+    },
+    "enable": "Bật",
+    "openSettings": "Mở cài đặt",
+    "reminders": "Nhắc trước buổi học",
+    "remindersHint": "Có thể chọn nhiều. Không chọn thì không có nhắc nhở.",
+    "offsets": {
+      "15": "15 phút",
+      "60": "1 giờ",
+      "180": "3 giờ",
+      "1440": "1 ngày",
+      "2880": "2 ngày"
+    },
+    "device": "Thiết bị này"
   }
 }

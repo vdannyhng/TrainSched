@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅**
+Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅**
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -64,7 +64,7 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - Schüleransicht: Tabs Hausaufgaben und Materialien.
 - **Tests:** RLS + Storage-Policies (Schüler sieht keine Lehrernotiz und keinen Lehrer-Anhang), Suche mit vietnamesischen Diakritika, Markdown-Renderer.
 
-## M5 – Push-Benachrichtigungen + Anfragen-Workflow
+## M5 – Push-Benachrichtigungen + Anfragen-Workflow ✅
 
 - Dev Build via EAS (`development`-Profil); Push-Token registrieren und verwalten.
 - Erinnerungen vor Terminen (pro Nutzer konfigurierbar, Standard 24 h + 1 h) über `pg_cron` und Edge Function.
@@ -73,6 +73,9 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - Lehrer: Tab „Anfragen“ mit Badge; annehmen (Slot wählen → Termin wird verschoben, mit Konfliktprüfung) oder ablehnen mit Antwort.
 - **Tests:** pgTAP für Anfrage-RLS und Statusübergänge, Erinnerungsfenster-Logik und Dedupe (als SQL-Funktion testbar); Jest für Anfrage-Formular.
 - **[Du]:** Apple Developer + Google Play Konten (für APNs/FCM-Credentials), Gerätetest der Pushes.
+- **Umgesetzt:** Outbox mit Dedupe, Versand per `pg_net` → Edge Function `send-push` → Expo Push Service (Texte in Sprache und Zeitzone des Empfängers, ungültige Geräte werden entfernt). Absage im Gruppentermin entschuldigt nur die anfragende Person. Konfliktanzeige pro vorgeschlagenem Slot. Erinnerungen 15 Min. bis 2 Tage frei wählbar.
+- **Vorgezogen aus M6:** Level-Verlauf wird seit 2026-10-17 per Trigger protokolliert (`student_level_changes`).
+- **[Du] offen:** `eas init` (Expo-Konto) für die Projekt-ID, danach Push auf dem iPhone in Expo Go testen; Android braucht einen Dev Build.
 
 **→ Nach M5 ist das MVP komplett.**
 

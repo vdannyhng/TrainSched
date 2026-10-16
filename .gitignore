@@ -52,3 +52,6 @@ supabase/.temp
 supabase/.branches
 
 CLAUDE_CODE_PROMPT.*
+
+# Edge-Function-Secrets (lokal)
+supabase/functions/.env

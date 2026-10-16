@@ -18,7 +18,8 @@ export default function StudentLayout() {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="my-lesson/[id]" options={{ title: '' }} />
+      <Stack.Screen name="my-lesson/[id]/index" options={{ title: '' }} />
+      <Stack.Screen name="my-lesson/[id]/request" options={{ title: t('requests.formTitle') }} />
     </Stack>
   );
 }

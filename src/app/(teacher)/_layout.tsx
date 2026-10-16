@@ -32,6 +32,7 @@ export default function TeacherLayout() {
       <Stack.Screen name="notes-search" options={{ title: t('notes.search.title') }} />
       <Stack.Screen name="blocker/new" options={{ title: t('blockers.new') }} />
       <Stack.Screen name="blocker/[id]" options={{ title: t('blockers.edit') }} />
+      <Stack.Screen name="request/[id]" options={{ title: t('requests.title') }} />
     </Stack>
   );
 }

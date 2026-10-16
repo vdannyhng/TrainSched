@@ -88,6 +88,7 @@ export function useLessonsInRange(from: string, to: string) {
 export function useLesson(id: string) {
   return useQuery({
     queryKey: lessonKeys.detail(id),
+    enabled: !!id,
     queryFn: async () => {
       const { data, error } = await supabase.from('lessons').select(LESSON_SELECT).eq('id', id).single();
       if (error) throw error;

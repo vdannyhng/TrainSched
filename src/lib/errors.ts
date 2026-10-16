@@ -10,7 +10,11 @@ export type ErrorKey =
   | 'errors.participantsRequired'
   | 'errors.participantsOtherTeacher'
   | 'errors.cannotPauseSelf'
-  | 'errors.notFound';
+  | 'errors.notFound'
+  | 'errors.requestPending'
+  | 'errors.invalidSlots'
+  | 'errors.lessonNotOpen'
+  | 'errors.requestClosed';
 
 type PostgrestLikeError = { code?: string; message?: string };
 
@@ -20,6 +24,10 @@ const MESSAGE_KEYS: Record<string, ErrorKey> = {
   participants_required: 'errors.participantsRequired',
   participants_other_teacher: 'errors.participantsOtherTeacher',
   cannot_pause_self: 'errors.cannotPauseSelf',
+  request_pending: 'errors.requestPending',
+  invalid_slots: 'errors.invalidSlots',
+  lesson_not_open: 'errors.lessonNotOpen',
+  request_closed: 'errors.requestClosed',
 };
 
 /** Datenbank-/Netzwerkfehler → i18n-Key für die Anzeige. */
