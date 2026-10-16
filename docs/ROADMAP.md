@@ -76,12 +76,11 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 
 **→ Nach M5 ist das MVP komplett.**
 
-## M6 – Abrechnung light + Fortschritt
+## M6 – Lernfortschritt
 
-- Stundensatz und Währung (EUR/VND) pro Schüler, Pakete (z. B. Zehnerkarte), Zähler „verbleibende Stunden“ (verbraucht durch „gehalten“).
-- Zahlungen manuell erfassen; Monatsübersicht offen/bezahlt; CSV-Export über das Teilen-Sheet. Beträge nur als Text, ohne Umrechnung und Zahlungsabwicklung.
-- Fortschritt pro Schüler: Level-Verlauf, behandelte Topics, Anwesenheits- und Absagequote.
-- **Tests:** Berechnung offene Stunden/Beträge, CSV-Format, RLS (Schüler sieht eigenes Guthaben nur lesend).
+- Fortschritt pro Schüler: Level-Verlauf (wann von A2 auf B1 usw.), behandelte Topics, Anwesenheits- und Absagequote.
+- Abrechnung (Stundensätze, Pakete, Zahlungen) ist bewusst gestrichen – wird nicht gebraucht.
+- **Tests:** Berechnung der Quoten, Level-Verlauf, RLS (Schüler sieht nur den eigenen Fortschritt).
 
 ## M7 – Zweisprachigkeit, Politur, Datenschutz-Komplettierung
 
@@ -106,7 +105,6 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 2. **ICS-Abo-Feed** (pro Nutzer geheimer URL-Token, Edge Function) für Google/Apple Kalender.
 3. **Material-/Vokabel-Bibliothek** nach Level/Topic, Schülern zuweisbar.
 4. Gruppen als eigene Entität (feste Gruppen mit Namen), falls Gruppenunterricht häufig wird.
-5. Wiederkehrende Rechnungen als PDF.
 
 ## Offene Punkte / Risiken
 
