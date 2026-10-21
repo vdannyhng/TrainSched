@@ -5,7 +5,7 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 - Architektur: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-**Stand:** M1–M5 fertig (MVP): Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen) und Push-Benachrichtigungen.
+**Stand:** M1–M6 fertig: Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen), Push-Benachrichtigungen und Lernfortschritt.
 
 ## Voraussetzungen
 
@@ -35,7 +35,7 @@ npm start                 # Expo Dev-Server für Expo Go, QR-Code scannen
 
 ### Auf dem Handy testen
 
-Das Handy kann `127.0.0.1` nicht erreichen. Setze in `.env.local` deshalb die **LAN-IP deines PCs** ein, z. B. `EXPO_PUBLIC_SUPABASE_URL=http://192.168.1.23:54321`. Die IP zeigt `ipconfig` unter „IPv4-Adresse“. PC und Handy müssen im selben WLAN sein. Danach `npm start` neu starten.
+PC und Handy müssen im selben Netz sein. Im Entwicklungsmodus ersetzt die App eine lokale Supabase-Adresse (`127.0.0.1`, `192.168.…`) automatisch durch die Adresse des Rechners, auf dem `npm start` läuft – ein IP-Wechsel des PCs ist also kein Problem. Cloud-URLs bleiben unverändert.
 
 ### Push-Benachrichtigungen
 

@@ -558,5 +558,27 @@
       "2880": "2 ngày"
     },
     "device": "Thiết bị này"
+  },
+  "progress": {
+    "title": "Tiến độ học tập",
+    "period": {
+      "3m": "3 tháng",
+      "12m": "12 tháng",
+      "all": "Tất cả"
+    },
+    "empty": "Chưa có buổi học nào đã học hoặc đã hủy trong khoảng thời gian này.",
+    "hours": "Số giờ học",
+    "lessonsAttended": "Có mặt {{count}} buổi",
+    "attendance": "Chuyên cần",
+    "attendanceDetail": "{{present}} có mặt · {{excused}} có phép · {{absent}} vắng",
+    "cancellations": "Tỷ lệ hủy",
+    "cancellationsDetail": "{{count}} buổi hủy, trong đó {{student}} theo yêu cầu ({{late}} sát giờ)",
+    "notMarked": "Buổi đã qua chưa đánh dấu „đã học“: {{count}} – chưa được tính vào thống kê.",
+    "levels": "Tiến trình trình độ",
+    "since": "từ {{date}}",
+    "topics": "Chủ đề đã học",
+    "noTopics": "Chưa có chủ đề. Hãy chọn chủ đề cho buổi học để hiển thị ở đây.",
+    "topicLessons": "Số buổi: {{count}}",
+    "noCancellations": "Không có buổi hủy"
   }
 }

@@ -1,4 +1,8 @@
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 import { z } from 'zod';
+
+import { resolveDevSupabaseUrl } from './devHost';
 
 const envSchema = z.object({
   EXPO_PUBLIC_SUPABASE_URL: z.url(),
@@ -17,4 +21,13 @@ if (!parsed.success) {
   );
 }
 
-export const env = parsed.data;
+function devServerHost(): string | null {
+  if (!__DEV__) return null;
+  if (Platform.OS === 'web') return typeof window === 'undefined' ? null : window.location.hostname;
+  return Constants.expoConfig?.hostUri ?? null;
+}
+
+export const env = {
+  ...parsed.data,
+  EXPO_PUBLIC_SUPABASE_URL: resolveDevSupabaseUrl(parsed.data.EXPO_PUBLIC_SUPABASE_URL, devServerHost()),
+};

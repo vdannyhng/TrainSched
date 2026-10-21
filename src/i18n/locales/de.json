@@ -558,5 +558,27 @@
       "2880": "2 Tage"
     },
     "device": "Dieses Gerät"
+  },
+  "progress": {
+    "title": "Lernfortschritt",
+    "period": {
+      "3m": "3 Monate",
+      "12m": "12 Monate",
+      "all": "Gesamt"
+    },
+    "empty": "In diesem Zeitraum gibt es noch keine gehaltenen oder abgesagten Termine.",
+    "hours": "Unterrichtsstunden",
+    "lessonsAttended": "{{count}} × anwesend",
+    "attendance": "Anwesenheit",
+    "attendanceDetail": "{{present}} da · {{excused}} entschuldigt · {{absent}} gefehlt",
+    "cancellations": "Absagequote",
+    "cancellationsDetail": "{{count}} abgesagt, davon {{student}} auf Anfrage ({{late}} kurzfristig)",
+    "notMarked": "Vergangene Termine ohne Markierung „gehalten“: {{count}} – sie fehlen in der Statistik.",
+    "levels": "Level-Verlauf",
+    "since": "seit {{date}}",
+    "topics": "Behandelte Themen",
+    "noTopics": "Noch keine Themen. Wähle beim Termin Themen aus, dann erscheinen sie hier.",
+    "topicLessons": "Stunden: {{count}}",
+    "noCancellations": "Keine Absagen"
   }
 }

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 
+import { resolveDevSupabaseUrl } from '../devHost';
 import { contrastRatio, contrastText, LEVEL_COLORS, LEVELS, TAG_COLOR_PRESETS } from '../colors';
 import { errorKey } from '../errors';
 import { escapeLike, normalizeSearch } from '../search';
@@ -66,5 +67,24 @@ describe('errorKey', () => {
     [{}, 'errors.generic'],
   ])('%j → %s', (error, key) => {
     expect(errorKey(error)).toBe(key);
+  });
+});
+
+describe('resolveDevSupabaseUrl', () => {
+  it('ersetzt eine veraltete LAN-IP durch den Host des Dev-Servers', () => {
+    expect(resolveDevSupabaseUrl('http://192.168.1.109:54321', '192.168.1.106:8081')).toBe(
+      'http://192.168.1.106:54321',
+    );
+    expect(resolveDevSupabaseUrl('http://127.0.0.1:54321', 'localhost')).toBe('http://localhost:54321');
+  });
+
+  it('lässt Cloud-URLs und fehlende/öffentliche Dev-Hosts unverändert', () => {
+    expect(resolveDevSupabaseUrl('https://abc.supabase.co', '192.168.1.106:8081')).toBe(
+      'https://abc.supabase.co',
+    );
+    expect(resolveDevSupabaseUrl('http://192.168.1.109:54321', null)).toBe('http://192.168.1.109:54321');
+    expect(resolveDevSupabaseUrl('http://192.168.1.109:54321', 'abc.exp.direct')).toBe(
+      'http://192.168.1.109:54321',
+    );
   });
 });

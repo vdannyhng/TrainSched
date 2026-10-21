@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅**
+Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅**
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -79,11 +79,13 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 
 **→ Nach M5 ist das MVP komplett.**
 
-## M6 – Lernfortschritt
+## M6 – Lernfortschritt ✅
 
 - Fortschritt pro Schüler: Level-Verlauf (wann von A2 auf B1 usw.), behandelte Topics, Anwesenheits- und Absagequote.
 - Abrechnung (Stundensätze, Pakete, Zahlungen) ist bewusst gestrichen – wird nicht gebraucht.
 - **Tests:** Berechnung der Quoten, Level-Verlauf, RLS (Schüler sieht nur den eigenen Fortschritt).
+- **Umgesetzt:** RPC `student_progress` (Zeitraum 3 Monate / 12 Monate / gesamt). Karte „Lernfortschritt“ beim Schüler (Lehrkraft) und im Profil (Schüler): Unterrichtsstunden, Anwesenheits- und Absagequote (davon auf Anfrage/kurzfristig), Level-Zeitleiste, Themen als Balken. Hinweis für die Lehrkraft, wenn vergangene Termine noch nicht als gehalten markiert sind.
+- **Nebenbei:** Im Entwicklungsmodus nimmt die App die Supabase-Adresse vom Expo-Dev-Server – ein IP-Wechsel des PCs bricht das Handy-Testen nicht mehr.
 
 ## M7 – Zweisprachigkeit, Politur, Datenschutz-Komplettierung
 

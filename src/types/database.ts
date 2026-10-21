@@ -671,6 +671,9 @@ isOneToOne: true
               "created_at": string,"expires_at": string
             }[]
                            },
+"student_progress":
+{ Args: { "p_from"?: string,"p_student_id": string }; Returns: Json
+                           },
 "unregister_push_token":
 { Args: { "p_token": string }; Returns: undefined
                            },

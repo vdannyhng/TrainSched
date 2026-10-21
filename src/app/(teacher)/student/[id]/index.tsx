@@ -16,6 +16,7 @@ import {
 import { AttachmentsSection } from '@/features/attachments/components/AttachmentsSection';
 import { StudentHomeworkCard } from '@/features/homework/components/StudentHomeworkCard';
 import { NotesSection } from '@/features/notes/components/NotesSection';
+import { ProgressCard } from '@/features/progress/components/ProgressCard';
 import { useCreateInvitation, useInvitationStatus, useStudent } from '@/features/students/api';
 import { InviteCard } from '@/features/students/components/InviteCard';
 import { AccessToggle } from '@/features/settings/components/AccessToggle';
@@ -85,6 +86,8 @@ export default function StudentDetailScreen() {
         {s.goal ? <InfoRow label={t('students.fields.goal')} value={s.goal} /> : null}
         <InfoRow label={t('levels.label')} value={`${s.start_level ?? '–'} → ${s.current_level ?? '–'}`} />
       </Card>
+
+      <ProgressCard studentId={s.id} forTeacher />
 
       {s.email || s.phone ? (
         <Card title={t('students.sections.contact')}>

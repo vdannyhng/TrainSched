@@ -15,6 +15,7 @@ import {
 } from '@/components/ui';
 import { signOut, updateProfileLocale } from '@/features/auth/api';
 import { profileQueryKey, useAuth } from '@/features/auth/AuthProvider';
+import { ProgressCard } from '@/features/progress/components/ProgressCard';
 import { NotificationsCard } from '@/features/push/NotificationsCard';
 import { useTeachers, useTeacherSettings, useUpdateBuffer } from '@/features/settings/api';
 import { AccessToggle } from '@/features/settings/components/AccessToggle';
@@ -52,6 +53,7 @@ export function AccountScreen() {
       </Card>
 
       {profile.role === 'student' ? <MyCourseCard userId={userId} /> : null}
+      {profile.role === 'student' ? <MyProgressCard userId={userId} /> : null}
 
       <Segmented
         label={t('account.language')}
@@ -107,6 +109,13 @@ function MyCourseCard({ userId }: { userId: string | undefined }) {
       ) : null}
     </Card>
   );
+}
+
+/** Schüler: eigener Lernfortschritt (gleiche Karte wie bei der Lehrkraft, ohne Verwaltungshinweise). */
+function MyProgressCard({ userId }: { userId: string | undefined }) {
+  const mine = useMyStudent(userId);
+  if (!mine.data) return null;
+  return <ProgressCard studentId={mine.data.id} />;
 }
 
 const BUFFER_OPTIONS = [0, 10, 15, 30] as const;

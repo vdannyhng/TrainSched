@@ -109,12 +109,17 @@ export function useMyStudent(userId: string | undefined) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('students')
-        .select('current_level, goal, student_tags(tags(id, label, color))')
+        .select('id, current_level, goal, student_tags(tags(id, label, color))')
         .eq('profile_id', userId!)
         .maybeSingle();
       if (error) throw error;
       if (!data) return null;
-      return { level: data.current_level, goal: data.goal, tags: flattenTags(data.student_tags) };
+      return {
+        id: data.id,
+        level: data.current_level,
+        goal: data.goal,
+        tags: flattenTags(data.student_tags),
+      };
     },
   });
 }

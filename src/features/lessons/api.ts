@@ -178,7 +178,12 @@ export type LessonContent = {
 
 function useInvalidateLessons() {
   const queryClient = useQueryClient();
-  return () => queryClient.invalidateQueries({ queryKey: lessonKeys.all });
+  return () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: lessonKeys.all }),
+      // Gehalten/Abgesagt/Anwesenheit ändern den Lernfortschritt
+      queryClient.invalidateQueries({ queryKey: ['progress'] }),
+    ]);
 }
 
 export function useCreateLesson() {
