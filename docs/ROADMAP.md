@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-21 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅ · M7 ✅** · M8 Security · M9 Store
+Stand: 2026-10-21 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅ · M7 ✅ · M8 ✅** · M9 Store
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -98,7 +98,7 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - **Umgesetzt:** Konto löschen über Edge Function `delete-account` (Schüler: Login weg, Lehrkraft wird informiert; Lehrkraft für Schüler: Datensatz, Dateien, Login; Lehrkraft selbst: alles inkl. Schüler-Logins; Admin gesperrt). Datenexport als JSON (RLS-gefiltert, 7 Tage gültige Datei-Links). Datenschutzerklärung DE/VI in der App (`/privacy`, auch vor dem Login) und als `docs/PRIVACY.md` (aus derselben Quelle, `npm run privacy:md`). Offline-Lesen per persistiertem Query-Cache (7 Tage, beim Abmelden gelöscht) mit Offline-Hinweis. Kontrast-Test für hell/dunkel (WCAG AA).
 - **Offen [Du]:** Vietnamesisch durch deine Freundin gegenlesen lassen; Platzhalter für Anbieter/Adresse/E-Mail in `src/features/privacy/policy.ts` ausfüllen und rechtlich prüfen lassen. Apple/Google Sign-In bewusst weggelassen (optional).
 
-## M8 – Security, SDLC & CI-Pipeline
+## M8 – Security, SDLC & CI-Pipeline ✅
 
 Ziel: Der Prozess aus [docs/SDLC.md](SDLC.md) läuft automatisch – nichts Ungeprüftes landet auf `master` oder in einem Release.
 
@@ -115,6 +115,9 @@ Ziel: Der Prozess aus [docs/SDLC.md](SDLC.md) läuft automatisch – nichts Unge
 - `SECURITY.md` (Meldeweg für Schwachstellen), `docs/INCIDENT.md` (Ablauf bei Vorfällen).
 - **Tests:** Die Pipeline selbst ist der Test – ein absichtlich eingebauter Fehler (Tabelle ohne RLS, Secret im Code, fehlschlagender Test) muss den PR blockieren.
 - **[Du]:** Branch-Schutz in den GitHub-Einstellungen bestätigen, ggf. GitHub Advanced Security/CodeQL für das Repo aktivieren (für öffentliche Repos gratis).
+- **Umgesetzt:** Pre-Commit-Hook (secretlint, Prettier, ESLint, Typecheck); GitHub Actions mit vier Jobs (App inkl. Audit-Gate, Datenbank inkl. Security-Baseline und 36 Missbrauchstests, Semgrep, gitleaks); Dependabot; PR- und Release-Vorlagen; `docs/THREAT_MODEL.md` (19 Bedrohungen mit Nachweis), `SECURITY.md`, `docs/INCIDENT.md`, `docs/SECURITY_EXCEPTIONS.md`.
+- **Behoben:** Sitzung und Offline-Cache auf dem Handy jetzt AES-256-GCM-verschlüsselt (Schlüssel im Keychain/Keystore); Brute-Force-Schutz für Einladungscodes; Online-Raum-Links per DB-Constraint nur http(s); Passwortänderung nur nach frischem Login, Reset-Mails max. 1/Minute.
+- **Statt CodeQL:** Semgrep (Repo ist privat, CodeQL bräuchte GitHub Advanced Security).
 
 ## M9 – Store-Release
 

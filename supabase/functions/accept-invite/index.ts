@@ -25,13 +25,24 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
   if (req.method !== 'POST') return fail('invalid_input', 405);
 
-  const parsed = acceptInviteSchema.safeParse(await req.json().catch(() => null));
-  if (!parsed.success) return fail('invalid_input', 400);
-  const { code, email, password } = parsed.data;
-
   const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+
+  // Brute-Force-Schutz: jeder Versuch zählt (auch ungültige Eingaben), bevor ein Code geprüft wird
+  const client = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const { data: allowed, error: limitError } = await admin.rpc('register_invite_attempt', {
+    p_client: client,
+  });
+  if (limitError) {
+    console.error('register_invite_attempt', limitError);
+    return fail('server_error', 500);
+  }
+  if (!allowed) return fail('rate_limited', 429);
+
+  const parsed = acceptInviteSchema.safeParse(await req.json().catch(() => null));
+  if (!parsed.success) return fail('invalid_input', 400);
+  const { code, email, password } = parsed.data;
 
   const { data: invitations, error: findError } = await admin.rpc('find_open_invitation', { p_code: code });
   if (findError) {

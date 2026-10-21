@@ -1,0 +1,92 @@
+# SDLC Gate G2 – läuft bei jedem Pull Request und auf master. Branch-Schutz verlangt alle Jobs grün.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  app:
+    name: App – Typecheck, Lint, Tests, Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint -- --max-warnings=0
+      - run: npm run format:check
+      - run: npm test -- --ci
+      - run: npx expo-doctor
+      - name: Abhängigkeiten (npm audit, Ausnahmen in security-exceptions.json)
+        run: npm run audit:gate
+      - name: Secret-Scan Arbeitsstand (secretlint)
+        run: npm run test:secrets
+
+  database:
+    name: Datenbank – pgTAP, Security-Baseline, Missbrauchstests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Supabase starten (frische DB aus Migrationen + Seed)
+        run: npx supabase start -x studio,imgproxy,logflare,vector,supavisor
+      - name: pgTAP (RLS, RPCs, Security-Baseline)
+        run: npx supabase test db
+      - name: Edge Functions starten
+        run: |
+          cp supabase/functions/.env.example supabase/functions/.env
+          nohup npx supabase functions serve > functions.log 2>&1 &
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -X POST http://127.0.0.1:54321/functions/v1/send-push || true)
+            [ "$code" = "403" ] && echo "Functions bereit" && exit 0
+            sleep 2
+          done
+          cat functions.log; exit 1
+      - name: Missbrauchstests (fremde Lehrkraft, Schüler, anonym)
+        run: npm run test:abuse
+      - name: Logs bei Fehler
+        if: failure()
+        run: cat functions.log || true
+
+  sast:
+    name: SAST – Semgrep
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: semgrep/semgrep:latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: >-
+          semgrep scan --config p/typescript --config p/react --config p/javascript --config p/secrets
+          --metrics=off --exclude src/types/database.ts --error
+
+  secrets:
+    name: Secrets – gitleaks (ganze Historie)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

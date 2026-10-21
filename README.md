@@ -6,7 +6,7 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 - Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 - Entwicklungsprozess & Security Gates: [docs/SDLC.md](docs/SDLC.md)
 
-**Stand:** M1–M7 fertig: Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen), Push-Benachrichtigungen, Lernfortschritt, Konto löschen, Datenexport, Datenschutzerklärung und Offline-Lesen.
+**Stand:** M1–M8 fertig: Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen), Push-Benachrichtigungen, Lernfortschritt, Konto löschen, Datenexport, Datenschutzerklärung, Offline-Lesen sowie Security Gates und CI-Pipeline (siehe [docs/SDLC.md](docs/SDLC.md)).
 
 ## Voraussetzungen
 
@@ -79,6 +79,9 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
 | `npm run db:types`        | TypeScript-Typen aus dem DB-Schema generieren                   |
 | `npm run functions:serve` | Edge Functions lokal starten                                    |
 | `npm run format`          | Prettier auf alle Dateien                                       |
+| `npm run test:abuse`      | Missbrauchstests gegen lokale API (braucht `functions:serve`)   |
+| `npm run audit:gate`      | npm audit mit Ausnahmen aus `security-exceptions.json`          |
+| `npm run test:secrets`    | Secret-Scan (secretlint)                                        |
 | `npm run privacy:md`      | `docs/PRIVACY.md` aus der Datenschutzerklärung der App erzeugen |
 
 ## Supabase in der Cloud (Produktion)
@@ -117,4 +120,6 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
 - Rechte werden **serverseitig per Row Level Security** erzwungen. Die Rollen-Weiterleitung in der App ist nur UX.
 - Die offene Registrierung ist gesperrt. Konten entstehen ausschliesslich über Einladungscodes (Edge Function `accept-invite`).
 - Im Repo stehen keine Secrets. `.env.local` und `supabase/functions/.env` sind per `.gitignore` ausgeschlossen, nur die `.env.example`-Dateien werden committed. Das Secret `local-dev-push-secret` gilt nur lokal.
+- Sitzung und Offline-Cache liegen auf dem Handy AES-256-GCM-verschlüsselt, der Schlüssel im iOS-Keychain bzw. Android-Keystore (Web: Browser-Speicher, unverschlüsselt).
+- Prozess, Security Gates und Bedrohungsmodell: [docs/SDLC.md](docs/SDLC.md), [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md). Schwachstellen melden: [SECURITY.md](SECURITY.md).
 - `send-push` ist nicht für die App gedacht: Die Funktion prüft ein gemeinsames Secret, das nur die Datenbank kennt. Push-Tokens und Outbox sind für Nutzer nicht schreibbar, alle Änderungen laufen über geprüfte RPCs.

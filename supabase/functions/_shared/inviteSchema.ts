@@ -38,4 +38,5 @@ export const acceptInviteSchema = z.object({
 
 export type AcceptInviteInput = z.input<typeof acceptInviteSchema>;
 
-export type AcceptInviteErrorCode = 'invalid_input' | 'invalid_code' | 'email_taken' | 'server_error';
+export type AcceptInviteErrorCode =
+  'invalid_input' | 'invalid_code' | 'email_taken' | 'rate_limited' | 'server_error';

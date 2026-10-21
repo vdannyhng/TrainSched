@@ -43,6 +43,8 @@ export function inviteErrorKey(code: AcceptInviteErrorCode | undefined): AuthErr
       return 'errors.invalidCode';
     case 'email_taken':
       return 'errors.emailTaken';
+    case 'rate_limited':
+      return 'errors.rateLimited';
     default:
       return 'errors.generic';
   }
