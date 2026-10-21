@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅ · M7 ✅**
+Stand: 2026-10-21 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅ · M7 ✅** · M8 Security · M9 Store
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -10,6 +10,7 @@ Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 �
 - Jeder neue UI-Text läuft über i18n-Keys (`de.json`, für `vi.json` mindestens ein Platzhalter).
 - README mit Setup-Schritten ist aktualisiert.
 - Ein Commit (Conventional Commits, z. B. `feat(lessons): recurring series with DST-safe expansion`).
+- Ab M8: Security Gates aus [docs/SDLC.md](SDLC.md) sind grün (G1/G2 je Änderung, G3 vor jedem Release).
 
 Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Gerätetest).
 
@@ -97,7 +98,25 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - **Umgesetzt:** Konto löschen über Edge Function `delete-account` (Schüler: Login weg, Lehrkraft wird informiert; Lehrkraft für Schüler: Datensatz, Dateien, Login; Lehrkraft selbst: alles inkl. Schüler-Logins; Admin gesperrt). Datenexport als JSON (RLS-gefiltert, 7 Tage gültige Datei-Links). Datenschutzerklärung DE/VI in der App (`/privacy`, auch vor dem Login) und als `docs/PRIVACY.md` (aus derselben Quelle, `npm run privacy:md`). Offline-Lesen per persistiertem Query-Cache (7 Tage, beim Abmelden gelöscht) mit Offline-Hinweis. Kontrast-Test für hell/dunkel (WCAG AA).
 - **Offen [Du]:** Vietnamesisch durch deine Freundin gegenlesen lassen; Platzhalter für Anbieter/Adresse/E-Mail in `src/features/privacy/policy.ts` ausfüllen und rechtlich prüfen lassen. Apple/Google Sign-In bewusst weggelassen (optional).
 
-## M8 – Store-Release
+## M8 – Security, SDLC & CI-Pipeline
+
+Ziel: Der Prozess aus [docs/SDLC.md](SDLC.md) läuft automatisch – nichts Ungeprüftes landet auf `master` oder in einem Release.
+
+- **Arbeitsweise:** Feature-Branches + Pull Requests, Branch-Schutz auf `master` (nur mit grüner Pipeline), Releases nur über Tags.
+- **Gate G1 (lokal):** Pre-Commit-Hook mit Typecheck, ESLint, Prettier und Secret-Scan (gitleaks).
+- **Gate G2 (GitHub Actions):** Jest, pgTAP gegen eine frische Supabase in CI, Schema-Check „jede Tabelle hat RLS und keine offenen Grants“, `expo-doctor`, CodeQL (SAST), Dependency Review, `npm audit` für Produktionsabhängigkeiten, gitleaks über die Historie. Dependabot für Updates.
+- **Gate G3 (Release):** Checkliste im Release-PR (Threat Model, Datenschutzerklärung, Migrationen, Supabase Security Advisor, Secrets).
+- **Threat Model** `docs/THREAT_MODEL.md` (STRIDE light) für Login/Einladung, RLS, Storage, Edge Functions, Push, Offline-Cache. Bekannte Prüfpunkte:
+  - Sitzung und Offline-Cache liegen auf dem Gerät **unverschlüsselt** (expo-sqlite) → auf `expo-secure-store` bzw. verschlüsselten Speicher umstellen (MASVS-STORAGE).
+  - Rate-Limits für Login und Einladungscodes (Brute Force) prüfen und dokumentieren.
+  - Rotation von Push-Dispatch-Secret und Service-Role-Key beschreiben.
+  - Bekannte `npm audit`-Funde der Expo-Toolchain bewerten → `docs/SECURITY_EXCEPTIONS.md`.
+- **Missbrauchstests:** automatisierte Skripte, die als fremder Lehrer/Schüler versuchen, Daten zu lesen, zu ändern oder zu löschen (wie die Lösch-Tests aus M7), fest in der Pipeline.
+- `SECURITY.md` (Meldeweg für Schwachstellen), `docs/INCIDENT.md` (Ablauf bei Vorfällen).
+- **Tests:** Die Pipeline selbst ist der Test – ein absichtlich eingebauter Fehler (Tabelle ohne RLS, Secret im Code, fehlschlagender Test) muss den PR blockieren.
+- **[Du]:** Branch-Schutz in den GitHub-Einstellungen bestätigen, ggf. GitHub Advanced Security/CodeQL für das Repo aktivieren (für öffentliche Repos gratis).
+
+## M9 – Store-Release
 
 - `eas.json`-Profile, App-Icons, Splash, Bundle-IDs, Versionierung, EAS Update (OTA) für Bugfixes.
 - Store-Texte DE/VI, Screenshots, Datenschutz-Angaben (App Privacy / Data Safety), Demo-Zugang für das Apple-Review.
