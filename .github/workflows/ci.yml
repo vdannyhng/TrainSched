@@ -106,3 +106,33 @@ jobs:
           # Ausnahmen wie im Audit-Gate (security-exceptions.json)
           allow-ghsas: GHSA-vfj7-8cjw-p6xm, GHSA-86w9-cpqp-85rv
           comment-summary-in-pr: never
+
+  deploy-web:
+    # Continuous Deployment: nur nach Merge auf master und nur, wenn alle Gates grün sind
+    name: Web veröffentlichen (trainsched.expo.app)
+    needs: [app, database, sast, secrets]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://trainsched.expo.app
+    concurrency:
+      group: deploy-web
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Web-Build mit CSP (öffentliche Supabase-Werte aus der Umgebung „production“)
+        run: npm run build:web
+        env:
+          EXPO_PUBLIC_SUPABASE_URL: ${{ vars.EXPO_PUBLIC_SUPABASE_URL }}
+          EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+      - name: Auf EAS Hosting veröffentlichen
+        run: npx --yes eas-cli@25.3.0 deploy --prod --non-interactive --no-source-maps
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}

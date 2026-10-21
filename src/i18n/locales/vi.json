@@ -601,5 +601,23 @@
   },
   "offline": {
     "banner": "Ngoại tuyến – đang hiển thị dữ liệu đã lưu"
+  },
+  "audit": {
+    "title": "Nhật ký",
+    "hint": "Các thao tác quản trị trong 12 tháng qua (chỉ quản trị viên xem được).",
+    "empty": "Chưa có mục nào.",
+    "system": "Hệ thống",
+    "deletedAccount": "tài khoản đã xóa",
+    "by": "bởi {{name}}",
+    "actions": {
+      "access_paused": "Tạm khóa truy cập",
+      "access_resumed": "Mở lại truy cập",
+      "role_changed": "Đổi vai trò",
+      "invitation_created": "Tạo lời mời",
+      "invitation_revoked": "Thu hồi lời mời",
+      "invitation_redeemed": "Lời mời đã được dùng",
+      "student_deleted": "Xóa học viên",
+      "account_deleted": "Xóa tài khoản"
+    }
   }
 }

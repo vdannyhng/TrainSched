@@ -51,6 +51,8 @@ Deno.serve(async (req) => {
     return json({ error: 'server_error' }, 500);
   }
   const plan = data as Plan;
+  const { data: caller } = await asUser.auth.getUser();
+  const actorId = caller.user?.id ?? null;
 
   async function removeFiles(onlyOrphans: boolean) {
     if (!plan.teacher_folder) return;
@@ -66,6 +68,21 @@ Deno.serve(async (req) => {
     }
   }
 
+  // Admin-Protokoll: wer hat welches Konto gelöscht (vor dem Löschen, damit der Auslöser feststeht)
+  async function auditDeletions() {
+    if (!plan.user_ids.length) return;
+    const { error } = await admin.from('audit_log').insert(
+      plan.user_ids.map((id) => ({
+        actor_id: actorId,
+        action: 'account_deleted',
+        target_type: 'profile',
+        target_id: id,
+        details: { mode: plan.mode },
+      })),
+    );
+    if (error) throw error;
+  }
+
   async function deleteUsers() {
     for (const id of plan.user_ids) {
       const { error } = await admin.auth.admin.deleteUser(id);
@@ -74,9 +91,11 @@ Deno.serve(async (req) => {
   }
 
   try {
+    await auditDeletions();
     if (plan.mode === 'student') {
-      // Datensatz zuerst (Termine/Notizen/Anhänge kaskadieren), dann verwaiste Dateien, dann das Login
-      const { error } = await admin.from('students').delete().in('id', plan.student_ids);
+      // Datensatz zuerst (Termine/Notizen/Anhänge kaskadieren), dann verwaiste Dateien, dann das Login.
+      // Mit den Rechten des Nutzers löschen → das Protokoll kennt den Auslöser (RLS erlaubt es laut Plan).
+      const { error } = await asUser.from('students').delete().in('id', plan.student_ids);
       if (error) throw error;
       await removeFiles(true);
       await deleteUsers();

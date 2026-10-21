@@ -14,7 +14,7 @@ import { acceptInviteSchema, type InviteFormValues, type SignInValues } from './
 export type Profile = Tables<'profiles'>;
 
 /** Version der Datenschutzerklärung – bei inhaltlicher Änderung erhöhen, dann wird erneut gefragt. */
-export const PRIVACY_POLICY_VERSION = '2026-10';
+export const PRIVACY_POLICY_VERSION = '2026-10-21';
 
 export async function signIn(values: SignInValues) {
   const { error } = await supabase.auth.signInWithPassword({

@@ -601,5 +601,23 @@
   },
   "offline": {
     "banner": "Offline – gespeicherte Daten"
+  },
+  "audit": {
+    "title": "Protokoll",
+    "hint": "Verwaltungsaktionen der letzten 12 Monate (nur für Admins sichtbar).",
+    "empty": "Noch keine Einträge.",
+    "system": "System",
+    "deletedAccount": "gelöschtes Konto",
+    "by": "durch {{name}}",
+    "actions": {
+      "access_paused": "Zugang pausiert",
+      "access_resumed": "Zugang reaktiviert",
+      "role_changed": "Rolle geändert",
+      "invitation_created": "Einladung erstellt",
+      "invitation_revoked": "Einladung widerrufen",
+      "invitation_redeemed": "Einladung eingelöst",
+      "student_deleted": "Schüler gelöscht",
+      "account_deleted": "Konto gelöscht"
+    }
   }
 }

@@ -61,6 +61,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"audit_log": {
+                  Row: {
+                    "action": string,"actor_id": string | null,"created_at": string,"details": NonNullable<Json>,"id": number,"target_id": string | null,"target_type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"actor_id"?: string | null,"created_at"?: string,"details"?: NonNullable<Json>,"id"?: never,"target_id"?: string | null,"target_type": string
+                  }
+                  Update: {
+                    "action"?: string,"actor_id"?: string | null,"created_at"?: string,"details"?: NonNullable<Json>,"id"?: never,"target_id"?: string | null,"target_type"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"blockers": {
                   Row: {
                     "created_at": string,"end_date": string | null,"id": string,"local_end": string,"local_start": string,"start_date": string,"teacher_id": string,"timezone": string,"title": string,"updated_at": string,"weekdays": (number)[]
@@ -651,6 +665,9 @@ isOneToOne: true
                            },
 "previous_lesson_id":
 { Args: { "p_lesson_id": string }; Returns: string
+                           },
+"register_invite_attempt":
+{ Args: { "p_client": string }; Returns: boolean
                            },
 "register_push_token":
 { Args: { "p_platform": string,"p_token": string }; Returns: undefined
