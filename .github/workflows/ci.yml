@@ -92,3 +92,17 @@ jobs:
         run: >-
           docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:latest
           git /repo --redact --no-banner --exit-code 1
+
+  dependencies:
+    name: Abhängigkeiten – Dependency Review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          # Ausnahmen wie im Audit-Gate (security-exceptions.json)
+          allow-ghsas: GHSA-vfj7-8cjw-p6xm, GHSA-86w9-cpqp-85rv
+          comment-summary-in-pr: never

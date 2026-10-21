@@ -52,9 +52,9 @@ Grundsatz: Was automatisch prüfbar ist, prüft die Pipeline – Handarbeit nur 
 
 Ausnahmen (z. B. ein bekannter, nicht ausnutzbarer Fund in der Build-Toolchain) stehen mit Begründung und Ablaufdatum in `security-exceptions.json` (maschinenlesbar, vom Audit-Gate geprüft) und `docs/SECURITY_EXCEPTIONS.md`.
 
-**Warum Semgrep statt CodeQL:** Das Repo ist privat; CodeQL und Dependency Review brauchen dort GitHub Advanced Security (kostenpflichtig). Wird das Repo öffentlich, können beide ergänzt werden.
+**SAST doppelt:** Semgrep (schnell, Community-Regeln) und CodeQL (`security-extended`, auch wöchentlich). **Abhängigkeiten doppelt:** Audit-Gate auf dem ganzen Baum und Dependency Review für neu hinzukommende Pakete im PR. Beides ist gratis, weil das Repo öffentlich ist.
 
-**Branch-Schutz:** `master` nimmt nur Pull Requests an. Im privaten Repo ohne GitHub Pro erzwingt das der lokale Hook `.githooks/pre-push` (direkter Push auf `master` wird abgelehnt); gemergt wird nur, wenn alle vier CI-Jobs grün sind. Rollen: Claude entwickelt und öffnet PRs, du reviewst und mergst.
+**Branch-Schutz:** `master` nimmt nur Pull Requests mit allen grünen Pflicht-Checks an (GitHub-Branch-Schutz, gilt auch für Admins, keine Force-Pushes). Zusätzlich lehnt der lokale Hook `.githooks/pre-push` direkte Pushes ab. Rollen: Claude entwickelt und öffnet PRs, du reviewst und mergst.
 
 **Lokal ausführen:** `npm run check`, `npm test`, `npm run test:db`, `npm run test:abuse` (braucht `npm run functions:serve`), `npm run audit:gate`, `npm run test:secrets`.
 

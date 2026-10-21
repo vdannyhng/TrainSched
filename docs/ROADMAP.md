@@ -117,7 +117,7 @@ Ziel: Der Prozess aus [docs/SDLC.md](SDLC.md) läuft automatisch – nichts Unge
 - **[Du]:** Branch-Schutz in den GitHub-Einstellungen bestätigen, ggf. GitHub Advanced Security/CodeQL für das Repo aktivieren (für öffentliche Repos gratis).
 - **Umgesetzt:** Pre-Commit-Hook (secretlint, Prettier, ESLint, Typecheck); GitHub Actions mit vier Jobs (App inkl. Audit-Gate, Datenbank inkl. Security-Baseline und 36 Missbrauchstests, Semgrep, gitleaks); Dependabot; PR- und Release-Vorlagen; `docs/THREAT_MODEL.md` (19 Bedrohungen mit Nachweis), `SECURITY.md`, `docs/INCIDENT.md`, `docs/SECURITY_EXCEPTIONS.md`.
 - **Behoben:** Sitzung und Offline-Cache auf dem Handy jetzt AES-256-GCM-verschlüsselt (Schlüssel im Keychain/Keystore); Brute-Force-Schutz für Einladungscodes; Online-Raum-Links per DB-Constraint nur http(s); Passwortänderung nur nach frischem Login, Reset-Mails max. 1/Minute.
-- **Statt CodeQL:** Semgrep (Repo ist privat, CodeQL bräuchte GitHub Advanced Security).
+- **Repo öffentlich (2026-10-21):** dadurch zusätzlich CodeQL, Dependency Review und echter Branch-Schutz auf `master`.
 
 ## M9 – Store-Release
 
