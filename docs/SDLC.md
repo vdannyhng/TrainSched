@@ -54,6 +54,8 @@ Ausnahmen (z. B. ein bekannter, nicht ausnutzbarer Fund in der Build-Toolchain) 
 
 **Warum Semgrep statt CodeQL:** Das Repo ist privat; CodeQL und Dependency Review brauchen dort GitHub Advanced Security (kostenpflichtig). Wird das Repo öffentlich, können beide ergänzt werden.
 
+**Branch-Schutz:** `master` nimmt nur Pull Requests an. Im privaten Repo ohne GitHub Pro erzwingt das der lokale Hook `.githooks/pre-push` (direkter Push auf `master` wird abgelehnt); gemergt wird nur, wenn alle vier CI-Jobs grün sind. Rollen: Claude entwickelt und öffnet PRs, du reviewst und mergst.
+
 **Lokal ausführen:** `npm run check`, `npm test`, `npm run test:db`, `npm run test:abuse` (braucht `npm run functions:serve`), `npm run audit:gate`, `npm run test:secrets`.
 
 ### 5. Veröffentlichen

@@ -1,0 +1,11 @@
+#!/bin/sh
+# SDLC: master nur über Pull Requests mit grüner CI (Ersatz für GitHub-Branch-Schutz im privaten Repo).
+# stdin: <local ref> <local sha> <remote ref> <remote sha>
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/master" ]; then
+    echo "✗ Direkter Push auf master ist gesperrt (SDLC Gate G2)."
+    echo "  Bitte über einen Branch und Pull Request mergen – siehe docs/SDLC.md."
+    exit 1
+  fi
+done
+exit 0
