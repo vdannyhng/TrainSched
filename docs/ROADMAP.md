@@ -119,7 +119,7 @@ Ziel: Der Prozess aus [docs/SDLC.md](SDLC.md) läuft automatisch – nichts Unge
 - **Behoben:** Sitzung und Offline-Cache auf dem Handy jetzt AES-256-GCM-verschlüsselt (Schlüssel im Keychain/Keystore); Brute-Force-Schutz für Einladungscodes; Online-Raum-Links per DB-Constraint nur http(s); Passwortänderung nur nach frischem Login, Reset-Mails max. 1/Minute.
 - **Repo öffentlich (2026-10-21):** dadurch zusätzlich CodeQL, Dependency Review und echter Branch-Schutz auf `master`.
 
-## W – Web-Release (vor M9)
+## W – Web-Release (vor M9) ✅
 
 Ziel: Die App läuft öffentlich als Website und lässt sich auf dem Handy „Zum Home-Bildschirm“ hinzufügen (PWA) – ohne Store und ohne Expo Go.
 
@@ -128,6 +128,7 @@ Ziel: Die App läuft öffentlich als Website und lässt sich auf dem Handy „Zu
 - PWA: Manifest, Icons (vietnamesische Flagge + Kalender), Apple-Touch-Icon, Vollbild auf dem Home-Bildschirm.
 - Web-Sicherheit: kein Offline-Cache im Browser (kein sicherer Schlüsselspeicher), Push nur in der Handy-App.
 - **[Du]:** Supabase-Projekt anlegen und `supabase login`; eigenes Konto als Admin anlegen; Datenschutz-Platzhalter ausfüllen (Pflicht vor echten Schülerdaten).
+- **Live (2026-10-21):** https://trainsched.expo.app – Supabase `jlrcdqgiwyneykaijqpm` (eu-west-1, Irland), 19 Migrationen ohne Seed, 3 Edge Functions, Registrierung gesperrt (geprüft), Redirect-URLs über `[remotes.production]` in `supabase/config.toml`.
 
 ## M9 – Store-Release
 
