@@ -89,7 +89,9 @@
     "test:abuse": "node scripts/abuse-tests.mjs",
     "prepare": "git config core.hooksPath .githooks || true",
     "test:secrets": "secretlint \"**/*\"",
-    "audit:gate": "node scripts/audit-gate.mjs"
+    "audit:gate": "node scripts/audit-gate.mjs",
+    "build:web": "node scripts/build-web.mjs",
+    "deploy:web": "npm run build:web && npx eas-cli@latest deploy --prod"
   },
   "private": true,
   "jest": {

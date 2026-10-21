@@ -425,3 +425,11 @@ verify_jwt = false
 verify_jwt = false
 
 # delete-account prüft das JWT des Nutzers (Standard) und die Rechte in account_deletion_plan().
+
+# Produktion (Cloud): Werte, die beim `supabase config push` die lokalen Einstellungen überschreiben.
+[remotes.production]
+project_id = "jlrcdqgiwyneykaijqpm"
+
+[remotes.production.auth]
+site_url = "https://trainsched.expo.app"
+additional_redirect_urls = ["https://trainsched.expo.app/**", "trainsched://**"]

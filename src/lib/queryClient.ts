@@ -43,5 +43,9 @@ export const persistOptions = {
   maxAge: 7 * DAY,
   // Bei Schema-Änderungen hochzählen → alter Cache wird verworfen
   buster: 'v1',
-  dehydrateOptions: { shouldDehydrateQuery: shouldPersistQuery },
+  // Web: kein Offline-Cache – im Browser gibt es keinen sicheren Schlüsselspeicher (geteilte PCs!)
+  dehydrateOptions: { shouldDehydrateQuery: Platform.OS === 'web' ? () => false : shouldPersistQuery },
 };
+
+// Web: evtl. vorhandenen Cache aus älteren Versionen entfernen
+if (Platform.OS === 'web') void queryPersister.removeClient();

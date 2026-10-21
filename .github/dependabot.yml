@@ -22,6 +22,17 @@ updates:
       - dependency-name: 'jest-expo'
       - dependency-name: 'eslint-config-expo'
       - dependency-name: 'typescript'
+      # Versionen gibt das Expo SDK vor (expo-doctor prüft das)
+      - dependency-name: '@shopify/flash-list'
+      # Major-Sprünge nur bewusst mit eigenem PR (Kompatibilität mit jest-expo/eslint-config-expo bzw. API-Umbau)
+      - dependency-name: 'jest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/jest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@noble/ciphers'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:

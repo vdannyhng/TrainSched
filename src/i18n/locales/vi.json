@@ -546,7 +546,7 @@
       "undetermined": "Chưa bật",
       "denied": "Đã tắt trong cài đặt hệ thống",
       "unconfigured": "Chưa thiết lập (thiếu dự án EAS)",
-      "unsupported": "Không khả dụng trên thiết bị này (chỉ trên điện thoại)"
+      "unsupported": "Thông báo đẩy chỉ có trong ứng dụng điện thoại (không có trên trình duyệt)"
     },
     "enable": "Bật",
     "openSettings": "Mở cài đặt",
