@@ -1,6 +1,6 @@
 # Datenschutzerklärung
 
-Version 2026-10
+Version 2026-10-21
 
 TrainSched ist eine App zur Organisation von Nachhilfe- und Sprachunterricht. Wir erheben nur die Daten, die dafür nötig sind. Es gibt keine Werbung, kein Tracking und keinen Verkauf von Daten.
 
@@ -19,7 +19,8 @@ Für die Daten ihrer Schülerinnen und Schüler ist zusätzlich die jeweilige Le
 - **Unterricht:** Termine, Anwesenheit, Absagen, Verschiebe- und Absage-Anfragen, Notizen, Hausaufgaben.
 - **Dateien:** Fotos, PDFs und Audiodateien, die an Termine oder Schüler angehängt werden.
 - **Benachrichtigungen:** ein Gerätekennzeichen (Push-Token) und der Gerätetyp, falls Benachrichtigungen erlaubt wurden.
-- **Technische Daten:** Beim Zugriff verarbeitet der Hosting-Anbieter IP-Adresse und Zeitpunkt, um den Dienst sicher zu betreiben.
+- **Technische Daten:** Beim Zugriff verarbeitet der Hosting-Anbieter IP-Adresse und Zeitpunkt, um den Dienst sicher zu betreiben. Versuche, Einladungscodes einzulösen, werden mit gehashter Adresse höchstens einen Tag gespeichert (Schutz vor Missbrauch).
+- **Verwaltungsprotokoll:** Aktionen wie Zugang pausieren, Einladungen erstellen oder Konten löschen werden mit Zeitpunkt und Konto-Kennung (ohne Namen) protokolliert, nur für die Admin-Person sichtbar und nach 12 Monaten gelöscht.
 
 ## 3. Zweck und Rechtsgrundlage
 

@@ -36,7 +36,8 @@ const de: Policy = {
         '- **Unterricht:** Termine, Anwesenheit, Absagen, Verschiebe- und Absage-Anfragen, Notizen, Hausaufgaben.',
         '- **Dateien:** Fotos, PDFs und Audiodateien, die an Termine oder Schüler angehängt werden.',
         '- **Benachrichtigungen:** ein Gerätekennzeichen (Push-Token) und der Gerätetyp, falls Benachrichtigungen erlaubt wurden.',
-        '- **Technische Daten:** Beim Zugriff verarbeitet der Hosting-Anbieter IP-Adresse und Zeitpunkt, um den Dienst sicher zu betreiben.',
+        '- **Technische Daten:** Beim Zugriff verarbeitet der Hosting-Anbieter IP-Adresse und Zeitpunkt, um den Dienst sicher zu betreiben. Versuche, Einladungscodes einzulösen, werden mit gehashter Adresse höchstens einen Tag gespeichert (Schutz vor Missbrauch).',
+        '- **Verwaltungsprotokoll:** Aktionen wie Zugang pausieren, Einladungen erstellen oder Konten löschen werden mit Zeitpunkt und Konto-Kennung (ohne Namen) protokolliert, nur für die Admin-Person sichtbar und nach 12 Monaten gelöscht.',
       ].join('\n'),
     },
     {
@@ -122,7 +123,8 @@ const vi: Policy = {
         '- **Buổi học:** lịch học, chuyên cần, buổi hủy, yêu cầu dời/hủy, ghi chú, bài tập về nhà.',
         '- **Tệp:** ảnh, PDF và tệp âm thanh được đính kèm vào buổi học hoặc học viên.',
         '- **Thông báo:** mã thiết bị (push token) và loại thiết bị, nếu bạn cho phép thông báo.',
-        '- **Dữ liệu kỹ thuật:** khi truy cập, nhà cung cấp hosting xử lý địa chỉ IP và thời điểm để vận hành dịch vụ an toàn.',
+        '- **Dữ liệu kỹ thuật:** khi truy cập, nhà cung cấp hosting xử lý địa chỉ IP và thời điểm để vận hành dịch vụ an toàn. Các lần thử dùng mã mời được lưu với địa chỉ đã mã hóa (hash) tối đa một ngày (chống lạm dụng).',
+        '- **Nhật ký quản trị:** các thao tác như tạm khóa truy cập, tạo lời mời hoặc xóa tài khoản được ghi lại với thời điểm và mã tài khoản (không có tên), chỉ quản trị viên xem được và tự động xóa sau 12 tháng.',
       ].join('\n'),
     },
     {

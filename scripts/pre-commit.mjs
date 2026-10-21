@@ -38,7 +38,7 @@ const formattable = staged.filter((f) => /\.(ts|tsx|js|mjs|json|md|yml|yaml|css)
 const results = [
   run('Secret-Scan', ['secretlint', '--maskSecrets', '--', ...staged]),
   formattable.length ? run('Prettier', ['prettier', '--check', '--', ...formattable]) : true,
-  code.length ? run('ESLint', ['eslint', '--max-warnings=0', '--', ...code]) : true,
+  code.length ? run('ESLint', ['eslint', '--max-warnings=0', '--no-warn-ignored', '--', ...code]) : true,
   code.length ? run('Typecheck', ['tsc', '--noEmit']) : true,
 ];
 

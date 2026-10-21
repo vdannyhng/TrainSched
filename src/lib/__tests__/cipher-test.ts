@@ -33,3 +33,12 @@ describe('UTF-8 ohne TextEncoder', () => {
     expect(utf8Decode(new TextEncoder().encode(text))).toBe(text);
   });
 });
+
+describe('Kompatibilität gespeicherter Daten', () => {
+  it('liest Werte, die mit @noble/ciphers 1.x verschlüsselt wurden (bestehende Sitzungen bleiben gültig)', () => {
+    const fromV1 =
+      'enc1:010101010101010101010101:0dc3e7d8e4dace34f39c1a91b6961e568893f54f95f41b67b98ad21644c908c812874af92c79284d9b5412579762';
+    expect(decryptString(key, fromV1)).toBe('{"note":"Hương học tốt"}');
+    expect(encryptString(key, '{"note":"Hương học tốt"}', nonce)).toBe(fromV1);
+  });
+});

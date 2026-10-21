@@ -133,6 +133,7 @@ try {
   const del = await thomas.functions.invoke('delete-account', { body: { studentId: HUONG_STUDENT } });
   check('kann fremde Schüler nicht löschen', !!del.error && del.response?.status === 404);
   const exported = await thomas.rpc('export_my_data');
+  check('sieht das Admin-Protokoll nicht', denied(await thomas.from('audit_log').select('id')));
   check('Export enthält keine fremden Termine', !exported.data.lessons.some((l) => l.id === lessonId));
 
   // -------------------------------------------------------------- Schülerin von Lan
@@ -184,6 +185,11 @@ try {
     ).error,
   );
   check('sieht die Outbox nicht', denied(await huong.from('notification_outbox').select('id')));
+  check('sieht das Admin-Protokoll nicht', denied(await huong.from('audit_log').select('id')));
+  check(
+    'kann nichts ins Protokoll schreiben',
+    !!(await huong.from('audit_log').insert({ action: 'access_paused', target_type: 'profile' })).error,
+  );
   check('kann keine Pushes abholen', !!(await huong.rpc('claim_push_batch', { p_limit: 1 })).error);
 
   // -------------------------------------------------------------- Schüler einer anderen Lehrkraft

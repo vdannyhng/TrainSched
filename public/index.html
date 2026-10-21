@@ -11,6 +11,13 @@
       content="TrainSched – Termine, Notizen und Hausaufgaben für den Sprachunterricht"
     />
     <!-- Content-Security-Policy wird beim Web-Build eingesetzt (scripts/build-web.mjs) -->
+    <!-- Clickjacking-Schutz: unsichtbar, bis frame-guard.js das Einbetten ausschliesst -->
+    <style id="anti-clickjack">
+      html {
+        display: none !important;
+      }
+    </style>
+    <script src="/frame-guard.js"></script>
 
     <!-- Installierbar als Web-App („Zum Home-Bildschirm“) -->
     <link rel="manifest" href="/manifest.json" />
@@ -28,6 +35,8 @@
       html,
       body {
         height: 100%;
+        /* iOS Safari: 100% reicht unter die Browserleiste → sichtbare (dynamische) Höhe verwenden */
+        height: 100dvh;
       }
       /* These styles disable body scrolling if you are using <ScrollView> */
       body {

@@ -93,7 +93,7 @@ Live: **https://trainsched.expo.app** (Supabase-Projekt `jlrcdqgiwyneykaijqpm`, 
    EXPO_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
    EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_…
    ```
-2. Bauen und veröffentlichen:
+2. Bauen und veröffentlichen (passiert nach jedem Merge auf `master` automatisch über die CI; manuell nur im Notfall):
    ```bash
    npm run deploy:web
    ```

@@ -130,6 +130,14 @@ Ziel: Die App läuft öffentlich als Website und lässt sich auf dem Handy „Zu
 - **[Du]:** Supabase-Projekt anlegen und `supabase login`; eigenes Konto als Admin anlegen; Datenschutz-Platzhalter ausfüllen (Pflicht vor echten Schülerdaten).
 - **Live (2026-10-21):** https://trainsched.expo.app – Supabase `jlrcdqgiwyneykaijqpm` (eu-west-1, Irland), 19 Migrationen ohne Seed, 3 Edge Functions, Registrierung gesperrt (geprüft), Redirect-URLs über `[remotes.production]` in `supabase/config.toml`.
 
+## Betrieb & Härtung (nach W) ✅
+
+- Clickjacking-Schutz für die Website (`public/frame-guard.js`), Layout für iOS-Safari (dynamische Höhe, Tab-Leiste nicht mehr abgeschnitten).
+- Automatisches Veröffentlichen der Website nach jedem Merge auf `master` (nur bei grünen Gates).
+- Admin-Protokoll (`audit_log`): Zugang pausiert/reaktiviert, Rollenwechsel, Einladungen, Schüler- und Konto-Löschungen – sichtbar im Konto des Admins, 12 Monate.
+- `@noble/ciphers` 2 (mit Kompatibilitätstest für bestehende verschlüsselte Sitzungen).
+- Datenschutzerklärung um Protokoll und Einladungs-Rate-Limit ergänzt (Version 2026-10-21 → alle bestätigen neu).
+
 ## M9 – Store-Release
 
 - `eas.json`-Profile, App-Icons, Splash, Bundle-IDs, Versionierung, EAS Update (OTA) für Bugfixes.

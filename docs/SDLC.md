@@ -60,6 +60,9 @@ Ausnahmen (z. B. ein bekannter, nicht ausnutzbarer Fund in der Build-Toolchain) 
 
 ### 5. Veröffentlichen
 
+- **Website:** automatisch nach jedem Merge auf `master` (CI-Job „Web veröffentlichen“, läuft nur, wenn App, Datenbank, SAST und Secrets grün sind; Umgebung `production` mit `EXPO_TOKEN`).
+- **Datenbank:** Migrationen bewusst manuell (`npx supabase db push`, nie mit Seed) – vor dem App-Deploy, rückwärtskompatibel.
+
 - Nur getaggte Commits (`v0.x.y`) von `master` werden gebaut (EAS) bzw. deployt (Supabase, Web).
 - Datenbank-Migrationen vor dem App-Release einspielen, rückwärtskompatibel halten.
 

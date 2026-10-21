@@ -20,6 +20,7 @@ import { ProgressCard } from '@/features/progress/components/ProgressCard';
 import { NotificationsCard } from '@/features/push/NotificationsCard';
 import { useTeachers, useTeacherSettings, useUpdateBuffer } from '@/features/settings/api';
 import { AccessToggle } from '@/features/settings/components/AccessToggle';
+import { AuditLogCard } from '@/features/settings/components/AuditLogCard';
 import { useCreateTeacherInvitation, useMyStudent } from '@/features/students/api';
 import { InvitationCodeBox } from '@/features/students/components/InviteCard';
 import { SUPPORTED_LOCALES, type AppLocale } from '@/i18n';
@@ -73,6 +74,7 @@ export function AccountScreen() {
       {profile.role !== 'student' ? <TeachingCard teacherId={userId} /> : null}
       {profile.role === 'admin' ? <InviteTeacherCard /> : null}
       {profile.role === 'admin' ? <TeachersCard selfId={userId} /> : null}
+      {profile.role === 'admin' ? <AuditLogCard /> : null}
       <DataCard profile={profile} />
 
       <View style={styles.spacer} />

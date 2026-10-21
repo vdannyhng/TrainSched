@@ -1,5 +1,5 @@
-import { gcm } from '@noble/ciphers/aes';
-import { bytesToHex, hexToBytes } from '@noble/ciphers/utils';
+import { gcm } from '@noble/ciphers/aes.js';
+import { bytesToHex, hexToBytes } from '@noble/ciphers/utils.js';
 
 /**
  * AES-256-GCM für Daten auf dem Gerät (Sitzung, Offline-Cache).
