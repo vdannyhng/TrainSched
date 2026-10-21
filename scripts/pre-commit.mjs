@@ -11,11 +11,19 @@ const staged = execFileSync('git', ['diff', '--cached', '--name-only', '--diff-f
 
 if (staged.length === 0) process.exit(0);
 
-const isWin = process.platform === 'win32';
-const npx = isWin ? 'npx.cmd' : 'npx';
-const run = (label, args) => {
+// Werkzeuge direkt über Node starten – ohne Shell, damit Dateinamen nie als Befehle interpretiert werden
+const BIN = {
+  secretlint: 'node_modules/secretlint/bin/secretlint.js',
+  prettier: 'node_modules/prettier/bin/prettier.cjs',
+  eslint: 'node_modules/eslint/bin/eslint.js',
+  tsc: 'node_modules/typescript/bin/tsc',
+};
+const run = (label, [tool, ...args]) => {
   process.stdout.write(`G1 › ${label} … `);
-  const res = spawnSync(npx, args, { stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8', shell: isWin });
+  const res = spawnSync(process.execPath, [BIN[tool], ...args], {
+    stdio: ['ignore', 'pipe', 'pipe'],
+    encoding: 'utf8',
+  });
   if (res.status === 0) {
     console.log('ok');
     return true;
@@ -28,9 +36,9 @@ const code = staged.filter((f) => /\.(ts|tsx|js|mjs)$/.test(f) && !f.startsWith(
 const formattable = staged.filter((f) => /\.(ts|tsx|js|mjs|json|md|yml|yaml|css)$/.test(f));
 
 const results = [
-  run('Secret-Scan', ['secretlint', '--maskSecrets', ...staged]),
-  formattable.length ? run('Prettier', ['prettier', '--check', ...formattable]) : true,
-  code.length ? run('ESLint', ['eslint', '--max-warnings=0', ...code]) : true,
+  run('Secret-Scan', ['secretlint', '--maskSecrets', '--', ...staged]),
+  formattable.length ? run('Prettier', ['prettier', '--check', '--', ...formattable]) : true,
+  code.length ? run('ESLint', ['eslint', '--max-warnings=0', '--', ...code]) : true,
   code.length ? run('Typecheck', ['tsc', '--noEmit']) : true,
 ];
 

@@ -3,10 +3,11 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
-const isWin = process.platform === 'win32';
-const res = spawnSync(isWin ? 'npm.cmd' : 'npm', ['audit', '--omit=dev', '--json'], {
+// Über `npm run audit:gate` gestartet → npm_execpath zeigt auf npm-cli.js (kein Shell-Aufruf nötig)
+const npmCli = process.env.npm_execpath;
+if (!npmCli) throw new Error('Bitte über `npm run audit:gate` starten.');
+const res = spawnSync(process.execPath, [npmCli, 'audit', '--omit=dev', '--json'], {
   encoding: 'utf8',
-  shell: isWin,
   maxBuffer: 64 * 1024 * 1024,
 });
 const report = JSON.parse(res.stdout);
