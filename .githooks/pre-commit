@@ -1,0 +1,3 @@
+#!/bin/sh
+# SDLC Gate G1 – läuft vor jedem Commit (aktiviert durch `npm install` → prepare → core.hooksPath)
+exec node scripts/pre-commit.mjs

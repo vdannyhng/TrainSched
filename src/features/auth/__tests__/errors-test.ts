@@ -20,6 +20,7 @@ describe('authErrorKey', () => {
 describe('inviteErrorKey', () => {
   it('mappt Server-Codes auf Meldungen', () => {
     expect(inviteErrorKey('invalid_code')).toBe('errors.invalidCode');
+    expect(inviteErrorKey('rate_limited')).toBe('errors.rateLimited');
     expect(inviteErrorKey('email_taken')).toBe('errors.emailTaken');
     expect(inviteErrorKey('server_error')).toBe('errors.generic');
     expect(inviteErrorKey(undefined)).toBe('errors.generic');

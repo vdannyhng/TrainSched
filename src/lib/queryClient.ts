@@ -1,11 +1,10 @@
-import 'expo-sqlite/localStorage/install';
-
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { onlineManager, QueryClient } from '@tanstack/react-query';
 import * as Network from 'expo-network';
 import { Platform } from 'react-native';
 
 import { shouldPersistQuery } from './persist';
+import { encryptedStorage } from './secureStorage';
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -32,8 +31,9 @@ if (Platform.OS !== 'web') {
   });
 }
 
-export const queryPersister = createSyncStoragePersister({
-  storage: typeof localStorage === 'undefined' ? undefined : localStorage,
+// Offline-Cache enthält Notizen → verschlüsselt speichern (siehe secureStorage.ts)
+export const queryPersister = createAsyncStoragePersister({
+  storage: encryptedStorage,
   key: 'trainsched-query-cache',
   throttleTime: 2000,
 });

@@ -44,13 +44,19 @@ Grundsatz: Was automatisch prüfbar ist, prüft die Pipeline – Handarbeit nur 
 
 ### 4. Prüfen – Security Gates
 
-| Gate                     | Wann                   | Prüfungen                                                                                                                                                                                                     | Blockiert bei               |
-| ------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
-| **G1 Commit** (lokal)    | vor jedem Commit       | Typecheck, ESLint, Prettier, Secret-Scan (gitleaks)                                                                                                                                                           | jedem Fehler                |
-| **G2 Pull Request** (CI) | jeder PR auf `master`  | G1 + Jest + pgTAP (inkl. RLS-Negativtests) + Schema-Check „jede Tabelle hat RLS“ + `expo-doctor` + SAST (CodeQL) + Abhängigkeiten (Dependency Review, `npm audit --omit=dev`) + Secret-Scan über die Historie | Fehler, High/Critical-Funde |
-| **G3 Release**           | vor Store-/Web-Release | G2 grün auf dem Release-Commit + Checkliste: Threat Model aktuell, Datenschutzerklärung aktuell, Migrationen geprüft, Supabase Security Advisor ohne Warnungen, Secrets nur in Supabase/EAS                   | offenem Punkt               |
+| Gate                     | Wann                                                        | Prüfungen                                                                                                                                                                                                                                                           | Blockiert bei                                           |
+| ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| **G1 Commit** (lokal)    | vor jedem Commit (`.githooks/pre-commit`)                   | Secret-Scan (secretlint), Prettier, ESLint (0 Warnungen) auf gestagten Dateien, Typecheck                                                                                                                                                                           | jedem Fehler                                            |
+| **G2 Pull Request** (CI) | jeder PR und Push auf `master` (`.github/workflows/ci.yml`) | **App:** Typecheck, Lint, Prettier, Jest, `expo-doctor`, Audit-Gate, secretlint · **Datenbank:** frische Supabase, pgTAP inkl. Security-Baseline, Missbrauchstests gegen API und Edge Functions · **SAST:** Semgrep · **Secrets:** gitleaks über die ganze Historie | Fehler, neue High/Critical-Funde, abgelaufene Ausnahmen |
+| **G3 Release**           | vor Store-/Web-Release (Issue-Vorlage „Release“)            | G2 grün auf dem Release-Commit + Checkliste: Threat Model, Datenschutzerklärung, Migrationen, Supabase Security Advisor, Auth-Einstellungen, Secrets, Ausnahmen, Backup                                                                                             | offenem Punkt                                           |
 
-Ausnahmen (z. B. ein bekannter, nicht ausnutzbarer Fund in der Build-Toolchain) werden mit Begründung und Ablaufdatum in `docs/SECURITY_EXCEPTIONS.md` eingetragen.
+Ausnahmen (z. B. ein bekannter, nicht ausnutzbarer Fund in der Build-Toolchain) stehen mit Begründung und Ablaufdatum in `security-exceptions.json` (maschinenlesbar, vom Audit-Gate geprüft) und `docs/SECURITY_EXCEPTIONS.md`.
+
+**SAST doppelt:** Semgrep (schnell, Community-Regeln) und CodeQL (`security-extended`, auch wöchentlich). **Abhängigkeiten doppelt:** Audit-Gate auf dem ganzen Baum und Dependency Review für neu hinzukommende Pakete im PR. Beides ist gratis, weil das Repo öffentlich ist.
+
+**Branch-Schutz:** `master` nimmt nur Pull Requests mit allen grünen Pflicht-Checks an (GitHub-Branch-Schutz, gilt auch für Admins, keine Force-Pushes). Zusätzlich lehnt der lokale Hook `.githooks/pre-push` direkte Pushes ab. Rollen: Claude entwickelt und öffnet PRs, du reviewst und mergst.
+
+**Lokal ausführen:** `npm run check`, `npm test`, `npm run test:db`, `npm run test:abuse` (braucht `npm run functions:serve`), `npm run audit:gate`, `npm run test:secrets`.
 
 ### 5. Veröffentlichen
 
