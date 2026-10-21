@@ -546,7 +546,7 @@
       "undetermined": "Noch nicht aktiviert",
       "denied": "In den Systemeinstellungen ausgeschaltet",
       "unconfigured": "Noch nicht eingerichtet (EAS-Projekt fehlt)",
-      "unsupported": "Auf diesem Gerät nicht verfügbar (nur auf dem Handy)"
+      "unsupported": "Push-Benachrichtigungen gibt es nur in der Handy-App (nicht im Browser)"
     },
     "enable": "Aktivieren",
     "openSettings": "Einstellungen öffnen",

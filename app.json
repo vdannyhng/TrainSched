@@ -24,7 +24,12 @@
     },
     "web": {
       "output": "single",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "name": "TrainSched",
+      "shortName": "TrainSched",
+      "lang": "de",
+      "themeColor": "#1F5F8B",
+      "backgroundColor": "#F7F8FA"
     },
     "plugins": [
       "expo-router",

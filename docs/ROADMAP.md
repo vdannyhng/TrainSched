@@ -119,6 +119,16 @@ Ziel: Der Prozess aus [docs/SDLC.md](SDLC.md) läuft automatisch – nichts Unge
 - **Behoben:** Sitzung und Offline-Cache auf dem Handy jetzt AES-256-GCM-verschlüsselt (Schlüssel im Keychain/Keystore); Brute-Force-Schutz für Einladungscodes; Online-Raum-Links per DB-Constraint nur http(s); Passwortänderung nur nach frischem Login, Reset-Mails max. 1/Minute.
 - **Repo öffentlich (2026-10-21):** dadurch zusätzlich CodeQL, Dependency Review und echter Branch-Schutz auf `master`.
 
+## W – Web-Release (vor M9)
+
+Ziel: Die App läuft öffentlich als Website und lässt sich auf dem Handy „Zum Home-Bildschirm“ hinzufügen (PWA) – ohne Store und ohne Expo Go.
+
+- Supabase-Projekt in der Cloud (EU), Migrationen, Edge Functions, Secrets und Vault eingerichtet; Registrierung aus, Redirect-URLs für Passwort-Reset.
+- Web-Build mit Content-Security-Policy (`npm run build:web`), Hosting über EAS Hosting (`npm run deploy:web`, Adresse `*.expo.app`, eigene Domain optional).
+- PWA: Manifest, Icons (vietnamesische Flagge + Kalender), Apple-Touch-Icon, Vollbild auf dem Home-Bildschirm.
+- Web-Sicherheit: kein Offline-Cache im Browser (kein sicherer Schlüsselspeicher), Push nur in der Handy-App.
+- **[Du]:** Supabase-Projekt anlegen und `supabase login`; eigenes Konto als Admin anlegen; Datenschutz-Platzhalter ausfüllen (Pflicht vor echten Schülerdaten).
+
 ## M9 – Store-Release
 
 - `eas.json`-Profile, App-Icons, Splash, Bundle-IDs, Versionierung, EAS Update (OTA) für Bugfixes.

@@ -84,6 +84,22 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
 | `npm run test:secrets`    | Secret-Scan (secretlint)                                        |
 | `npm run privacy:md`      | `docs/PRIVACY.md` aus der Datenschutzerklärung der App erzeugen |
 
+## Web-Release (Website + „Zum Home-Bildschirm“)
+
+1. `.env.production.local` anlegen (wird nicht committet):
+   ```
+   EXPO_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
+   EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_…
+   ```
+2. Bauen und veröffentlichen:
+   ```bash
+   npm run deploy:web
+   ```
+   `build:web` setzt dabei eine Content-Security-Policy, die nur die eigene Seite und das Supabase-Projekt erlaubt.
+3. Auf dem Handy die Adresse in Safari (iPhone) bzw. Chrome (Android) öffnen → Teilen bzw. Menü → **„Zum Home-Bildschirm“**.
+
+Im Browser gibt es keine Push-Benachrichtigungen und keinen Offline-Cache.
+
 ## Supabase in der Cloud (Produktion)
 
 1. Auf supabase.com ein Projekt in einer **EU-Region** anlegen (Frankfurt oder Zürich).
