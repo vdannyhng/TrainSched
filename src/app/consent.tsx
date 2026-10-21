@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
@@ -38,6 +39,8 @@ export default function ConsentScreen() {
           </View>
         ))}
       </View>
+
+      <Button title={t('privacy.read')} variant="ghost" onPress={() => router.push('/privacy')} />
 
       <FormMessage message={accept.error ? t(authErrorKey(accept.error)) : undefined} />
       <Button title={t('consent.accept')} loading={accept.isPending} onPress={() => accept.mutate()} />

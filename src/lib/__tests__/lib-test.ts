@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 
 import { resolveDevSupabaseUrl } from '../devHost';
+import { shouldPersistQuery } from '../persist';
 import { contrastRatio, contrastText, LEVEL_COLORS, LEVELS, TAG_COLOR_PRESETS } from '../colors';
 import { errorKey } from '../errors';
 import { escapeLike, normalizeSearch } from '../search';
@@ -86,5 +87,19 @@ describe('resolveDevSupabaseUrl', () => {
     expect(resolveDevSupabaseUrl('http://192.168.1.109:54321', 'abc.exp.direct')).toBe(
       'http://192.168.1.109:54321',
     );
+  });
+});
+
+describe('Offline-Cache', () => {
+  const query = (key: unknown[], status: 'success' | 'error' = 'success') =>
+    ({ queryKey: key, state: { status } }) as unknown as Parameters<typeof shouldPersistQuery>[0];
+
+  it('speichert Termine, Notizen und Hausaufgaben, aber keine Anhänge-Links oder Fehler', () => {
+    expect(shouldPersistQuery(query(['lessons', 'range', 'a', 'b']))).toBe(true);
+    expect(shouldPersistQuery(query(['notes', 'lesson', 'x']))).toBe(true);
+    expect(shouldPersistQuery(query(['homework', 'mine']))).toBe(true);
+    expect(shouldPersistQuery(query(['attachments', 'lesson', 'x']))).toBe(false);
+    expect(shouldPersistQuery(query(['push-status']))).toBe(false);
+    expect(shouldPersistQuery(query(['lessons', 'detail', 'x'], 'error'))).toBe(false);
   });
 });

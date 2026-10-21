@@ -2,14 +2,21 @@
 // damit es in der Edge Function (Deno) und in Jest gleichermaßen läuft.
 
 export type PushLocale = 'de' | 'vi';
-export type PushKind = 'reminder' | 'lesson_moved' | 'lesson_cancelled' | 'request_new' | 'request_decided';
+export type PushKind =
+  'reminder' | 'lesson_moved' | 'lesson_cancelled' | 'request_new' | 'request_decided' | 'account_deleted';
 
 export type PushRow = {
   kind: PushKind;
   locale: PushLocale;
   timezone: string;
   recipient_role: 'admin' | 'teacher' | 'student';
-  payload: { offset_min?: number; old_start?: string; accepted?: boolean };
+  payload: {
+    offset_min?: number;
+    old_start?: string;
+    accepted?: boolean;
+    student_id?: string;
+    student_name?: string;
+  };
   lesson_id: string | null;
   request_id: string | null;
   lesson_start: string | null;
@@ -31,6 +38,8 @@ const TEXT = {
     cancel: 'Absage',
     accepted: 'Anfrage angenommen',
     declined: 'Anfrage abgelehnt',
+    accountDeleted: (name: string) => `${name} hat das App-Konto gelöscht`,
+    accountDeletedBody: 'Die Schülerdaten bleiben bei dir, bis du sie löschst.',
     minutes: (n: number) => `in ${n} Min.`,
     hours: (n: number) => `in ${n} Std.`,
     days: (n: number) => (n === 1 ? 'morgen' : `in ${n} Tagen`),
@@ -45,6 +54,8 @@ const TEXT = {
     cancel: 'Hủy buổi',
     accepted: 'Yêu cầu đã được chấp nhận',
     declined: 'Yêu cầu bị từ chối',
+    accountDeleted: (name: string) => `${name} đã xóa tài khoản ứng dụng`,
+    accountDeletedBody: 'Dữ liệu học viên vẫn được giữ cho đến khi bạn xóa.',
     minutes: (n: number) => `sau ${n} phút`,
     hours: (n: number) => `sau ${n} giờ`,
     days: (n: number) => (n === 1 ? 'ngày mai' : `sau ${n} ngày`),
@@ -73,7 +84,10 @@ function relative(offsetMin: number, locale: PushLocale): string {
 }
 
 /** Ziel in der App beim Antippen. */
-export function pushUrl(row: Pick<PushRow, 'kind' | 'recipient_role' | 'lesson_id' | 'request_id'>): string {
+export function pushUrl(
+  row: Pick<PushRow, 'kind' | 'recipient_role' | 'lesson_id' | 'request_id' | 'payload'>,
+): string {
+  if (row.kind === 'account_deleted' && row.payload.student_id) return `/student/${row.payload.student_id}`;
   if (row.recipient_role === 'student') return row.lesson_id ? `/my-lesson/${row.lesson_id}` : '/lessons';
   if (row.kind === 'request_new' && row.request_id) return `/request/${row.request_id}`;
   return row.lesson_id ? `/lesson/${row.lesson_id}` : '/today';
@@ -102,5 +116,11 @@ export function renderPush(row: PushRow): PushContent {
     }
     case 'request_decided':
       return { title: row.payload.accepted ? t.accepted : t.declined, body: labelWhen, url };
+    case 'account_deleted':
+      return {
+        title: t.accountDeleted(row.payload.student_name?.trim() || '…'),
+        body: t.accountDeletedBody,
+        url,
+      };
   }
 }

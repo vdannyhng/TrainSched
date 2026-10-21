@@ -14,7 +14,8 @@ export type ErrorKey =
   | 'errors.requestPending'
   | 'errors.invalidSlots'
   | 'errors.lessonNotOpen'
-  | 'errors.requestClosed';
+  | 'errors.requestClosed'
+  | 'errors.adminCannotDelete';
 
 type PostgrestLikeError = { code?: string; message?: string };
 
@@ -28,6 +29,7 @@ const MESSAGE_KEYS: Record<string, ErrorKey> = {
   invalid_slots: 'errors.invalidSlots',
   lesson_not_open: 'errors.lessonNotOpen',
   request_closed: 'errors.requestClosed',
+  admin_cannot_delete: 'errors.adminCannotDelete',
 };
 
 /** Datenbank-/Netzwerkfehler → i18n-Key für die Anzeige. */

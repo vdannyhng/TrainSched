@@ -30,6 +30,9 @@ export default function SignInScreen() {
         <Link href="/invite" style={styles.link}>
           <AppText tone="primary">{t('auth.signIn.haveInvite')}</AppText>
         </Link>
+        <Link href="/privacy" style={styles.link}>
+          <AppText tone="muted">{t('privacy.title')}</AppText>
+        </Link>
       </View>
     </Screen>
   );

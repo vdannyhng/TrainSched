@@ -15,6 +15,7 @@ import {
 } from '@/components/ui';
 import { signOut, updateProfileLocale } from '@/features/auth/api';
 import { profileQueryKey, useAuth } from '@/features/auth/AuthProvider';
+import { DataCard } from '@/features/privacy/DataCard';
 import { ProgressCard } from '@/features/progress/components/ProgressCard';
 import { NotificationsCard } from '@/features/push/NotificationsCard';
 import { useTeachers, useTeacherSettings, useUpdateBuffer } from '@/features/settings/api';
@@ -72,6 +73,7 @@ export function AccountScreen() {
       {profile.role !== 'student' ? <TeachingCard teacherId={userId} /> : null}
       {profile.role === 'admin' ? <InviteTeacherCard /> : null}
       {profile.role === 'admin' ? <TeachersCard selfId={userId} /> : null}
+      <DataCard profile={profile} />
 
       <View style={styles.spacer} />
       <Button

@@ -139,7 +139,9 @@
     "requestPending": "Buổi học này đã có một yêu cầu đang chờ.",
     "invalidSlots": "Vui lòng chọn thời gian thay thế hợp lệ trong tương lai.",
     "lessonNotOpen": "Buổi học này không còn trong lịch.",
-    "requestClosed": "Yêu cầu này đã được quyết định."
+    "requestClosed": "Yêu cầu này đã được quyết định.",
+    "adminCannotDelete": "Không thể xóa tài khoản quản trị viên.",
+    "exportFailedData": "Xuất dữ liệu thất bại."
   },
   "validation": {
     "required": "Bắt buộc",
@@ -215,7 +217,7 @@
     "guardianConsentHint": "Bắt buộc trước khi mời vào ứng dụng.",
     "localTime": "Bây giờ là {{time}} tại {{city}}",
     "deleteTitle": "Xóa {{name}}?",
-    "deleteMessage": "Toàn bộ dữ liệu của học viên này sẽ bị xóa vĩnh viễn: ghi chú, chủ đề, lời mời cùng các buổi học riêng và chuỗi buổi học. Buổi học nhóm vẫn giữ lại cho những người khác.",
+    "deleteMessage": "Toàn bộ dữ liệu của học viên này sẽ bị xóa vĩnh viễn: ghi chú, tệp, bài tập, chủ đề, lời mời, tài khoản ứng dụng cùng các buổi học riêng và chuỗi buổi học. Buổi học nhóm vẫn giữ lại cho những người khác.",
     "deleteButton": "Xóa học viên",
     "invite": {
       "linked": "Đã có tài khoản ứng dụng.",
@@ -580,5 +582,24 @@
     "noTopics": "Chưa có chủ đề. Hãy chọn chủ đề cho buổi học để hiển thị ở đây.",
     "topicLessons": "Số buổi: {{count}}",
     "noCancellations": "Không có buổi hủy"
+  },
+  "privacy": {
+    "title": "Chính sách bảo mật",
+    "read": "Đọc chính sách bảo mật",
+    "version": "Phiên bản {{version}}"
+  },
+  "data": {
+    "title": "Dữ liệu & tài khoản",
+    "export": "Xuất dữ liệu của tôi",
+    "exportHint": "Tệp JSON chứa tất cả dữ liệu bạn thấy trong ứng dụng. Liên kết tải tệp có hiệu lực 7 ngày.",
+    "delete": "Xóa tài khoản",
+    "deleteTitle": "Xóa tài khoản vĩnh viễn?",
+    "deleteStudent": "Quyền truy cập ứng dụng của bạn sẽ bị xóa ngay. Giáo viên sẽ được thông báo; dữ liệu học tập vẫn ở chỗ giáo viên cho đến khi giáo viên xóa.",
+    "deleteTeacher": "Tài khoản của bạn sẽ bị xóa ngay – cùng toàn bộ học viên, lịch học, ghi chú, tệp và tài khoản ứng dụng của học viên. Không thể hoàn tác. Gợi ý: hãy xuất dữ liệu trước.",
+    "adminHint": "Không thể xóa tài khoản quản trị viên.",
+    "deleteConfirm": "Xóa vĩnh viễn"
+  },
+  "offline": {
+    "banner": "Ngoại tuyến – đang hiển thị dữ liệu đã lưu"
   }
 }

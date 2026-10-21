@@ -423,3 +423,5 @@ verify_jwt = false
 # Wird nur von der Datenbank (pg_net) aufgerufen und prüft ein gemeinsames Secret.
 [functions.send-push]
 verify_jwt = false
+
+# delete-account prüft das JWT des Nutzers (Standard) und die Rechte in account_deletion_plan().

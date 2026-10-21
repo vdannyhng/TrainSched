@@ -8,7 +8,9 @@
     "@hookform/resolvers": "^5.9.1",
     "@shopify/flash-list": "2.0.2",
     "@supabase/supabase-js": "^2.117.3",
+    "@tanstack/query-sync-storage-persister": "^5.104.5",
     "@tanstack/react-query": "^5.104.2",
+    "@tanstack/react-query-persist-client": "^5.104.5",
     "expo": "~57.0.30",
     "expo-clipboard": "~57.0.2",
     "expo-constants": "~57.0.21",
@@ -23,6 +25,7 @@
     "expo-image-picker": "~57.0.20",
     "expo-linking": "~57.0.13",
     "expo-localization": "~57.0.2",
+    "expo-network": "~57.0.2",
     "expo-notifications": "~57.0.23",
     "expo-router": "~57.0.28",
     "expo-sharing": "~57.0.23",
@@ -76,7 +79,8 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > src/types/database.ts",
-    "functions:serve": "supabase functions serve"
+    "functions:serve": "supabase functions serve",
+    "privacy:md": "node -e \"process.env.UPDATE_PRIVACY_MD='1';require('child_process').execSync('npx jest src/features/privacy',{stdio:'inherit'})\""
   },
   "private": true,
   "jest": {

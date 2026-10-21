@@ -5,6 +5,7 @@ import { escapeLike, normalizeSearch } from '@/lib/search';
 import { supabase } from '@/lib/supabase';
 import type { Enums, Tables } from '@/types/database';
 
+import { deleteAccount } from '../privacy/api';
 import type { Tag } from '../tags/api';
 import { toStudentRow, type StudentFormOutput } from './schemas';
 
@@ -186,10 +187,8 @@ export function useUpdateStudent(student: StudentDetail | undefined) {
 export function useDeleteStudent() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('students').delete().eq('id', id);
-      if (error) throw error;
-    },
+    // Über die Edge Function: entfernt auch Dateien im Storage und das App-Login des Schülers
+    mutationFn: (id: string) => deleteAccount(id),
     onSuccess: (_data, id) => {
       queryClient.removeQueries({ queryKey: studentKeys.detail(id) });
       void queryClient.invalidateQueries({ queryKey: studentKeys.all });

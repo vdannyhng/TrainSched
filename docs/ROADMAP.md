@@ -1,6 +1,6 @@
 # TrainSched – Roadmap
 
-Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅**
+Stand: 2026-10-13 · Status: freigegeben · **M1 ✅ · M2 ✅ · M3 ✅ · M4 ✅ · M5 ✅ · M6 ✅ · M7 ✅**
 
 ## Definition of Done (gilt für jeden Meilenstein)
 
@@ -87,13 +87,15 @@ Legende: **[Du]** = Schritt, den du manuell machen musst (Konten, Schlüssel, Ge
 - **Umgesetzt:** RPC `student_progress` (Zeitraum 3 Monate / 12 Monate / gesamt). Karte „Lernfortschritt“ beim Schüler (Lehrkraft) und im Profil (Schüler): Unterrichtsstunden, Anwesenheits- und Absagequote (davon auf Anfrage/kurzfristig), Level-Zeitleiste, Themen als Balken. Hinweis für die Lehrkraft, wenn vergangene Termine noch nicht als gehalten markiert sind.
 - **Nebenbei:** Im Entwicklungsmodus nimmt die App die Supabase-Adresse vom Expo-Dev-Server – ein IP-Wechsel des PCs bricht das Handy-Testen nicht mehr.
 
-## M7 – Zweisprachigkeit, Politur, Datenschutz-Komplettierung
+## M7 – Zweisprachigkeit, Politur, Datenschutz-Komplettierung ✅
 
 - Vietnamesische Übersetzung vollständig (von deiner Freundin gegengelesen), Sprachumschalter, Diakritika-Test auf beiden Plattformen.
 - Dark Mode final, Barrierefreiheits-Check (Font-Scaling 200 %, Screenreader-Labels, Kontraste).
 - Offline-Lesezugriff (persistierter Query-Cache) auf Termine und Notizen.
 - Konto löschen (Schüler selbst / Lehrer für Schüler), Datenexport (JSON + Anhänge), Datenschutzerklärung (`docs/PRIVACY.md` + In-App).
 - Optional: Apple/Google Sign-In als Verknüpfung bestehender Konten.
+- **Umgesetzt:** Konto löschen über Edge Function `delete-account` (Schüler: Login weg, Lehrkraft wird informiert; Lehrkraft für Schüler: Datensatz, Dateien, Login; Lehrkraft selbst: alles inkl. Schüler-Logins; Admin gesperrt). Datenexport als JSON (RLS-gefiltert, 7 Tage gültige Datei-Links). Datenschutzerklärung DE/VI in der App (`/privacy`, auch vor dem Login) und als `docs/PRIVACY.md` (aus derselben Quelle, `npm run privacy:md`). Offline-Lesen per persistiertem Query-Cache (7 Tage, beim Abmelden gelöscht) mit Offline-Hinweis. Kontrast-Test für hell/dunkel (WCAG AA).
+- **Offen [Du]:** Vietnamesisch durch deine Freundin gegenlesen lassen; Platzhalter für Anbieter/Adresse/E-Mail in `src/features/privacy/policy.ts` ausfüllen und rechtlich prüfen lassen. Apple/Google Sign-In bewusst weggelassen (optional).
 
 ## M8 – Store-Release
 

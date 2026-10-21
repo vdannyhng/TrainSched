@@ -576,6 +576,12 @@ isOneToOne: true
             "accept_privacy_policy":
 { Args: { "p_version": string }; Returns: undefined
                            },
+"account_deletion_plan":
+{ Args: { "p_student_id"?: string }; Returns: Json
+                           },
+"attachment_objects":
+{ Args: { "p_only_orphans": boolean,"p_teacher_id": string }; Returns: string[]
+                           },
 "blocker_occurrences":
 { Args: { "p_from": string,"p_teacher_id": string,"p_to": string }; Returns: {
               "blocker_id": string,"end_at": string,"start_at": string,"title": string
@@ -623,6 +629,9 @@ isOneToOne: true
                            },
 "end_series":
 { Args: { "p_lesson_id": string }; Returns: number
+                           },
+"export_my_data":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "find_open_invitation":
 { Args: { "p_code": string }; Returns: {

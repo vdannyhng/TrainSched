@@ -30,6 +30,11 @@ export async function signOut() {
   if (error) throw error;
 }
 
+/** Nach dem Löschen des eigenen Kontos: nur die lokale Sitzung beenden (Server kennt den Nutzer nicht mehr). */
+export async function signOutLocal() {
+  await supabase.auth.signOut({ scope: 'local' });
+}
+
 /** Löst die Einladung über die Edge Function ein und meldet direkt an. */
 export async function acceptInvite(values: InviteFormValues) {
   const body = acceptInviteSchema.parse(values);

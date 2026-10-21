@@ -139,7 +139,9 @@
     "requestPending": "Für diesen Termin gibt es schon eine offene Anfrage.",
     "invalidSlots": "Bitte gültige Ersatztermine in der Zukunft wählen.",
     "lessonNotOpen": "Dieser Termin ist nicht mehr geplant.",
-    "requestClosed": "Über diese Anfrage wurde schon entschieden."
+    "requestClosed": "Über diese Anfrage wurde schon entschieden.",
+    "adminCannotDelete": "Das Admin-Konto kann nicht gelöscht werden.",
+    "exportFailedData": "Der Export ist fehlgeschlagen."
   },
   "validation": {
     "required": "Pflichtfeld",
@@ -215,7 +217,7 @@
     "guardianConsentHint": "Voraussetzung für die Einladung in die App.",
     "localTime": "Jetzt {{time}} in {{city}}",
     "deleteTitle": "{{name}} löschen?",
-    "deleteMessage": "Alle Daten dieses Schülers werden endgültig gelöscht: Notizen, Themen, Einladungen sowie seine Einzeltermine und Serien. Gruppentermine bleiben für die anderen bestehen.",
+    "deleteMessage": "Alle Daten dieses Schülers werden endgültig gelöscht: Notizen, Dateien, Hausaufgaben, Themen, Einladungen, sein App-Zugang sowie seine Einzeltermine und Serien. Gruppentermine bleiben für die anderen bestehen.",
     "deleteButton": "Schüler löschen",
     "invite": {
       "linked": "Hat App-Zugang.",
@@ -580,5 +582,24 @@
     "noTopics": "Noch keine Themen. Wähle beim Termin Themen aus, dann erscheinen sie hier.",
     "topicLessons": "Stunden: {{count}}",
     "noCancellations": "Keine Absagen"
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "read": "Datenschutzerklärung lesen",
+    "version": "Version {{version}}"
+  },
+  "data": {
+    "title": "Daten & Konto",
+    "export": "Meine Daten exportieren",
+    "exportHint": "JSON-Datei mit allen Daten, die du in der App sehen kannst. Links zu Dateien gelten 7 Tage.",
+    "delete": "Konto löschen",
+    "deleteTitle": "Konto endgültig löschen?",
+    "deleteStudent": "Dein App-Zugang wird sofort gelöscht. Deine Lehrkraft wird informiert; die Unterrichtsdaten bleiben bei ihr, bis sie sie löscht.",
+    "deleteTeacher": "Dein Konto wird sofort gelöscht – mit allen Schülern, Terminen, Notizen, Dateien und den App-Zugängen deiner Schüler. Das lässt sich nicht rückgängig machen. Tipp: Vorher die Daten exportieren.",
+    "adminHint": "Das Admin-Konto kann nicht gelöscht werden.",
+    "deleteConfirm": "Endgültig löschen"
+  },
+  "offline": {
+    "banner": "Offline – gespeicherte Daten"
   }
 }

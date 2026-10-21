@@ -5,7 +5,7 @@ Termin- und Lernverwaltung für Vietnamesisch-/Deutsch-Nachhilfe. Mobile App (An
 - Architektur: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - Roadmap / Meilensteine: [docs/ROADMAP.md](docs/ROADMAP.md)
 
-**Stand:** M1–M6 fertig: Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen), Push-Benachrichtigungen und Lernfortschritt.
+**Stand:** M1–M7 fertig: Auth/Rollen/RLS, Schülerverwaltung, Termine (Serien, Kalender, Blocker, Zeitzonen), Notizen, Anhänge, Hausaufgaben, Notiz-Suche, Anfragen (Verschieben/Absagen), Push-Benachrichtigungen, Lernfortschritt, Konto löschen, Datenexport, Datenschutzerklärung und Offline-Lesen.
 
 ## Voraussetzungen
 
@@ -67,17 +67,18 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
 
 ## Skripte
 
-| Befehl                    | Zweck                                                         |
-| ------------------------- | ------------------------------------------------------------- |
-| `npm start`               | Expo Dev-Server für Expo Go                                   |
-| `npm run start:dev`       | Expo Dev-Server für den eigenen Dev Build (`eas build`)       |
-| `npm run check`           | TypeScript (`tsc --noEmit`) + ESLint + Prettier-Check         |
-| `npm test`                | Jest + React Native Testing Library                           |
-| `npm run test:db`         | pgTAP-Tests für RLS und SQL-Funktionen (Supabase muss laufen) |
-| `npm run db:reset`        | DB neu aufsetzen (Migrationen + Seed)                         |
-| `npm run db:types`        | TypeScript-Typen aus dem DB-Schema generieren                 |
-| `npm run functions:serve` | Edge Functions lokal starten                                  |
-| `npm run format`          | Prettier auf alle Dateien                                     |
+| Befehl                    | Zweck                                                           |
+| ------------------------- | --------------------------------------------------------------- |
+| `npm start`               | Expo Dev-Server für Expo Go                                     |
+| `npm run start:dev`       | Expo Dev-Server für den eigenen Dev Build (`eas build`)         |
+| `npm run check`           | TypeScript (`tsc --noEmit`) + ESLint + Prettier-Check           |
+| `npm test`                | Jest + React Native Testing Library                             |
+| `npm run test:db`         | pgTAP-Tests für RLS und SQL-Funktionen (Supabase muss laufen)   |
+| `npm run db:reset`        | DB neu aufsetzen (Migrationen + Seed)                           |
+| `npm run db:types`        | TypeScript-Typen aus dem DB-Schema generieren                   |
+| `npm run functions:serve` | Edge Functions lokal starten                                    |
+| `npm run format`          | Prettier auf alle Dateien                                       |
+| `npm run privacy:md`      | `docs/PRIVACY.md` aus der Datenschutzerklärung der App erzeugen |
 
 ## Supabase in der Cloud (Produktion)
 
@@ -90,6 +91,7 @@ Mails (z. B. für den Passwort-Reset) landen lokal in Mailpit: <http://127.0.0.1
    npx supabase db push
    npx supabase functions deploy accept-invite --no-verify-jwt
    npx supabase functions deploy send-push --no-verify-jwt
+   npx supabase functions deploy delete-account
    npx supabase secrets set PUSH_DISPATCH_SECRET=<langes-zufälliges-secret>
    ```
    Im SQL-Editor die Vault-Secrets für den Push-Versand setzen (gleiches Secret):

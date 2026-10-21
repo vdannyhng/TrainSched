@@ -67,3 +67,18 @@ describe('Push-Texte', () => {
     expect(renderPush({ ...base, kind: 'lesson_cancelled', recipient_role: 'admin' }).url).toBe('/lesson/L1');
   });
 });
+
+describe('Push-Text: Konto gelöscht', () => {
+  it('informiert die Lehrkraft und öffnet den Schüler', () => {
+    const p = renderPush({
+      ...base,
+      kind: 'account_deleted',
+      recipient_role: 'teacher',
+      lesson_id: null,
+      lesson_start: null,
+      payload: { student_id: 'S1', student_name: 'Hương' },
+    });
+    expect(p.title).toBe('Hương hat das App-Konto gelöscht');
+    expect(p.url).toBe('/student/S1');
+  });
+});

@@ -7,18 +7,21 @@ import {
   BeVietnamPro_700Bold,
   useFonts,
 } from '@expo-google-fonts/be-vietnam-pro';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { AuthProvider, useAuth } from '@/features/auth/AuthProvider';
 import { configureNotifications } from '@/features/push/push';
 import { PushBridge } from '@/features/push/PushBridge';
-import { queryClient } from '@/lib/queryClient';
+import { OfflineBanner } from '@/components/OfflineBanner';
+import { persistOptions, queryClient } from '@/lib/queryClient';
+import { fontFamily } from '@/theme/tokens';
 import { useTheme } from '@/theme/useTheme';
 
 void SplashScreen.preventAutoHideAsync();
@@ -34,16 +37,17 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={styles.root}>
-      <QueryClientProvider client={queryClient}>
+      <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <AuthProvider>
           <RootNavigator fontsReady={fontsLoaded || !!fontError} />
         </AuthProvider>
-      </QueryClientProvider>
+      </PersistQueryClientProvider>
     </GestureHandlerRootView>
   );
 }
 
 function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
+  const { t } = useTranslation();
   const { gate, session } = useAuth();
   const { scheme, colors } = useTheme();
   const base = scheme === 'dark' ? DarkTheme : DefaultTheme;
@@ -90,8 +94,20 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
           <Stack.Screen name="(student)" />
         </Stack.Protected>
         <Stack.Screen name="reset-password" />
+        <Stack.Screen
+          name="privacy"
+          options={{
+            headerShown: true,
+            title: t('privacy.title'),
+            headerBackTitle: t('common.back'),
+            headerStyle: { backgroundColor: colors.surface },
+            headerTintColor: colors.primary,
+            headerTitleStyle: { fontFamily: fontFamily.semibold, color: colors.text },
+          }}
+        />
       </Stack>
       {session && (gate === 'teacher' || gate === 'student') ? <PushBridge userId={session.user.id} /> : null}
+      <OfflineBanner />
     </ThemeProvider>
   );
 }

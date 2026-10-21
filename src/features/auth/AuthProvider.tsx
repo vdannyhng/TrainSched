@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 import i18n, { isAppLocale } from '@/i18n';
+import { queryPersister } from '@/lib/queryClient';
 import { supabase } from '@/lib/supabase';
 
 import { fetchProfile, type Profile } from './api';
@@ -32,7 +33,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data } = supabase.auth.onAuthStateChange((event, next) => {
       setSession(next);
-      if (event === 'SIGNED_OUT') queryClient.clear();
+      if (event === 'SIGNED_OUT') {
+        // Offline-Cache gehört zum Konto → beim Abmelden sofort vom Gerät entfernen
+        queryClient.clear();
+        void queryPersister.removeClient();
+      }
     });
     return () => data.subscription.unsubscribe();
   }, [queryClient]);
