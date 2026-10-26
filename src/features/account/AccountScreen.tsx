@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
@@ -78,6 +79,7 @@ export function AccountScreen() {
       <DataCard profile={profile} />
 
       <View style={styles.spacer} />
+      <Button title={t('help.open')} variant="secondary" onPress={() => router.push('/anleitung')} />
       <Button
         title={t('auth.signOut')}
         variant="secondary"
