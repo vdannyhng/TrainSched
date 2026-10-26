@@ -2,10 +2,10 @@
 
 Maschinenlesbar in [`security-exceptions.json`](../security-exceptions.json) – das Audit-Gate (`npm run audit:gate`) lässt nur diese High/Critical-Funde durch und schlägt nach dem Ablaufdatum wieder an.
 
-| Advisory            | Paket      | Schwere | Wo                                      | Begründung                                                                                        | Ablauf     |
-| ------------------- | ---------- | ------- | --------------------------------------- | ------------------------------------------------------------------------------------------------- | ---------- |
-| GHSA-vfj7-8cjw-p6xm | braces     | high    | Metro, Jest (Build/Test)                | Glob-Muster stammen aus der eigenen Konfiguration, nie von Nutzern; nicht im App-Bundle; kein Fix | 2027-01-31 |
-| GHSA-86w9-cpqp-85rv | node-forge | high    | `@expo/code-signing-certificates` (CLI) | Nur Expo-CLI-Werkzeug für Update-Signaturen, wird nicht genutzt; nicht im App-Bundle; kein Fix    | 2027-01-31 |
+| Advisory            | Paket      | Schwere | Wo                                      | Begründung                                                                                                                    | Ablauf     |
+| ------------------- | ---------- | ------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| GHSA-86w9-cpqp-85rv | node-forge | high    | `@expo/code-signing-certificates` (CLI) | Nur Expo-CLI-Werkzeug für Update-Signaturen, wird nicht genutzt; nicht im App-Bundle; kein Fix                                | 2027-01-31 |
+| GHSA-mrhx-c7xc-m3w5 | zod (v3)   | high    | `@expo/cli` (Build/Dev)                 | Nur die Expo-CLI nutzt zod 3, verarbeitet keine Nutzereingaben; die App nutzt zod 4.6.7 (nicht betroffen); kein Fix für zod 3 | 2027-01-31 |
 
 ## Moderate Funde (nicht blockierend, beobachtet)
 
@@ -16,3 +16,5 @@ Maschinenlesbar in [`security-exceptions.json`](../security-exceptions.json) –
 | GHSA-w5hq-g745-h8pq | uuid                 | xcode (Config-Plugins)     | Nur beim Prebuild                                                                                     |
 
 Neubewertung: bei jedem Expo-SDK-Update und spätestens zum Ablaufdatum.
+
+**Erledigt:** GHSA-vfj7-8cjw-p6xm (braces) – mit den Expo-SDK-57-Patches (Oktober 2026) nicht mehr betroffen.

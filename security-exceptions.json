@@ -2,17 +2,17 @@
   "$comment": "Bewusst akzeptierte npm-audit-Funde (SDLC: Ausnahmen mit Begründung und Ablaufdatum). Begründungen: docs/SECURITY_EXCEPTIONS.md",
   "advisories": [
     {
-      "id": "GHSA-vfj7-8cjw-p6xm",
-      "package": "braces",
-      "severity": "high",
-      "reason": "Nur in Build-/Testwerkzeugen (Metro, Jest). Muster stammen aus der eigenen Konfiguration, nicht von Nutzern. Kein Fix verfügbar.",
-      "expires": "2027-01-31"
-    },
-    {
       "id": "GHSA-86w9-cpqp-85rv",
       "package": "node-forge",
       "severity": "high",
       "reason": "Nur in der Expo-CLI (Code-Signing-Werkzeug), nicht im App-Bundle. EAS-Update-Codesignatur wird nicht verwendet. Kein Fix verfügbar.",
+      "expires": "2027-01-31"
+    },
+    {
+      "id": "GHSA-mrhx-c7xc-m3w5",
+      "package": "zod",
+      "severity": "high",
+      "reason": "Nur zod@3 in @expo/cli (Build-/Dev-Werkzeug, verarbeitet eigene Konfiguration, keine Nutzereingaben); nicht im App-Bundle. Kein Fix für zod 3; die App selbst nutzt zod 4.6.7 (nicht betroffen).",
       "expires": "2027-01-31"
     }
   ]
