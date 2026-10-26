@@ -105,6 +105,17 @@ function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
             headerTitleStyle: { fontFamily: fontFamily.semibold, color: colors.text },
           }}
         />
+        <Stack.Screen
+          name="anleitung"
+          options={{
+            headerShown: true,
+            title: t('help.title'),
+            headerBackTitle: t('common.back'),
+            headerStyle: { backgroundColor: colors.surface },
+            headerTintColor: colors.primary,
+            headerTitleStyle: { fontFamily: fontFamily.semibold, color: colors.text },
+          }}
+        />
       </Stack>
       {session && (gate === 'teacher' || gate === 'student') ? <PushBridge userId={session.user.id} /> : null}
       <OfflineBanner />

@@ -619,5 +619,10 @@
       "student_deleted": "Schüler gelöscht",
       "account_deleted": "Konto gelöscht"
     }
+  },
+  "help": {
+    "title": "Anleitung",
+    "open": "Anleitung",
+    "signInLink": "Hilfe & Anleitung"
   }
 }

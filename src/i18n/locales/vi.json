@@ -619,5 +619,10 @@
       "student_deleted": "Xóa học viên",
       "account_deleted": "Xóa tài khoản"
     }
+  },
+  "help": {
+    "title": "Hướng dẫn",
+    "open": "Hướng dẫn sử dụng",
+    "signInLink": "Trợ giúp & hướng dẫn"
   }
 }
